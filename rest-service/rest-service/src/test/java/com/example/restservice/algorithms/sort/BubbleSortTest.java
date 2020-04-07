@@ -1,15 +1,14 @@
-package com.example.restservice.algorithms;
+package com.example.restservice.algorithms.sort;
 
-import com.example.restservice.algorithms.SelectionSort;
+import com.example.restservice.algorithms.sort.BubbleSort;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
+public class BubbleSortTest {
 
-public class SelectionSortTest {
-
-    private SelectionSort array = new SelectionSort();
+    BubbleSort array = new BubbleSort();
 
     @DisplayName("Should not throw an exception")
 
@@ -26,6 +25,7 @@ public class SelectionSortTest {
             assertArrayEquals(expected_array, array.sorting(v));
 
             double time_after = System.nanoTime();
+
             total_time += (time_after - time_before);
         }
 

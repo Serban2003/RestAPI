@@ -1,14 +1,14 @@
-package com.example.restservice.algorithms;
+package com.example.restservice.algorithms.sort;
 
-import com.example.restservice.algorithms.BubbleSort;
+import com.example.restservice.algorithms.sort.QuickSort;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-public class BubbleSortTest {
+public class QuickSortTest {
 
-    BubbleSort array = new BubbleSort();
+    QuickSort array = new QuickSort();
 
     @DisplayName("Should not throw an exception")
 

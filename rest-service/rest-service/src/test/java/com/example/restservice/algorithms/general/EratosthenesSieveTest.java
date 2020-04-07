@@ -1,6 +1,6 @@
-package com.example.restservice.algorithms;
+package com.example.restservice.algorithms.general;
 
-import com.example.restservice.algorithms.EratosthenesSieve;
+import com.example.restservice.algorithms.general.EratosthenesSieve;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

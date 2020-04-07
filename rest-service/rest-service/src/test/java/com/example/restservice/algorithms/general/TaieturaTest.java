@@ -1,6 +1,6 @@
-package com.example.restservice.algorithms;
+package com.example.restservice.algorithms.general;
 
-import com.example.restservice.algorithms.Taietura;
+import com.example.restservice.algorithms.general.Taietura;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

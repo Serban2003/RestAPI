@@ -1,6 +1,6 @@
-package com.example.restservice.algorithms;
+package com.example.restservice.algorithms.numbers;
 
-import com.example.restservice.algorithms.ArabToRoman;
+import com.example.restservice.algorithms.numbers.ArabToRoman;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

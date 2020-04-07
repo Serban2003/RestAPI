@@ -1,4 +1,4 @@
-package com.example.restservice.algorithms;
+package com.example.restservice.algorithms.sort;
 
 public class BubbleSort {
 
