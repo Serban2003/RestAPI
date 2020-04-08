@@ -1,8 +1,8 @@
 package com.example.restservice.algorithms.sort;
 
-public class BubbleSort {
+public class BubbleSort implements Sort {
 
-    public int[] sorting(int[] array) {
+    public Integer[] sorting(Integer[] array) {
 
         int mut = 1;
 

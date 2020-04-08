@@ -1,8 +1,8 @@
 package com.example.restservice.algorithms.sort;
 
-public class SelectionSort {
+public class SelectionSort implements Sort{
 
-    public int[] sorting(int[] array) {
+    public Integer[] sorting(Integer[] array) {
 
         int poz = 0, k = 0;
 

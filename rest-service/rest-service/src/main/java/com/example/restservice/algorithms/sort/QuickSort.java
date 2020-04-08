@@ -1,15 +1,15 @@
 package com.example.restservice.algorithms.sort;
 
-public class QuickSort {
+public class QuickSort implements Sort{
 
-    public int[] sorting(int[] array) {
+    public Integer[] sorting(Integer[] array) {
 
         quicksort(array, 0, array.length - 1);
 
         return array;
     }
 
-    void quicksort(int[] array, int stg, int drp) {
+    void quicksort(Integer[] array, int stg, int drp) {
 
         if (stg < drp) {
             int indx = partition(array, stg, drp);
@@ -19,7 +19,7 @@ public class QuickSort {
         }
     }
 
-    int partition(int[] array, int stg, int drp) {
+    int partition(Integer[] array, int stg, int drp) {
 
         int pivot = array[drp];
         int indx = stg - 1;
