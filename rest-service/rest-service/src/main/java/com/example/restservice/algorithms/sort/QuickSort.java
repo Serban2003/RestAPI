@@ -9,34 +9,34 @@ public class QuickSort implements Sort{
         return array;
     }
 
-    void quicksort(Integer[] array, int stg, int drp) {
+    void quicksort(Integer[] array, int left, int right) {
 
-        if (stg < drp) {
-            int indx = partition(array, stg, drp);
+        if (left < right) {
+            int index = partition(array, left, right);
 
-            quicksort(array, stg, indx - 1);
-            quicksort(array, indx + 1, drp);
+            quicksort(array, left, index - 1);
+            quicksort(array, index + 1, right);
         }
     }
 
-    int partition(Integer[] array, int stg, int drp) {
+    int partition(Integer[] array, int left, int right) {
 
-        int pivot = array[drp];
-        int indx = stg - 1;
+        int pivot = array[right];
+        int index = left - 1;
 
-        for (int i = stg; i <= drp - 1; ++i)
+        for (int i = left; i <= right - 1; ++i)
             if (pivot > array[i]) {
-                indx++;
+                index++;
 
-                int aux = array[indx];
-                array[indx] = array[i];
+                int aux = array[index];
+                array[index] = array[i];
                 array[i] = aux;
             }
 
-        int aux = array[indx + 1];
-        array[indx + 1] = array[drp];
-        array[drp] = aux;
+        int aux = array[index + 1];
+        array[index + 1] = array[right];
+        array[right] = aux;
 
-        return indx + 1;
+        return index + 1;
     }
 }

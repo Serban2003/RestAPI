@@ -1,6 +1,5 @@
 package com.example.restservice.algorithms.sort;
 
-import com.example.restservice.algorithms.sort.QuickSort;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,27 +7,25 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class QuickSortTest {
 
-    QuickSort array = new QuickSort();
+    QuickSort sortedArray = new QuickSort();
 
     @DisplayName("Should not throw an exception")
 
     @Test
-    void testall() {
+    void testAll() {
 
-        double total_time = 0.0;
+        double totalTime = 0.0;
         for (int i = 1; i <= 10; ++i) {
 
-            double time_before = System.nanoTime();
+            double timeBefore = System.nanoTime();
 
-            int[] expected_array = {10, 30, 40, 50, 80, 90};
-            int[] v = {10, 80, 30, 90, 40, 50};
-            assertArrayEquals(expected_array, array.sorting(v));
+            Integer[] expectedArray = {10, 30, 40, 50, 80, 90};
+            Integer[] array = {10, 80, 30, 90, 40, 50};
+            assertArrayEquals(expectedArray, sortedArray.sorting(array));
 
-            double time_after = System.nanoTime();
-
-            total_time += (time_after - time_before);
+            totalTime += (System.nanoTime() - timeBefore);
         }
 
-        System.out.println((total_time / 10) / 1_000_000);
+        System.out.println((totalTime / 10) / 1_000_000 + " ms.");
     }
 }

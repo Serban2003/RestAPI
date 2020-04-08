@@ -2,24 +2,23 @@ package com.example.restservice.algorithms.general;
 
 public class HeapsAlgorithm {
 
-    int[] fol = new int[32];
+    int[] usedNumber = new int[32];
     int[] perm = new int[32];
 
-    void permutation(int n, int k) {
+    void createPermutation(int numberOfDistinctDigits, int initialDigit) {
 
-        if (k == n + 1) {
-            for (int i = 1; i <= n; ++i)
+        if (initialDigit == numberOfDistinctDigits + 1) {
+            for (int i = 1; i <= numberOfDistinctDigits; ++i)
                 System.out.print(perm[i] + " ");
             System.out.print("\n");
         }
 
-        for (int j = 1; j <= n; j++)
-            if (fol[j] == 0) {
-                perm[k] = j;
-                fol[j] = 1;
-                permutation(n, k + 1);
-                fol[j] = 0;
+        for (int j = 1; j <= numberOfDistinctDigits; j++)
+            if (usedNumber[j] == 0) {
+                perm[initialDigit] = j;
+                usedNumber[j] = 1;
+                createPermutation(numberOfDistinctDigits, initialDigit + 1);
+                usedNumber[j] = 0;
             }
     }
-
 }

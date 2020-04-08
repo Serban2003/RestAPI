@@ -2,27 +2,27 @@ package com.example.restservice.algorithms.general;
 
 public class Taietura {
 
-    int[] frecv1 = new int[200000000];
-    int[] frecv2 = new int[200000000];
+    int[] IncidenceOfSumAfterCut = new int[200000000];
+    int[] IncidenceOfSumBeforeCut = new int[200000000];
 
-    int suma1 = 0, k = 0, val = 0;
+    int partialSum = 0, k = 0, value = 0;
 
-    public int[] taieturi(int[] x) {
+    public int[] cuts(int[] array) {
 
-        int[] rez = new int[x.length];
+        int[] result = new int[array.length];
 
-        for (int value : x) {
-            suma1 += value;
-            frecv1[suma1]++;
+        for (int value : array) {
+            partialSum += value;
+            IncidenceOfSumAfterCut[partialSum]++;
         }
-        suma1 = 0;
-        for (int value : x) {
-            val += frecv1[suma1] - frecv2[suma1];
-            rez[k++] = val;
-            frecv1[suma1]--;
-            suma1 += value;
-            frecv2[suma1]++;
+        partialSum = 0;
+        for (int value : array) {
+            value += IncidenceOfSumAfterCut[partialSum] - IncidenceOfSumBeforeCut[partialSum];
+            result[k++] = value;
+            IncidenceOfSumAfterCut[partialSum]--;
+            partialSum += value;
+            IncidenceOfSumBeforeCut[partialSum]++;
         }
-        return rez;
+        return result;
     }
 }
