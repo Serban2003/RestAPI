@@ -34,15 +34,15 @@ public class TestSorting {
         sorters.add(new QuickSort());
         sorters.add(new SelectionSort());
 
-        for (Map.Entry<String, Integer[]> testSet : generatedNumbers.entrySet()) {
-            System.out.println("Sorting set " + testSet.getKey());
-            for (Sort sorter : sorters) {
-                double time_before = System.nanoTime();
-                sorter.sorting(testSet.getValue());
-                System.out.println("- Sorting with (" + sorter.getClass() + ") - " + (System.nanoTime() - time_before) / 1_000_000 + "ms");
-            }
-            System.out.println();
-        }
+//        for (Map.Entry<String, Integer[]> testSet : generatedNumbers.entrySet()) {
+//            System.out.println("Sorting set " + testSet.getKey());
+//            for (Sort sorter : sorters) {
+//                double time_before = System.nanoTime();
+//                sorter.sorting(testSet.getValue());
+//                System.out.println("- Sorting with (" + sorter.getClass() + ") - " + (System.nanoTime() - time_before) / 1_000_000 + "ms");
+//            }
+//            System.out.println();
+//        }
     }
 }
 /**
