@@ -25,7 +25,7 @@ public class TestSorting {
         generatedNumbers.put("100_1_nearlySorted", generator.generate(100, 1, "nearlySorted"));
         generatedNumbers.put("100_1_reversed", generator.generate(100, 1, "reversed"));
         generatedNumbers.put("100_10_random", generator.generate(100, 10, "random"));
-        generatedNumbers.put("1000000_100000_random", generator.generate(1_000_000, 100_000, "random"));
+//        generatedNumbers.put("1000000_100000_random", generator.generate(1_000_000, 100_000, "random"));
 
         System.out.println();
 
@@ -34,15 +34,15 @@ public class TestSorting {
         sorters.add(new QuickSort());
         sorters.add(new SelectionSort());
 
-//        for (Map.Entry<String, Integer[]> testSet : generatedNumbers.entrySet()) {
-//            System.out.println("Sorting set " + testSet.getKey());
-//            for (Sort sorter : sorters) {
-//                double time_before = System.nanoTime();
-//                sorter.sorting(testSet.getValue());
-//                System.out.println("- Sorting with (" + sorter.getClass() + ") - " + (System.nanoTime() - time_before) / 1_000_000 + "ms");
-//            }
-//            System.out.println();
-//        }
+        for (Map.Entry<String, Integer[]> testSet : generatedNumbers.entrySet()) {
+            System.out.println("Sorting set " + testSet.getKey());
+            for (Sort sorter : sorters) {
+                double time_before = System.nanoTime();
+                sorter.sorting(testSet.getValue());
+                System.out.println("- Sorting with (" + sorter.getClass() + ") - " + (System.nanoTime() - time_before) / 1_000_000 + "ms");
+            }
+            System.out.println();
+        }
     }
 }
 /**
