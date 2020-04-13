@@ -10,10 +10,6 @@ import java.util.Map;
 
 public class TestSorting {
 
-    //TODO: 100 - 1 000 000 - 2 000 000 000                 (3 order of magnitude)
-    //TODO: distribution random, nearlySorted, reversed     (4 distributions)
-    // = 12 distinct cases
-
     @Test
     public void testSorting() {
 
