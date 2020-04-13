@@ -14,28 +14,32 @@ import java.util.Map;
 @Controller
 public class UserController {
 
-    private Map<Integer, User> userlist=new HashMap<>();
+    Integer id = 1;
+    private Map<Integer, User> userlist = new HashMap<>();
 
     @PostMapping("/user/")
-    public User create(String name){
-        return null;
+    public User create(String name) {
+        User user = new User(id, name);
+        id++;
+        return user;
     }
 
     @PostMapping("/user/{id}")
-    public User update(Integer id, String name){
-        return null;
+    public User update(Integer id, String name) {
+        userlist.get(id).setName(name);
+        return userlist.get(id);
     }
 
-    public void delete(Integer id){
-
+    public void delete(Integer id) {
+        userlist.remove(id);
     }
 
     @GetMapping("/user/{id}")
-    public User read(@RequestParam(value = "id")Integer id){
+    public User read(@RequestParam(value = "id") Integer id) {
         return null;
     }
 
-    public List<User> getAll(){
+    public List<User> getAll() {
         return new ArrayList<>();
     }
 }
