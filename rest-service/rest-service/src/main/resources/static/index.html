@@ -1,14 +1,21 @@
 <html>
 <head>
     <link rel="stylesheet" href="/css/style.css">
-    <script type="text/javascript"  src="/js/index.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
 </head>
 <body>
-It loads!
-<label for="namez"> Name :</label> <input type="text" name="namez" id="namez" value="insert your name here ..."/>
+It loads!<br>
+<label for="namez"> Name :</label>
+<input type="text" name="namez" id="namez" placeholder="insert your name here ..." maxlength="12"s/>
 <button onclick="submitGreeting()">Greet</button>
-<div id="greeting-result">
 
-</div>
+<table class="user_table" border="1">
+    <thead><tr>
+        <td width="110px">User</td>
+        <td width="110px">Actions</td></tr>
+    </thead>
+    <tbody id="user_list">
+    </tbody>
+</table>
 </body>
 </html>
