@@ -19,12 +19,23 @@ function submitGreeting() {
                 ++id;
                 let jsonResult = JSON.parse(xhr.responseText);
 
+                document.getElementById("namez").value=''; //refreshing the input form
+
                 let newRow = document.createElement('tr'); //creating a new row for user table
                 newRow.id = "user_row" + id;
 
                 let newData = document.createElement('td'); //creating a new table cell for username
                 newData.id = "user_data" + id;
                 newRow.appendChild(newData);
+
+                //adding an ondblclick event for the table cell
+                if (newData.addEventListener) { // all browsers except IE before version 9
+                    newData.addEventListener("dblclick", editUser, false);
+                } else {
+                    if (newData.attachEvent) { // IE before version 9
+                        newData.attachEvent("dblclick", editUser(newData.id));
+                    }
+                }
 
                 let newName = document.createElement('span'); //creating a container for username
                 newName.id = "user_name" + id;
@@ -82,7 +93,7 @@ function submitGreeting() {
     // Send the request to send-ajax-data.php
     xhr.send(null);
 }
-//edit username on button click
+//edit username on button click or double click
 function editUser(id) {
 
     var index = this.id.length - 1; //length of the username

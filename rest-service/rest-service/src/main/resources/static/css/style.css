@@ -1,9 +1,26 @@
 body {
- font-size: 20px;
+    font-size: 20px;
+}
+
+h3{
+    text-align: center;
 }
 
 .user_table{
     border-collapse: collapse;
     border: 1.5px solid black;
     text-align: center;
+}
+
+.instructions{
+    position: absolute;
+    border: 1px solid black;
+    top: 5%;
+    padding: 10px;
+    left: 50%;
+    margin-left: -240px;
+    font-size: 18px;
+    width: 480px;
+    height: 200px;
+    background-color: rgb(240, 240, 240);
 }
