@@ -1,3 +1,5 @@
+//TODO: minimize code
+
 var id = 0;
 
 function submitGreetingKey() {
@@ -7,7 +9,9 @@ function submitGreetingKey() {
 
 function submitGreeting() {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/greeting?name=' + document.getElementById("namez").value);
+    xhr.open('POST', '/user/');
+    xhr.setRequestHeader("Content-Type", "application/json");
+    var name = document.getElementById("namez").value;
 
     // Track the state changes of the request.
     xhr.onreadystatechange = function () {
@@ -24,22 +28,20 @@ function submitGreeting() {
                 let newRow = document.createElement('tr'); //creating a new row for user table
                 newRow.id = "user_row" + id;
 
+                let newID = document.createElement('td'); //creating a new table cell for user id
+                newID.data = "user_id" + id;
+                newID.innerHTML = id;
+                newRow.appendChild(newID);
+
                 let newData = document.createElement('td'); //creating a new table cell for username
                 newData.id = "user_data" + id;
                 newRow.appendChild(newData);
 
-                //adding an ondblclick event for the table cell
-                if (newData.addEventListener) { // all browsers except IE before version 9
-                    newData.addEventListener("dblclick", editUser, false);
-                } else {
-                    if (newData.attachEvent) { // IE before version 9
-                        newData.attachEvent("dblclick", editUser(newData.id));
-                    }
-                }
+                addNewEvent(newData, "dblclick", editUser); //adding an ondblclick event for the table cell
 
                 let newName = document.createElement('span'); //creating a container for username
                 newName.id = "user_name" + id;
-                newName.innerHTML = jsonResult.content; //displaying the username
+                newName.innerHTML = jsonResult.name; //displaying the username
                 newData.appendChild(newName);
 
                 //creating a new table cell for buttons
@@ -51,28 +53,15 @@ function submitGreeting() {
                 newEdit.appendChild(textValue);
                 newEdit.id = "edit_user" + id;
 
-                //adding an onclick event for the edit button
-                if (newEdit.addEventListener) { // all browsers except IE before version 9
-                    newEdit.addEventListener("click", editUser, false);
-                } else {
-                    if (newEdit.attachEvent) { // IE before version 9
-                        newEdit.attachEvent("click", editUser(newEdit.id));
-                    }
-                }
+                addNewEvent(newEdit, "click", editUser); //adding an onclick event for the edit button
+
                 //creating a delete button
                 let newDelete = document.createElement('button');
                 var textValue = document.createTextNode("Delete");
                 newDelete.appendChild(textValue);
                 newDelete.id = "delete_user" + id;
 
-                //adding an onclick event for the delete button
-                if (newDelete.addEventListener) { // all browsers except IE before version 9
-                    newDelete.addEventListener("click", deleteUser, false);
-                } else {
-                    if (newDelete.attachEvent) { // IE before version 9
-                        newDelete.attachEvent("click", deleteUser(newDelete.id));
-                    }
-                }
+                addNewEvent(newDelete, "click", deleteUser); //adding an onclick event for the delete button
 
                 newAction.appendChild(newEdit);
                 newAction.appendChild(newDelete);
@@ -82,16 +71,13 @@ function submitGreeting() {
                 let cont = document.getElementById("user_list");
                 cont.appendChild(newRow);
 
-                //showing the result
-                console.info("Adding user: " + document.getElementById("namez").value + " id: " + id);
                 console.log(xhr.responseText); // 'This is the output.'
             } else {
                 console.log('Error: ' + xhr.status); // An error occurred during the request.
             }
         }
     };
-    // Send the request to send-ajax-data.php
-    xhr.send(null);
+    xhr.send("{\"name\": \""+ name + "\"}");
 }
 //edit username on button click or double click
 function editUser(id) {
@@ -130,6 +116,10 @@ function press(id) {
 
     if (event.which == 13 || event.keyCode == 13) { //if "Enter" was pressed
 
+        var x = new XMLHttpRequest();
+        x.open('POST', '/user/update/');
+        x.setRequestHeader("Content-Type", "application/json");
+
         var index = this.id.length - 1; //length of the username
         while (this.id[index] >= '0' && this.id[index] <= '9') //finding the first digit of the id
             index--;
@@ -146,11 +136,19 @@ function press(id) {
         var row = document.getElementById("user_data" + newId);
         row.appendChild(newSpan);
         row.removeChild(editInput);
+
+         var data = JSON.stringify({ "name":editInput.value, "id": newId });
+         x.send(data);
     }
 }
 
 //deleting the username on button click
 function deleteUser(id) {
+
+    var x = new XMLHttpRequest();
+    x.open('POST', '/user/delete/');
+    x.setRequestHeader("Content-Type", "application/json");
+
     var index = this.id.length - 1; //length of the username
     while (this.id[index] >= '0' && this.id[index] <= '9') //finding the first digit of the id
         index--;
@@ -162,4 +160,17 @@ function deleteUser(id) {
     //deleting the row containing the username from the table
     var row = document.getElementById("user_row" + newId);
     row.remove();
+
+    x.send("{\"id\": \""+ newId + "\"}");
+}
+
+ //adding a new event listener for a variable
+function addNewEvent(variable, action, newFunction){
+    if (variable.addEventListener) { // all browsers except IE before version 9
+            variable.addEventListener(action, newFunction, false);
+        } else {
+            if (variable.attachEvent) { // IE before version 9
+                variable.attachEvent(action, newFunction(variable.id));
+            }
+        }
 }
