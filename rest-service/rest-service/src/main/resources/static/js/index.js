@@ -1,6 +1,11 @@
 //TODO: minimize code
 
 var id = 0;
+let allUsers;
+
+window.onload = function() {
+getAll();
+}
 
 function submitGreetingKey() {
     if (event.which == 13 || event.keyCode == 13) //call submitGreeting if "Enter" was pressed
@@ -22,6 +27,7 @@ function submitGreeting() {
             if (xhr.status === OK) {
                 ++id;
                 let jsonResult = JSON.parse(xhr.responseText);
+                getAll();
 
                 document.getElementById("namez").value=''; //refreshing the input form
 
@@ -72,11 +78,13 @@ function submitGreeting() {
                 cont.appendChild(newRow);
 
                 console.log(xhr.responseText); // 'This is the output.'
+
             } else {
                 console.log('Error: ' + xhr.status); // An error occurred during the request.
             }
         }
     };
+
     xhr.send("{\"name\": \""+ name + "\"}");
 }
 //edit username on button click or double click
@@ -173,4 +181,21 @@ function addNewEvent(variable, action, newFunction){
                 variable.attachEvent(action, newFunction(variable.id));
             }
         }
+}
+
+function getAll(){
+    var x = new XMLHttpRequest();
+    x.open('GET', '/user/allusers/');
+
+    x.onreadystatechange = function () {
+        var DONE = 4;
+        var OK = 200;
+
+        if (x.readyState === DONE) {
+            if (x.status === OK){
+                console.log(x.responseText);
+            }
+        } else console.log('Error: ' + x.status);
+    }
+    x.send();
 }
