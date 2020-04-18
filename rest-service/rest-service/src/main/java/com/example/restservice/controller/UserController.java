@@ -8,11 +8,12 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -21,7 +22,6 @@ public class UserController {
 
     Integer id = 1;
 
-    private List<User> allUsers = new ArrayList<>();
     private Map<Integer, User> userlist = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(GreetingController.class);
 
@@ -32,7 +32,6 @@ public class UserController {
         id++;
         logger.debug("Creating user: id = " + user.getId() + " name = " + user.getName());
         userlist.put(user.getId(), user);
-        getAll();
         return user;
     }
 
@@ -51,7 +50,6 @@ public class UserController {
 
         userlist.remove(user.getId());
         logger.debug("Deleting user: id = " + user.getId() + " name = " + user.getName());
-        allUsers.clear();
     }
 
     @ResponseBody
@@ -60,11 +58,11 @@ public class UserController {
         JSONArray jsArray = new JSONArray();
         Gson gson = new Gson();
 
-        for (User allUser : allUsers) {
+        for (Map.Entry<Integer, User> value : userlist.entrySet()) {
             JSONObject jObj = new JSONObject();
             try {
-                jObj.put("id", allUser.getId());
-                jObj.put("name", allUser.getName());
+                jObj.put("id", value.getValue().getId());
+                jObj.put("name", value.getValue().getName());
                 jsArray.put(jObj);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -73,11 +71,5 @@ public class UserController {
         return gson.toJson(jsArray);
     }
 
-    public List<User> getAll() {
-        allUsers.clear();
-        for (Map.Entry<Integer, User> value : userlist.entrySet())
-            allUsers.add(value.getValue());
-        return allUsers;
-    }
 
 }
