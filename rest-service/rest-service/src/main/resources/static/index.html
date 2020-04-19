@@ -3,19 +3,21 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <script type="text/javascript" src="/js/index.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <title>Greeting</title>
 </head>
 <body>
-    It loads!<br>
-    <label for="namez"> Name :</label>
-    <input type="text" name="namez" id="namez" placeholder="insert your name here ..." maxlength="12"
+
+    <label for="namez"> Name:</label>
+    <input type="text" name="namez" id="namez" placeholder="insert your name here ..." maxlength="20"
            onkeypress="submitGreetingKey()"/>
-    <button onclick="submitGreeting()">Greet</button>
+    <button onclick="submitGreeting()" style="position: relative; top: 1px; width: 50px;">Greet</button>
 
     <table class="user_table" border="1">
         <thead>
         <tr>
             <td width="20px">ID</td>
-            <td width="110px">User</td>
+            <td width="200px">User</td>
             <td width="110px">Actions</td>
         </tr>
         </thead>
@@ -23,7 +25,7 @@
         </tbody>
     </table>
 
-   <div class="instructions">
+    <div class="instructions">
         <h3>Instructions!</h3>
         1. Type your username.<br>
         2. Click "Greet" button or press "Enter" to submit your username.<br>

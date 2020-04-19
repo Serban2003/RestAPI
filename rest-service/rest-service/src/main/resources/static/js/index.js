@@ -10,31 +10,32 @@ function submitGreetingKey() {
 }
 
 function submitGreeting() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/user/');
-    xhr.setRequestHeader("Content-Type", "application/json");
 
     var name = document.getElementById("namez").value;
+    if (name != ""){
+        var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/user/');
+            xhr.setRequestHeader("Content-Type", "application/json");
+        // Track the state changes of the request.
+        xhr.onreadystatechange = function () {
+            var DONE = 4; // readyState 4 means the request is done.
+            var OK = 200; // status 200 is a successful return.
 
-    // Track the state changes of the request.
-    xhr.onreadystatechange = function () {
-        var DONE = 4; // readyState 4 means the request is done.
-        var OK = 200; // status 200 is a successful return.
+            if (xhr.readyState === DONE) {
+                if (xhr.status === OK) {
 
-        if (xhr.readyState === DONE) {
-            if (xhr.status === OK) {
+                    let jsonResult = JSON.parse(xhr.responseText);
+                    document.getElementById("namez").value=''; //refreshing the input form
 
-                let jsonResult = JSON.parse(xhr.responseText);
-                document.getElementById("namez").value=''; //refreshing the input form
-
-                getAll();
-                console.log(xhr.responseText); // 'This is the output.'
-            } else {
-                console.log('Error: ' + xhr.status); // An error occurred during the request.
+                    getAll();
+                    console.log(xhr.responseText); // 'This is the output.'
+                } else {
+                    console.log('Error: ' + xhr.status); // An error occurred during the request.
+                }
             }
-        }
-    };
-    xhr.send("{\"name\": \""+ name + "\"}");
+        };
+        xhr.send("{\"name\": \""+ name + "\"}");
+    }
 }
 //creating a new table row
 function createTable(myObj){
@@ -100,6 +101,7 @@ function editUser(id) {
 
     let editInput = document.createElement('input');
     editInput.type = "text";
+    editInput.maxLength = 12;
     editInput.id = "input" + newId;
     editInput.value = div.textContent;
 
@@ -123,23 +125,24 @@ function press(id) {
 
         var newId = this.id.substr(index + 1, this.id.length - 1); //creating the new id
 
-        var x = new XMLHttpRequest();
-        x.open('POST', '/user/update/');
-        x.setRequestHeader("Content-Type", "application/json");
-
         var editInput = document.getElementById("input" + newId);
+        if(editInput.value != ""){
+            var x = new XMLHttpRequest();
+            x.open('POST', '/user/update/');
+            x.setRequestHeader("Content-Type", "application/json");
 
-        //creating a new span container for the username
-        let newSpan = document.createElement('span');
-        newSpan.innerHTML = editInput.value;
-        newSpan.id = "user_name" + newId;
+            //creating a new span container for the username
+            let newSpan = document.createElement('span');
+            newSpan.innerHTML = editInput.value;
+            newSpan.id = "user_name" + newId;
 
-        var row = document.getElementById("user_data" + newId);
-        row.appendChild(newSpan);
-        row.removeChild(editInput);
+            var row = document.getElementById("user_data" + newId);
+            row.appendChild(newSpan);
+            row.removeChild(editInput);
 
-         var data = JSON.stringify({ "name":editInput.value, "id": newId });
-         x.send(data);
+             var data = JSON.stringify({ "name":editInput.value, "id": newId });
+             x.send(data);
+         }
     }
 }
 

@@ -10,6 +10,8 @@ h3{
     border-collapse: collapse;
     border: 1.5px solid black;
     text-align: center;
+    position: relative;
+    top: 15px;
 }
 
 .instructions{
@@ -23,4 +25,36 @@ h3{
     width: 480px;
     height: 200px;
     background-color: rgb(240, 240, 240);
+}
+
+input{
+    border-radius: 10px;
+    font-size: 15px;
+    border: 1px grey solid;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 200px;
+    outline: none;
+}
+
+input:focus, input:hover{
+    box-shadow: black 0.5px 0.5px 0.5px;
+    border-color: black;
+}
+
+button{
+    width: 50%;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 15px;
+    border: 1px grey solid;
+    box-shadow: black 1px 1px 1px;
+    outline: none;
+}
+
+button:hover{
+    background-color: rgb(240, 240, 240);
+    box-shadow: black 1.5px 1.5px 1.5px;
+    border-color: black;
+    cursor: pointer;
 }
