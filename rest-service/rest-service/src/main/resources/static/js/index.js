@@ -209,4 +209,32 @@ function getAll(){
     x.send();
 }
 
+function startSnake(){
+
+    if (document.body.contains(document.getElementById('playArea'))) {
+        document.body.removeChild(document.getElementById("playArea"));
+    }
+    else {
+        let playArea = document.createElement('div');
+        playArea.id = "playArea";
+        playArea.className = "snake_area";
+        document.body.appendChild(playArea);
+
+        let snakeHead = document.createElement('div');
+        snakeHead.id = "snakeHead";
+        snakeHead.className = "snake_head";
+
+
+        playArea.appendChild(snakeHead);
+        snakeHead.style.left = getRandom(snakeHead.style.width, playArea.style.width);
+        snakeHead.style.top = getRandom(snakeHead.style.height, playArea.style.height);;
+
+        console.log(snakeHead.style.left + " " + snakeHead.style.top);
+    }
+}
+
+function getRandom(min, max) {
+    console.log("Min: " + min + " Max: " + max); //doesn't work
+    return Math.floor(Math.random() * (max - min + 1) ) + "px";
+}
 

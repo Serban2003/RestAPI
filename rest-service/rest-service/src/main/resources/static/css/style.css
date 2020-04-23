@@ -14,17 +14,27 @@ h3{
     top: 15px;
 }
 
-.instructions{
+.button_snake{
+    position: relative;
+    top: 20px;
+    width: 100px;
+}
+
+.snake_area{
     position: absolute;
-    border: 1px solid black;
-    top: 5%;
-    padding: 10px;
-    left: 50%;
-    margin-left: -100px;
-    font-size: 18px;
-    width: 480px;
-    height: 200px;
-    background-color: rgb(240, 240, 240);
+    top: 5px;
+    left: 400px;
+    width: 550px;
+    height: 550px;
+    background-color: black;
+    border: 2px solid grey;
+}
+
+.snake_head{
+    position: relative;
+    width: 20px;
+    height: 20px;
+    background-color: rgb(30, 145, 0);
 }
 
 input{
