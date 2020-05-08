@@ -24,17 +24,58 @@ h3{
     position: absolute;
     top: 5px;
     left: 400px;
-    width: 550px;
-    height: 550px;
-    background-color: black;
+    width: 560px;
+    height: 560px;
     border: 2px solid grey;
+    background-color: black;
 }
 
-.snake_head{
-    position: relative;
+.snake{
+    position: absolute;
     width: 20px;
     height: 20px;
     background-color: rgb(30, 145, 0);
+}
+
+.food{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: #DA2400;
+}
+
+.game_text{
+    position: absolute;
+    width: 400px;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top: -25px;
+    text-align: center;
+    font-size: 30px;
+    letter-spacing: 5px;
+    color: #E8130E;
+    text-shadow: -1px 0 #AA0A00, 0 1px #AA0A00, 1px 0 #AA0A00, 0 -1px #AA0A00;
+}
+
+.retry_button, .quit_button{
+    position: absolute;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+    left: 50%;
+    top: 50%;
+    margin-top: 15px;
+    background-color: rgb(70, 70, 70);
+}
+
+.retry_button{
+    margin-left: -150px;
+}
+
+.quit_button{
+    margin-left: 5px;
 }
 
 input{
@@ -67,4 +108,42 @@ button:hover{
     box-shadow: black 1.5px 1.5px 1.5px;
     border-color: black;
     cursor: pointer;
+}
+
+@keyframes disappearAnimation{
+  0%{
+    opacity: 1;
+  }
+  50%{
+    opacity: 0.5;
+  }
+  100%{
+    display: none;
+    opacity: 0;
+  }
+}
+
+.disappear{
+    animation-name: disappearAnimation;
+    animation-duration: 1000ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes appearAnimation{
+  0%{
+    opacity: 0;
+  }
+  50%{
+    opacity: 0.5;
+  }
+  100%{
+    display: none;
+    opacity: 1;
+  }
+}
+
+.appear{
+    animation-name: appearAnimation;
+    animation-duration: 1000ms;
+    animation-fill-mode: forwards;
 }

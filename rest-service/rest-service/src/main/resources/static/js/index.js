@@ -168,7 +168,7 @@ function deleteUser(id) {
     x.send("{\"id\": \""+ newId + "\"}");
 }
 
- //adding a new event listener for a variable
+// adding a new event listener for a variable
 function addNewEvent(variable, objId, action, newFunction){
     if (variable.addEventListener) { // all browsers except IE before version 9
             variable.addEventListener(action, newFunction, false);
@@ -209,32 +209,227 @@ function getAll(){
     x.send();
 }
 
+let playArea;
+var snake = [];
+
+var snakeWidth = 20;
+var snakeHeight = 20;
+
+var food = { x : 0, y: 0 };
+
 function startSnake(){
 
+    var snakeLength = 1;
+
     if (document.body.contains(document.getElementById('playArea'))) {
-        document.body.removeChild(document.getElementById("playArea"));
+        document.body.removeChild(document.getElementById("playArea"));  // removing the play area
+        deleteAll();
+        document.body.removeEventListener("keypress", move);
     }
     else {
-        let playArea = document.createElement('div');
+
+        playArea = document.createElement('div');
         playArea.id = "playArea";
         playArea.className = "snake_area";
         document.body.appendChild(playArea);
 
-        let snakeHead = document.createElement('div');
-        snakeHead.id = "snakeHead";
-        snakeHead.className = "snake_head";
-
-
-        playArea.appendChild(snakeHead);
-        snakeHead.style.left = getRandom(snakeHead.style.width, playArea.style.width);
-        snakeHead.style.top = getRandom(snakeHead.style.height, playArea.style.height);;
-
-        console.log(snakeHead.style.left + " " + snakeHead.style.top);
+        var x1 = Math.floor(Math.random() * (playArea.offsetHeight - snakeHeight + 1));
+        var y1 = Math.floor(Math.random() * (playArea.offsetWidth - snakeWidth + 1));
+        snake.push([ x1 - x1 % 20, y1 - y1 % 20]);
+        createAll();
+        createFood();
+        document.body.addEventListener("keypress", getDirection);
     }
 }
 
-function getRandom(min, max) {
-    console.log("Min: " + min + " Max: " + max); //doesn't work
-    return Math.floor(Math.random() * (max - min + 1) ) + "px";
+function createFood(){
+
+    if(playArea.contains(document.getElementById("food"))){
+        playArea.removeChild(document.getElementById("food"));
+    }
+
+    let foodNew = document.createElement('div');
+    foodNew.className = "food";
+    foodNew.id = "food";
+
+    var x1 = Math.floor(Math.random() * (playArea.offsetHeight - snakeHeight + 1));
+    var y1 = Math.floor(Math.random() * (playArea.offsetWidth - snakeWidth + 1))
+    food.x = x1 - x1 % 20;
+    food.y = y1 - y1 % 20;
+
+    foodNew.style.left = food.x;
+    foodNew.style.top = food.y;
+
+    playArea.appendChild(foodNew);
 }
 
+function getDirection(){
+    switch (event.keyCode) {
+        case 119:{ // w key
+            move("up");
+            break;
+        }
+        case 100:{ // d key
+            move("right");
+            break;
+        }
+        case 115:{ // s key
+            move("down");
+            break;
+        }
+        case 97:{ // a key
+            move("left");
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+function createAll(){
+    for(var i=0; i<snake.length; ++i){
+        let snakeBody = document.createElement('div');
+        snakeBody.className = "snake";
+        snakeBody.id = "snake" + i;
+        snakeBody.style.left = snake[i][0] + 'px';
+        snakeBody.style.top = snake[i][1] + 'px';
+        playArea.appendChild(snakeBody);
+    }
+}
+
+function disappearAll(){
+    for(var i=0; i<snake.length; ++i)
+        playArea.removeChild(document.getElementById("snake"+i));
+}
+
+function deleteAll(){
+    while(snake.length>0)
+        snake.pop()
+    document.body.removeEventListener("keypress", getDirection);
+}
+var coords = {x : 0, y : 0};
+
+function move(finalDirection){
+
+    switch(finalDirection){
+        case "up":{
+            coords.x = snake[snake.length-1][0];
+            coords.y = snake[snake.length-1][1];
+
+            moveDiv();
+            snake[0][1]-=snakeHeight;
+
+            if(snake[0][0] == food.x && snake[0][1] == food.y){
+                snake.push([coords.x, coords.y]);
+                createFood();
+            }
+            createAll();
+            disappearAll();
+
+            if(snake[0][1] < 0)
+                gameOver();
+            break;
+        }
+        case "right":{
+            coords.x = snake[snake.length-1][0];
+            coords.y = snake[snake.length-1][1];
+
+            moveDiv();
+            snake[0][0]+=snakeWidth;
+
+            if(snake[0][0] == food.x && snake[0][1] == food.y){
+                snake.push([coords.x, coords.y]);
+                createFood();
+            }
+            createAll();
+            disappearAll();
+
+            if(snake[0][0] >= playArea.offsetWidth - snakeWidth)
+                gameOver();
+            break;
+        }
+        case "down":{
+            coords.x = snake[snake.length-1][0];
+            coords.y = snake[snake.length-1][1];
+
+            moveDiv();
+            snake[0][1]+=snakeHeight;
+
+            if(snake[0][0] == food.x && snake[0][1] == food.y){
+                snake.push([coords.x, coords.y]);
+                createFood();
+            }
+            createAll();
+            disappearAll();
+
+            if(snake[0][1] >= playArea.offsetHeight - snakeHeight)
+                gameOver();
+            break;
+        }
+        case "left":{
+            coords.x = snake[snake.length-1][0];
+            coords.y = snake[snake.length-1][1];
+
+            moveDiv();
+            snake[0][0]-=snakeWidth;
+
+            if(snake[0][0] == food.x && snake[0][1] == food.y){
+                snake.push([coords.x, coords.y]);
+                createFood();
+            }
+            createAll();
+            disappearAll();
+
+            if(snake[0][0] < 0)
+                gameOver();
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+function gameOver(){
+    disappearAll();
+    let text = document.createTextNode("GAME OVER");
+    let message = document.createElement('span');
+    message.appendChild(text);
+    message.className = 'game_text';
+    playArea.appendChild(message);
+
+    let retryButton = document.createElement('button');
+    text = document.createTextNode('Retry');
+    retryButton.appendChild(text);
+    retryButton.addEventListener("click", retry);
+    retryButton.className = 'retry_button';
+    playArea.appendChild(retryButton);
+
+    let quitButton = document.createElement('button');
+    text = document.createTextNode('Quit');
+    quitButton.appendChild(text);
+    quitButton.addEventListener("click", quit);
+    quitButton.className = 'quit_button';
+    playArea.appendChild(quitButton);
+
+    message.classList.add('appear');
+    retryButton.classList.add('appear');
+    quitButton.classList.add('appear');
+    deleteAll();
+}
+
+function moveDiv(){
+    for(var i=snake.length-1; i>=1; --i){
+        snake[i][0]=snake[i-1][0];
+        snake[i][1]=snake[i-1][1];
+    }
+}
+
+function quit(){
+    document.body.removeChild(document.getElementById("playArea"));  // removing the play area
+    document.body.removeEventListener("keypress", getDirection);
+}
+
+function retry(){
+    quit();
+    startSnake();
+}
