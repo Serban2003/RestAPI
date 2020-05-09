@@ -218,11 +218,12 @@ function getAll(){
 //  -> keep score
 //  -> clear interval error
 //  -> inputs for board dimensions (make snake 5px/5px)
-
-//
+//  -> input for speed (interval timing)
+//  ->
 
 //TODO: create a matrix to hold board
 //  -> create gutters | walls | generate board
+//  -> button to activate walls creation (via click)
 //  -> Lee ( A -> B) + show number of moves
 
 let playArea;
