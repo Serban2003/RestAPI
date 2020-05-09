@@ -209,6 +209,22 @@ function getAll(){
     x.send();
 }
 
+//TODO for snake:
+// - gameorver conditions:
+//  -> self bump
+//  -> remove boundaries
+// - gameplay:
+//  -> don't skip a cell when pressing the same button as current direction
+//  -> keep score
+//  -> clear interval error
+//  -> inputs for board dimensions (make snake 5px/5px)
+
+//
+
+//TODO: create a matrix to hold board
+//  -> create gutters | walls | generate board
+//  -> Lee ( A -> B) + show number of moves
+
 let playArea;
 var snake = [];
 
@@ -216,6 +232,9 @@ var snakeWidth = 20;
 var snakeHeight = 20;
 
 var food = { x : 0, y: 0 };
+
+var timer;
+var direction="right";
 
 function startSnake(){
 
@@ -236,9 +255,15 @@ function startSnake(){
         var x1 = Math.floor(Math.random() * (playArea.offsetHeight - snakeHeight + 1));
         var y1 = Math.floor(Math.random() * (playArea.offsetWidth - snakeWidth + 1));
         snake.push([ x1 - x1 % 20, y1 - y1 % 20]);
-        createAll();
         createFood();
+        drawSnake();
         document.body.addEventListener("keypress", getDirection);
+
+
+        timer = setInterval(function(){
+            move(direction);
+        }, 300);
+
     }
 }
 
@@ -267,18 +292,22 @@ function getDirection(){
     switch (event.keyCode) {
         case 119:{ // w key
             move("up");
+            direction = "up";
             break;
         }
         case 100:{ // d key
             move("right");
+            direction = "right";
             break;
         }
         case 115:{ // s key
             move("down");
+            direction = "down";
             break;
         }
         case 97:{ // a key
             move("left");
+            direction = "left";
             break;
         }
         default:
@@ -286,7 +315,7 @@ function getDirection(){
     }
 }
 
-function createAll(){
+function drawSnake(){
     for(var i=0; i<snake.length; ++i){
         let snakeBody = document.createElement('div');
         snakeBody.className = "snake";
@@ -313,72 +342,78 @@ function move(finalDirection){
 
     switch(finalDirection){
         case "up":{
+            disappearAll();
+
             coords.x = snake[snake.length-1][0];
             coords.y = snake[snake.length-1][1];
 
-            moveDiv();
+            moveTail();
             snake[0][1]-=snakeHeight;
 
             if(snake[0][0] == food.x && snake[0][1] == food.y){
                 snake.push([coords.x, coords.y]);
                 createFood();
             }
-            createAll();
-            disappearAll();
+            drawSnake();
 
             if(snake[0][1] < 0)
                 gameOver();
             break;
         }
         case "right":{
+            disappearAll();
+
             coords.x = snake[snake.length-1][0];
             coords.y = snake[snake.length-1][1];
 
-            moveDiv();
-            snake[0][0]+=snakeWidth;
+            moveTail();
 
+            snake[0][0]+=snakeWidth;
             if(snake[0][0] == food.x && snake[0][1] == food.y){
                 snake.push([coords.x, coords.y]);
                 createFood();
             }
-            createAll();
-            disappearAll();
+            drawSnake();
 
             if(snake[0][0] >= playArea.offsetWidth - snakeWidth)
                 gameOver();
             break;
         }
         case "down":{
+            disappearAll();
+
             coords.x = snake[snake.length-1][0];
             coords.y = snake[snake.length-1][1];
 
-            moveDiv();
-            snake[0][1]+=snakeHeight;
+            moveTail();
 
+            snake[0][1]+=snakeHeight;
             if(snake[0][0] == food.x && snake[0][1] == food.y){
                 snake.push([coords.x, coords.y]);
                 createFood();
             }
-            createAll();
-            disappearAll();
+
+            drawSnake();
 
             if(snake[0][1] >= playArea.offsetHeight - snakeHeight)
                 gameOver();
             break;
         }
         case "left":{
+            disappearAll();
+
             coords.x = snake[snake.length-1][0];
             coords.y = snake[snake.length-1][1];
 
-            moveDiv();
-            snake[0][0]-=snakeWidth;
+            moveTail();
 
+            snake[0][0]-=snakeWidth;
             if(snake[0][0] == food.x && snake[0][1] == food.y){
                 snake.push([coords.x, coords.y]);
                 createFood();
             }
-            createAll();
-            disappearAll();
+
+            drawSnake();
 
             if(snake[0][0] < 0)
                 gameOver();
@@ -390,6 +425,7 @@ function move(finalDirection){
 }
 
 function gameOver(){
+    clearInterval(timer);
     disappearAll();
     let text = document.createTextNode("GAME OVER");
     let message = document.createElement('span');
@@ -417,7 +453,7 @@ function gameOver(){
     deleteAll();
 }
 
-function moveDiv(){
+function moveTail(){
     for(var i=snake.length-1; i>=1; --i){
         snake[i][0]=snake[i-1][0];
         snake[i][1]=snake[i-1][1];
