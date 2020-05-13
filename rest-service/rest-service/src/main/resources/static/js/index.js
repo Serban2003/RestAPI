@@ -214,12 +214,10 @@ function getAll(){
 //  -> self bump
 //  -> remove boundaries
 // - gameplay:
-//  -> don't skip a cell when pressing the same button as current direction
-//  -> keep score
+//  -> don't skip a cell when pressing the same button as current direction //done
+//  -> keep score //done
 //  -> clear interval error
 //  -> inputs for board dimensions (make snake 5px/5px)
-
-//
 
 //TODO: create a matrix to hold board
 //  -> create gutters | walls | generate board
@@ -227,60 +225,131 @@ function getAll(){
 
 let playArea;
 var snake = [];
+var matrix = [];
 
-var snakeWidth = 20;
-var snakeHeight = 20;
+var snakeWidth = 10, snakeHeight = 10;
+var playAreaWidth = 500, playAreaHeight = 500;
 
 var food = { x : 0, y: 0 };
 
 var timer;
-var direction="right";
+var direction = "right";
+
+var indexTail;
+
+function startConfig(){
+    let controlPanel = document.createElement('div');
+    controlPanel.id = "controlPanel";
+    controlPanel.className = "control_panel";
+
+    let scoreBoard = document.createElement('span');
+    let text = document.createTextNode("Score: ");
+
+    scoreBoard.className = "score_board";
+    scoreBoard.appendChild(text);
+
+    let score = document.createElement('div');
+    score.id = "score";
+    score.className = "score";
+    scoreBoard.appendChild(score);
+    controlPanel.appendChild(scoreBoard);
+
+    let sliderPlayAreaWidth = document.createElement('input');
+    sliderPlayAreaWidth.type = 'range';
+    sliderPlayAreaWidth.className = 'slider';
+    sliderPlayAreaWidth.id = 'sliderWidth';
+    sliderPlayAreaWidth.min = 100;
+    sliderPlayAreaWidth.max = 560;
+    sliderPlayAreaWidth.step = 10;
+    sliderPlayAreaWidth.value = 500;
+    controlPanel.appendChild(sliderPlayAreaWidth);
+
+    let sliderPlayAreaHeight = document.createElement('input');
+    sliderPlayAreaHeight.type = 'range';
+    sliderPlayAreaHeight.className = 'slider';
+    sliderPlayAreaHeight.id = 'sliderHeight';
+    sliderPlayAreaHeight.min = 100;
+    sliderPlayAreaHeight.max = 560;
+    sliderPlayAreaHeight.step = 10;
+    sliderPlayAreaHeight.value = 500;
+    controlPanel.appendChild(sliderPlayAreaHeight);
+
+    let submitConfig = document.createElement('button');
+    submitConfig.className = "config_button";
+    submitConfig.addEventListener("click", submitConfiguration);
+
+    text = document.createTextNode("Submit");
+    submitConfig.appendChild(text);
+
+    controlPanel.appendChild(submitConfig);
+    document.body.appendChild(controlPanel);
+}
 
 function startSnake(){
 
-    var snakeLength = 1;
-
+    for(var i = 1; i <= playAreaWidth / snakeWidth; i++) {
+        matrix[i] = [];
+        for(var j = 1; j <= playAreaHeight / snakeHeight; j++) {
+            matrix[i][j] = 0;
+        }
+    }
+    indexTail=-1;
     if (document.body.contains(document.getElementById('playArea'))) {
-        document.body.removeChild(document.getElementById("playArea"));  // removing the play area
-        deleteAll();
-        document.body.removeEventListener("keypress", move);
+        quit();
     }
     else {
 
         playArea = document.createElement('div');
         playArea.id = "playArea";
         playArea.className = "snake_area";
+        playArea.style.width = playAreaWidth + 'px';
+        playArea.style.height = playAreaHeight + 'px';
         document.body.appendChild(playArea);
 
-        var x1 = Math.floor(Math.random() * (playArea.offsetHeight - snakeHeight + 1));
-        var y1 = Math.floor(Math.random() * (playArea.offsetWidth - snakeWidth + 1));
-        snake.push([ x1 - x1 % 20, y1 - y1 % 20]);
+        var x1 = Math.floor(Math.random() * (playArea.offsetWidth - snakeWidth + 1));
+        var y1 = Math.floor(Math.random() * (playArea.offsetHeight - snakeHeight + 1));
+
+        var x2 = x1 - x1 % snakeWidth;
+        var y2 = y1 - y1 % snakeHeight;
+
+        snake.push([x2, y2]);
+        matrix[x2/snakeWidth][y2/snakeHeight] = 'S';
+
         createFood();
         drawSnake();
-        document.body.addEventListener("keypress", getDirection);
 
+        document.body.addEventListener("keypress", getDirection);
 
         timer = setInterval(function(){
             move(direction);
         }, 300);
-
     }
+}
+
+function submitConfiguration(){
+    playAreaWidth = document.getElementById("sliderWidth").value;
+    playAreaHeight = document.getElementById("sliderHeight").value;
+    startSnake();
 }
 
 function createFood(){
 
-    if(playArea.contains(document.getElementById("food"))){
+    if(playArea.contains(document.getElementById("food")))
         playArea.removeChild(document.getElementById("food"));
-    }
 
+    document.getElementById("score").innerHTML = snake.length;
+
+    indexTail++;
     let foodNew = document.createElement('div');
     foodNew.className = "food";
     foodNew.id = "food";
 
-    var x1 = Math.floor(Math.random() * (playArea.offsetHeight - snakeHeight + 1));
-    var y1 = Math.floor(Math.random() * (playArea.offsetWidth - snakeWidth + 1))
-    food.x = x1 - x1 % 20;
-    food.y = y1 - y1 % 20;
+    var x1 = Math.floor(Math.random() * (playArea.offsetWidth - snakeWidth + 1));
+    var y1 = Math.floor(Math.random() * (playArea.offsetHeight - snakeHeight + 1))
+    food.x = x1 - x1 % snakeWidth;
+    food.y = y1 - y1 % snakeHeight;
+
+    matrix[food.x/snakeWidth][food.y/snakeHeight] = 'F';
 
     foodNew.style.left = food.x;
     foodNew.style.top = food.y;
@@ -291,23 +360,31 @@ function createFood(){
 function getDirection(){
     switch (event.keyCode) {
         case 119:{ // w key
-            move("up");
-            direction = "up";
+            if(direction != "up"){
+                direction = "up";
+                move(direction);
+            }
             break;
         }
         case 100:{ // d key
-            move("right");
-            direction = "right";
+            if(direction != "right"){
+                direction = "right";
+                move(direction);
+            }
             break;
         }
         case 115:{ // s key
-            move("down");
-            direction = "down";
+            if(direction != "down"){
+                direction = "down";
+                move(direction);
+            }
             break;
         }
         case 97:{ // a key
-            move("left");
-            direction = "left";
+            if(direction != "left"){
+                direction = "left";
+                move(direction);
+            }
             break;
         }
         default:
@@ -316,19 +393,18 @@ function getDirection(){
 }
 
 function drawSnake(){
-    for(var i=0; i<snake.length; ++i){
-        let snakeBody = document.createElement('div');
-        snakeBody.className = "snake";
-        snakeBody.id = "snake" + i;
-        snakeBody.style.left = snake[i][0] + 'px';
-        snakeBody.style.top = snake[i][1] + 'px';
-        playArea.appendChild(snakeBody);
-    }
+    let snakeBody = document.createElement('div');
+    snakeBody.className = "snake";
+    snakeBody.id = "snake" + (snake.length-1);
+    snakeBody.style.left = snake[0][0] + 'px';
+    snakeBody.style.top = snake[0][1] + 'px';
+    playArea.appendChild(snakeBody);
 }
 
-function disappearAll(){
-    for(var i=0; i<snake.length; ++i)
-        playArea.removeChild(document.getElementById("snake"+i));
+
+
+function disappearTail(){
+    playArea.removeChild(document.getElementById("snake" + (snake.length-1)));
 }
 
 function deleteAll(){
@@ -342,81 +418,77 @@ function move(finalDirection){
 
     switch(finalDirection){
         case "up":{
-            disappearAll();
+            disappearTail();
 
-            coords.x = snake[snake.length-1][0];
-            coords.y = snake[snake.length-1][1];
+            coords.x = snake[snake.length-1][0] % playAreaWidth;
+            coords.y = snake[snake.length-1][1] % playAreaHeight;
 
             moveTail();
-            snake[0][1]-=snakeHeight;
+            snake[0][1] -= snakeHeight;
+            snake[0][1] %= playAreaHeight;
 
             if(snake[0][0] == food.x && snake[0][1] == food.y){
                 snake.push([coords.x, coords.y]);
+                drawSnake();
                 createFood();
             }
             drawSnake();
-
-            if(snake[0][1] < 0)
-                gameOver();
             break;
         }
         case "right":{
-            disappearAll();
+            disappearTail();
 
-            coords.x = snake[snake.length-1][0];
-            coords.y = snake[snake.length-1][1];
+            coords.x = snake[snake.length-1][0] % playAreaWidth;
+            coords.y = snake[snake.length-1][1] % playAreaHeight;
 
             moveTail();
+            snake[0][0] += snakeWidth;
+            snake[0][0] %= playAreaWidth;
 
-            snake[0][0]+=snakeWidth;
             if(snake[0][0] == food.x && snake[0][1] == food.y){
                 snake.push([coords.x, coords.y]);
+                drawSnake();
                 createFood();
             }
             drawSnake();
-
-            if(snake[0][0] >= playArea.offsetWidth - snakeWidth)
-                gameOver();
             break;
         }
         case "down":{
-            disappearAll();
+            disappearTail();
 
-            coords.x = snake[snake.length-1][0];
-            coords.y = snake[snake.length-1][1];
+            coords.x = snake[snake.length-1][0] % playAreaWidth;
+            coords.y = snake[snake.length-1][1] % playAreaHeight;
 
             moveTail();
+            snake[0][1] += snakeHeight;
+            snake[0][1] %= playAreaHeight;
 
-            snake[0][1]+=snakeHeight;
             if(snake[0][0] == food.x && snake[0][1] == food.y){
                 snake.push([coords.x, coords.y]);
+                drawSnake();
                 createFood();
             }
 
             drawSnake();
-
-            if(snake[0][1] >= playArea.offsetHeight - snakeHeight)
-                gameOver();
             break;
         }
         case "left":{
-            disappearAll();
+            disappearTail();
 
-            coords.x = snake[snake.length-1][0];
-            coords.y = snake[snake.length-1][1];
+            coords.x = snake[snake.length-1][0] % playAreaWidth;
+            coords.y = snake[snake.length-1][1] % playAreaHeight;
 
             moveTail();
+            snake[0][0] -= snakeWidth;
+            snake[0][0] %= playAreaWidth;
 
-            snake[0][0]-=snakeWidth;
             if(snake[0][0] == food.x && snake[0][1] == food.y){
                 snake.push([coords.x, coords.y]);
+                drawSnake();
                 createFood();
             }
 
             drawSnake();
-
-            if(snake[0][0] < 0)
-                gameOver();
             break;
         }
         default:
@@ -426,7 +498,7 @@ function move(finalDirection){
 
 function gameOver(){
     clearInterval(timer);
-    disappearAll();
+    disappearTail();
     let text = document.createTextNode("GAME OVER");
     let message = document.createElement('span');
     message.appendChild(text);
@@ -455,17 +527,19 @@ function gameOver(){
 
 function moveTail(){
     for(var i=snake.length-1; i>=1; --i){
-        snake[i][0]=snake[i-1][0];
-        snake[i][1]=snake[i-1][1];
+        snake[i][0]=snake[i-1][0] % playAreaWidth;
+        snake[i][1]=snake[i-1][1] % playAreaHeight;
     }
 }
 
 function quit(){
     document.body.removeChild(document.getElementById("playArea"));  // removing the play area
+    document.body.removeChild(document.getElementById("controlPanel"));
     document.body.removeEventListener("keypress", getDirection);
+    deleteAll();
 }
 
 function retry(){
     quit();
-    startSnake();
+    startConfig();
 }
