@@ -193,10 +193,6 @@ function getAll(){
                 console.log(response);
                 const obj = JSON.parse(response);
 
-//                for (i = 0; i <tr; i++)
-//                    document.getElementById("user_list").deleteRow(i);
-//                var tr = document.getElementById("user_list").rows.length;
-//                 console.log(tr);
                 $( "#user_list" ).empty();
                 for (i = 0; i < obj.values.length; i++) {
                     console.log(obj.values[i].nameValuePairs);
@@ -216,8 +212,8 @@ function getAll(){
 // - gameplay:
 //  -> don't skip a cell when pressing the same button as current direction //done
 //  -> keep score //done
-//  -> clear interval error
-//  -> inputs for board dimensions (make snake 5px/5px)
+//  -> clear interval error //done
+//  -> inputs for board dimensions (make snake 5px/5px) //done
 
 //TODO: create a matrix to hold board
 //  -> create gutters | walls | generate board
@@ -293,12 +289,11 @@ function startSnake(){
             matrix[i][j] = 0;
         }
     }
-    indexTail=-1;
+    indexTail=0;
     if (document.body.contains(document.getElementById('playArea'))) {
         quit();
     }
     else {
-
         playArea = document.createElement('div');
         playArea.id = "playArea";
         playArea.className = "snake_area";
@@ -339,7 +334,7 @@ function createFood(){
 
     document.getElementById("score").innerHTML = snake.length;
 
-    indexTail++;
+
     let foodNew = document.createElement('div');
     foodNew.className = "food";
     foodNew.id = "food";
@@ -360,28 +355,28 @@ function createFood(){
 function getDirection(){
     switch (event.keyCode) {
         case 119:{ // w key
-            if(direction != "up"){
+            if(direction != "up" && direction != "down"){
                 direction = "up";
                 move(direction);
             }
             break;
         }
         case 100:{ // d key
-            if(direction != "right"){
+            if(direction != "right" && direction != "left"){
                 direction = "right";
                 move(direction);
             }
             break;
         }
         case 115:{ // s key
-            if(direction != "down"){
+            if(direction != "down" && direction != "up"){
                 direction = "down";
                 move(direction);
             }
             break;
         }
         case 97:{ // a key
-            if(direction != "left"){
+            if(direction != "left" && direction != "right"){
                 direction = "left";
                 move(direction);
             }
@@ -395,16 +390,16 @@ function getDirection(){
 function drawSnake(){
     let snakeBody = document.createElement('div');
     snakeBody.className = "snake";
-    snakeBody.id = "snake" + (snake.length-1);
+    snakeBody.id = "snake" + indexTail;
     snakeBody.style.left = snake[0][0] + 'px';
     snakeBody.style.top = snake[0][1] + 'px';
     playArea.appendChild(snakeBody);
+    indexTail++;
+    indexTail %= snake.length;
 }
 
-
-
 function disappearTail(){
-    playArea.removeChild(document.getElementById("snake" + (snake.length-1)));
+    playArea.removeChild(document.getElementById("snake" + indexTail));
 }
 
 function deleteAll(){
@@ -418,82 +413,49 @@ function move(finalDirection){
 
     switch(finalDirection){
         case "up":{
-            disappearTail();
-
-            coords.x = snake[snake.length-1][0] % playAreaWidth;
-            coords.y = snake[snake.length-1][1] % playAreaHeight;
-
-            moveTail();
-            snake[0][1] -= snakeHeight;
-            snake[0][1] %= playAreaHeight;
-
-            if(snake[0][0] == food.x && snake[0][1] == food.y){
-                snake.push([coords.x, coords.y]);
-                drawSnake();
-                createFood();
-            }
-            drawSnake();
+            executePath(1, -1);
             break;
         }
         case "right":{
-            disappearTail();
-
-            coords.x = snake[snake.length-1][0] % playAreaWidth;
-            coords.y = snake[snake.length-1][1] % playAreaHeight;
-
-            moveTail();
-            snake[0][0] += snakeWidth;
-            snake[0][0] %= playAreaWidth;
-
-            if(snake[0][0] == food.x && snake[0][1] == food.y){
-                snake.push([coords.x, coords.y]);
-                drawSnake();
-                createFood();
-            }
-            drawSnake();
+            executePath(0, 1);
             break;
         }
         case "down":{
-            disappearTail();
-
-            coords.x = snake[snake.length-1][0] % playAreaWidth;
-            coords.y = snake[snake.length-1][1] % playAreaHeight;
-
-            moveTail();
-            snake[0][1] += snakeHeight;
-            snake[0][1] %= playAreaHeight;
-
-            if(snake[0][0] == food.x && snake[0][1] == food.y){
-                snake.push([coords.x, coords.y]);
-                drawSnake();
-                createFood();
-            }
-
-            drawSnake();
+            executePath(1, 1);
             break;
         }
         case "left":{
-            disappearTail();
-
-            coords.x = snake[snake.length-1][0] % playAreaWidth;
-            coords.y = snake[snake.length-1][1] % playAreaHeight;
-
-            moveTail();
-            snake[0][0] -= snakeWidth;
-            snake[0][0] %= playAreaWidth;
-
-            if(snake[0][0] == food.x && snake[0][1] == food.y){
-                snake.push([coords.x, coords.y]);
-                drawSnake();
-                createFood();
-            }
-
-            drawSnake();
+            executePath(0, -1);
             break;
         }
         default:
             break;
     }
+}
+
+function executePath(coord, semn){
+    disappearTail();
+
+    coords.x = snake[snake.length-1][0];
+    coords.y = snake[snake.length-1][1];
+
+    moveTail();
+
+    if(coord == 1){
+        snake[0][coord] += semn * snakeHeight;
+        snake[0][coord] %= playAreaHeight;
+    }
+    else if(coord == 0){
+        snake[0][coord] += semn * snakeWidth;
+        snake[0][coord] %= playAreaWidth;
+    }
+
+    if(snake[0][0] == food.x && snake[0][1] == food.y){
+        snake.push([coords.x, coords.y]);
+        drawSnake();
+        createFood();
+    }
+    drawSnake();
 }
 
 function gameOver(){
@@ -527,8 +489,8 @@ function gameOver(){
 
 function moveTail(){
     for(var i=snake.length-1; i>=1; --i){
-        snake[i][0]=snake[i-1][0] % playAreaWidth;
-        snake[i][1]=snake[i-1][1] % playAreaHeight;
+        snake[i][0] = snake[i-1][0] % playAreaWidth;
+        snake[i][1] = snake[i-1][1] % playAreaHeight;
     }
 }
 
