@@ -53,6 +53,7 @@ h3{
 .config_button{
     position: relative;
     top: 20px;
+    width: 100px;
 }
 
 .snake_area{
@@ -62,12 +63,31 @@ h3{
     border: 2px solid grey;
     background-color: black;
 }
+.tile_green{
+    position: absolute;
+    background-color: #75E500;
+}
+
+.tile_dark_green{
+    position: absolute;
+    background-color: #5DD517;
+}
+
+.tile_wall{
+    background-color: black;
+}
+
+.start_button{
+    position: relative;
+    top: 20px;
+    width: 100px;
+}
 
 .snake{
     position: absolute;
     width: 10px;
     height: 10px;
-    background-color: rgb(30, 145, 0);
+    background-color: #015700;
 }
 
 .food{

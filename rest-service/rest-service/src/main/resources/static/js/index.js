@@ -280,12 +280,15 @@ function startConfig(){
     controlPanel.appendChild(submitConfig);
     document.body.appendChild(controlPanel);
 }
+var makeWalls;
+function submitConfiguration(){
 
-function startSnake(){
+    playAreaWidth = document.getElementById("sliderWidth").value;
+    playAreaHeight = document.getElementById("sliderHeight").value;
 
-    for(var i = 1; i <= playAreaWidth / snakeWidth; i++) {
+    for(var i = 1; i <= playAreaHeight / snakeHeight; i++) {
         matrix[i] = [];
-        for(var j = 1; j <= playAreaHeight / snakeHeight; j++) {
+        for(var j = 1; j <= playAreaWidth / snakeWidth; j++) {
             matrix[i][j] = 0;
         }
     }
@@ -301,6 +304,58 @@ function startSnake(){
         playArea.style.height = playAreaHeight + 'px';
         document.body.appendChild(playArea);
 
+        for(var i = 1; i <= playAreaHeight / snakeHeight; i++)
+            for(var j = 1; j <= playAreaWidth / snakeWidth; j++) {
+                let tile = document.createElement('div');
+                tile.id = "tile" + i + "_" + j;
+                tile.style.width = snakeWidth + 'px';
+                tile.style.height = snakeHeight + 'px';
+
+                if(i % 2 == 1){
+                    if(j % 2 == 0) tile.className = "tile_green";
+                    else tile.className = "tile_dark_green";
+                }
+                else{
+                    if(j % 2 == 0) tile.className = "tile_dark_green";
+                    else tile.className = "tile_green";
+                }
+
+                tile.style.top = ((i-1) * snakeHeight) + 'px';
+                tile.style.left = ((j-1) * snakeWidth) + 'px';
+
+                makeWalls = function(){
+                    if(tile.classList.contains('tile_wall')){
+                        tile.classList.remove('tile_wall');
+                        matrix[tile.offsetHeight / snakeHeight][tile.offsetWidth / snakeWidth] = 0;
+                    }
+                    else{
+                        tile.classList.add('tile_wall');
+                        matrix[tile.offsetHeight / snakeHeight][tile.offsetWidth / snakeWidth] = 'W';
+                    }
+                }
+                tile.addEventListener("click", makeWalls);
+                playArea.appendChild(tile);
+            }
+
+        let startButton = document.createElement('button');
+        let text = document.createTextNode('Start');
+        startButton.appendChild(text);
+        startButton.className = 'start_button';
+
+        startButton.addEventListener("click", startSnake);
+
+        document.getElementById("controlPanel").appendChild(startButton);
+    }
+}
+
+function startSnake(){
+
+/*  doesn't work
+    for(var i = 1; i <= playAreaHeight / snakeHeight; i++)
+        for(var j = 1; j <= playAreaWidth / snakeWidth; j++)
+            document.getElementById("tile" + i + "_" + j).removeEventListener("click", makeWalls);
+*/
+    if(!playArea.contains(document.getElementById("food"))){
         var x1 = Math.floor(Math.random() * (playArea.offsetWidth - snakeWidth + 1));
         var y1 = Math.floor(Math.random() * (playArea.offsetHeight - snakeHeight + 1));
 
@@ -308,7 +363,7 @@ function startSnake(){
         var y2 = y1 - y1 % snakeHeight;
 
         snake.push([x2, y2]);
-        matrix[x2/snakeWidth][y2/snakeHeight] = 'S';
+        matrix[y2/snakeWidth][x2/snakeHeight] = 'S';
 
         createFood();
         drawSnake();
@@ -316,16 +371,12 @@ function startSnake(){
         document.body.addEventListener("keypress", getDirection);
 
         timer = setInterval(function(){
-            move(direction);
+             move(direction);
         }, 300);
     }
+    else quit();
 }
 
-function submitConfiguration(){
-    playAreaWidth = document.getElementById("sliderWidth").value;
-    playAreaHeight = document.getElementById("sliderHeight").value;
-    startSnake();
-}
 
 function createFood(){
 
@@ -344,7 +395,7 @@ function createFood(){
     food.x = x1 - x1 % snakeWidth;
     food.y = y1 - y1 % snakeHeight;
 
-    matrix[food.x/snakeWidth][food.y/snakeHeight] = 'F';
+    matrix[food.y/snakeHeight][food.x/snakeWidth] = 'F';
 
     foodNew.style.left = food.x;
     foodNew.style.top = food.y;
@@ -394,12 +445,16 @@ function drawSnake(){
     snakeBody.style.left = snake[0][0] + 'px';
     snakeBody.style.top = snake[0][1] + 'px';
     playArea.appendChild(snakeBody);
+
+    matrix[snake[0][1]/snakeWidth][snake[0][0]/snakeHeight] = 'S';
     indexTail++;
     indexTail %= snake.length;
 }
 
 function disappearTail(){
-    playArea.removeChild(document.getElementById("snake" + indexTail));
+    let snakePart = document.getElementById("snake" + indexTail);
+    matrix[snakePart.offsetHeight/snakeWidth][snakePart.offsetWidth/snakeHeight] = 0;
+    playArea.removeChild(snakePart);
 }
 
 function deleteAll(){
@@ -410,7 +465,6 @@ function deleteAll(){
 var coords = {x : 0, y : 0};
 
 function move(finalDirection){
-
     switch(finalDirection){
         case "up":{
             executePath(1, -1);
@@ -455,7 +509,26 @@ function executePath(coord, semn){
         drawSnake();
         createFood();
     }
+
+    switch(matrix[snake[0][1] / snakeHeight][snake[0][0] / snakeWidth]){
+        case 'W': case 'S':{
+            gameOver();
+            break;
+        }
+        default: break;
+    }
     drawSnake();
+}
+
+function moveTail(){
+    for(var i=snake.length-1; i>=1; --i){
+        snake[i][0] = snake[i-1][0] % playAreaWidth;
+        snake[i][1] = snake[i-1][1] % playAreaHeight;
+    }
+}
+
+function createWall(div){
+    document.getElementById(div).classList.add('tile_wall');
 }
 
 function gameOver(){
@@ -487,17 +560,11 @@ function gameOver(){
     deleteAll();
 }
 
-function moveTail(){
-    for(var i=snake.length-1; i>=1; --i){
-        snake[i][0] = snake[i-1][0] % playAreaWidth;
-        snake[i][1] = snake[i-1][1] % playAreaHeight;
-    }
-}
-
 function quit(){
     document.body.removeChild(document.getElementById("playArea"));  // removing the play area
     document.body.removeChild(document.getElementById("controlPanel"));
     document.body.removeEventListener("keypress", getDirection);
+    clearInterval(timer);
     deleteAll();
 }
 
