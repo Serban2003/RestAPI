@@ -260,6 +260,16 @@ function startConfig(){
     sliderPlayAreaWidth.value = 500;
     controlPanel.appendChild(sliderPlayAreaWidth);
 
+    let valueWidth = document.createElement('div');
+    valueWidth.className = 'value_slider';
+    valueWidth.id = "value_width";
+    valueWidth.innerHTML = sliderPlayAreaWidth.value;
+
+    sliderPlayAreaWidth.oninput = function(){
+        valueWidth.innerHTML = sliderPlayAreaWidth.value;
+    }
+    controlPanel.appendChild(valueWidth);
+
     let sliderPlayAreaHeight = document.createElement('input');
     sliderPlayAreaHeight.type = 'range';
     sliderPlayAreaHeight.className = 'slider';
@@ -269,6 +279,16 @@ function startConfig(){
     sliderPlayAreaHeight.step = 10;
     sliderPlayAreaHeight.value = 500;
     controlPanel.appendChild(sliderPlayAreaHeight);
+
+    let valueHeight = document.createElement('div');
+    valueHeight.className = 'value_slider';
+    valueHeight.id = "value_height";
+    valueHeight.innerHTML = sliderPlayAreaHeight.value;
+
+    sliderPlayAreaHeight.oninput = function(){
+        valueHeight.innerHTML = sliderPlayAreaHeight.value;
+    }
+    controlPanel.appendChild(valueHeight);
 
     let submitConfig = document.createElement('button');
     submitConfig.className = "config_button";
@@ -326,11 +346,11 @@ function submitConfiguration(){
                 makeWalls = function(){
                     if(tile.classList.contains('tile_wall')){
                         tile.classList.remove('tile_wall');
-                        matrix[tile.offsetHeight / snakeHeight][tile.offsetWidth / snakeWidth] = 0;
+                        matrix[tile.offsetTop / snakeHeight][tile.offsetLeft / snakeWidth] = 0;
                     }
                     else{
                         tile.classList.add('tile_wall');
-                        matrix[tile.offsetHeight / snakeHeight][tile.offsetWidth / snakeWidth] = 'W';
+                        matrix[tile.offsetTop / snakeHeight][tile.offsetLeft / snakeWidth] = 'W';
                     }
                 }
                 tile.addEventListener("click", makeWalls);
@@ -347,7 +367,7 @@ function submitConfiguration(){
         document.getElementById("controlPanel").appendChild(startButton);
     }
 }
-
+var status = 'OK';
 function startSnake(){
 
 /*  doesn't work
@@ -356,6 +376,7 @@ function startSnake(){
             document.getElementById("tile" + i + "_" + j).removeEventListener("click", makeWalls);
 */
     if(!playArea.contains(document.getElementById("food"))){
+        status = 'OK';
         var x1 = Math.floor(Math.random() * (playArea.offsetWidth - snakeWidth + 1));
         var y1 = Math.floor(Math.random() * (playArea.offsetHeight - snakeHeight + 1));
 
@@ -377,14 +398,12 @@ function startSnake(){
     else quit();
 }
 
-
 function createFood(){
 
     if(playArea.contains(document.getElementById("food")))
         playArea.removeChild(document.getElementById("food"));
 
     document.getElementById("score").innerHTML = snake.length;
-
 
     let foodNew = document.createElement('div');
     foodNew.className = "food";
@@ -439,22 +458,26 @@ function getDirection(){
 }
 
 function drawSnake(){
-    let snakeBody = document.createElement('div');
-    snakeBody.className = "snake";
-    snakeBody.id = "snake" + indexTail;
-    snakeBody.style.left = snake[0][0] + 'px';
-    snakeBody.style.top = snake[0][1] + 'px';
-    playArea.appendChild(snakeBody);
+    if(status == 'OK'){
+        let snakeBody = document.createElement('div');
+        snakeBody.className = "snake";
+        snakeBody.id = "snake" + indexTail;
+        snakeBody.style.left = snake[0][0] + 'px';
+        snakeBody.style.top = snake[0][1] + 'px';
+        playArea.appendChild(snakeBody);
 
-    matrix[snake[0][1]/snakeWidth][snake[0][0]/snakeHeight] = 'S';
-    indexTail++;
-    indexTail %= snake.length;
+        matrix[snake[0][1]/snakeWidth][snake[0][0]/snakeHeight] = 'S';
+        indexTail++;
+        indexTail %= snake.length;
+    }
 }
 
 function disappearTail(){
-    let snakePart = document.getElementById("snake" + indexTail);
-    matrix[snakePart.offsetHeight/snakeWidth][snakePart.offsetWidth/snakeHeight] = 0;
-    playArea.removeChild(snakePart);
+    if(status == 'OK'){
+        let snakePart = document.getElementById("snake" + indexTail);
+        matrix[snakePart.offsetHeight/snakeWidth][snakePart.offsetWidth/snakeHeight] = 0;
+        playArea.removeChild(snakePart);
+    }
 }
 
 function deleteAll(){
@@ -509,9 +532,9 @@ function executePath(coord, semn){
         drawSnake();
         createFood();
     }
-
     switch(matrix[snake[0][1] / snakeHeight][snake[0][0] / snakeWidth]){
         case 'W': case 'S':{
+            status = 0;
             gameOver();
             break;
         }

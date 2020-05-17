@@ -27,7 +27,7 @@ h3{
     top: 50px;
     left: 50px;
     width: 200px;
-    height: 200px;
+    height: 100px;
     border: 1px rgb(110, 110, 110) solid;
     background-image: linear-gradient(135deg, rgb(202, 202, 202), rgb(155, 155, 155));
     padding: 5px;
@@ -74,6 +74,7 @@ h3{
 }
 
 .tile_wall{
+    position: absolute;
     background-color: black;
 }
 
@@ -81,6 +82,15 @@ h3{
     position: relative;
     top: 20px;
     width: 100px;
+}
+
+.value_slider{
+    position: relative;
+    float: right;
+    left: -12px;
+    top: 22.5px;
+    width: 20px;
+    font-size: 18px;
 }
 
 .snake{
