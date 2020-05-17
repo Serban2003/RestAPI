@@ -1,22 +1,24 @@
 /***************** User Table *****************/
-.user_table{
+.user_table {
     border-collapse: collapse;
     border: 1.5px solid black;
     text-align: center;
     position: relative;
     top: 15px;
 }
+
 /**********************************************/
 
 /***************** Snake Game *****************/
 /* Buttons */
-.button_snake{
+.button_snake {
     position: relative;
     top: 20px;
     width: 100px;
 }
 
-.retry_button, .quit_button{
+.retry_button,
+.quit_button {
     position: absolute;
     width: 120px;
     height: 30px;
@@ -27,16 +29,16 @@
     background-color: rgb(70, 70, 70);
 }
 
-.retry_button{
+.retry_button {
     margin-left: -150px;
 }
 
-.quit_button{
+.quit_button {
     margin-left: 5px;
 }
 
 /* Control panel */
-.control_panel{
+.control_panel {
     position: relative;
     top: 50px;
     left: 50px;
@@ -47,36 +49,36 @@
     padding: 5px;
 }
 
-.score_board{
+.score_board {
     position: absolute;
 }
 
-.score{
+.score {
     position: relative;
     margin-left: 2px;
     float: right;
 }
 
-.slider{
+.slider {
     position: relative;
     top: 20px;
     width: 150px;
     border-radius: 2px;
 }
 
-.config_button{
+.config_button {
     position: relative;
     top: 20px;
     width: 100px;
 }
 
-.start_button{
+.start_button {
     position: relative;
     top: 20px;
     width: 100px;
 }
 
-.value_slider{
+.value_slider {
     position: relative;
     float: right;
     left: -12px;
@@ -86,7 +88,7 @@
 }
 
 /* Snake area */
-.snake_area{
+.snake_area {
     position: absolute;
     top: 5px;
     left: 400px;
@@ -94,29 +96,29 @@
     background-color: black;
 }
 
-.tile_green{
+.tile_green {
     position: absolute;
     background-color: #75E500;
 }
 
-.tile_dark_green{
+.tile_dark_green {
     position: absolute;
     background-color: #5DD517;
 }
 
-.tile_wall{
+.tile_wall {
     position: absolute;
     background-color: black;
 }
 
-.snake{
+.snake {
     position: absolute;
     width: 10px;
     height: 10px;
     background-color: #015700;
 }
 
-.food{
+.food {
     position: absolute;
     width: 10px;
     height: 10px;
@@ -124,7 +126,7 @@
     background-color: #DA2400;
 }
 
-.game_text{
+.game_text {
     position: absolute;
     width: 400px;
     top: 50%;
@@ -139,43 +141,48 @@
 }
 
 /* Animations */
-@keyframes disappearAnimation{
-  0%{
-    opacity: 1;
-  }
-  50%{
-    opacity: 0.5;
-  }
-  100%{
-    display: none;
-    opacity: 0;
-  }
+@keyframes disappearAnimation {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        display: none;
+        opacity: 0;
+    }
 }
 
-.disappear{
+.disappear {
     animation-name: disappearAnimation;
     animation-duration: 1000ms;
     animation-fill-mode: forwards;
 }
 
-@keyframes appearAnimation{
-  0%{
-    opacity: 0;
-  }
-  50%{
-    opacity: 0.5;
-  }
-  100%{
-    display: none;
-    opacity: 1;
-  }
+@keyframes appearAnimation {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        display: none;
+        opacity: 1;
+    }
 }
 
-.appear{
+.appear {
     animation-name: appearAnimation;
     animation-duration: 1000ms;
     animation-fill-mode: forwards;
 }
+
 /**********************************************/
 
 /***************** Random *****************/
@@ -183,11 +190,11 @@ body {
     font-size: 20px;
 }
 
-h3{
+h3 {
     text-align: center;
 }
 
-input{
+input {
     border-radius: 10px;
     font-size: 15px;
     border: 1px grey solid;
@@ -197,12 +204,13 @@ input{
     outline: none;
 }
 
-input:focus, input:hover{
+input:focus,
+input:hover {
     box-shadow: black 0.5px 0.5px 0.5px;
     border-color: black;
 }
 
-button{
+button {
     width: 50%;
     border-radius: 2px;
     text-align: center;
@@ -212,10 +220,9 @@ button{
     outline: none;
 }
 
-button:hover{
+button:hover {
     background-color: rgb(240, 240, 240);
     box-shadow: black 1.5px 1.5px 1.5px;
     border-color: black;
     cursor: pointer;
 }
-
