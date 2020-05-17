@@ -116,7 +116,6 @@ function editUser(id) {
 
 //updating the new username and putting it back in the table
 function press(id) {
-
     if (event.which == 13 || event.keyCode == 13) { //if "Enter" was pressed
 
         var index = this.id.length - 1; //length of the username
@@ -148,7 +147,6 @@ function press(id) {
 
 //deleting the username on button click
 function deleteUser(id) {
-
      var index = this.id.length - 1; //length of the username
      while (this.id[index] >= '0' && this.id[index] <= '9') //finding the first digit of the id
             index--;
@@ -207,8 +205,8 @@ function getAll(){
 
 //TODO for snake:
 // - gameorver conditions:
-//  -> self bump
-//  -> remove boundaries
+//  -> self bump //done
+//  -> remove boundaries //done -ish
 // - gameplay:
 //  -> don't skip a cell when pressing the same button as current direction //done
 //  -> keep score //done
@@ -216,22 +214,19 @@ function getAll(){
 //  -> inputs for board dimensions (make snake 5px/5px) //done
 
 //TODO: create a matrix to hold board
-//  -> create gutters | walls | generate board
+//  -> create gutters | walls | generate board //done
 //  -> Lee ( A -> B) + show number of moves
 
 let playArea;
-var snake = [];
-var matrix = [];
+var snake = [], matrix = [];
 
 var snakeWidth = 10, snakeHeight = 10;
 var playAreaWidth = 500, playAreaHeight = 500;
 
 var food = { x : 0, y: 0 };
 
-var timer;
-var direction = "right";
-
-var indexTail;
+var timer, direction = "right", indexTail;
+var makeWalls, status = 'OK';
 
 function startConfig(){
     let controlPanel = document.createElement('div');
@@ -300,9 +295,8 @@ function startConfig(){
     controlPanel.appendChild(submitConfig);
     document.body.appendChild(controlPanel);
 }
-var makeWalls;
-function submitConfiguration(){
 
+function submitConfiguration(){
     playAreaWidth = document.getElementById("sliderWidth").value;
     playAreaHeight = document.getElementById("sliderHeight").value;
 
@@ -367,9 +361,8 @@ function submitConfiguration(){
         document.getElementById("controlPanel").appendChild(startButton);
     }
 }
-var status = 'OK';
-function startSnake(){
 
+function startSnake(){
 /*  doesn't work
     for(var i = 1; i <= playAreaHeight / snakeHeight; i++)
         for(var j = 1; j <= playAreaWidth / snakeWidth; j++)
@@ -399,7 +392,6 @@ function startSnake(){
 }
 
 function createFood(){
-
     if(playArea.contains(document.getElementById("food")))
         playArea.removeChild(document.getElementById("food"));
 
@@ -457,36 +449,6 @@ function getDirection(){
     }
 }
 
-function drawSnake(){
-    if(status == 'OK'){
-        let snakeBody = document.createElement('div');
-        snakeBody.className = "snake";
-        snakeBody.id = "snake" + indexTail;
-        snakeBody.style.left = snake[0][0] + 'px';
-        snakeBody.style.top = snake[0][1] + 'px';
-        playArea.appendChild(snakeBody);
-
-        matrix[snake[0][1]/snakeWidth][snake[0][0]/snakeHeight] = 'S';
-        indexTail++;
-        indexTail %= snake.length;
-    }
-}
-
-function disappearTail(){
-    if(status == 'OK'){
-        let snakePart = document.getElementById("snake" + indexTail);
-        matrix[snakePart.offsetHeight/snakeWidth][snakePart.offsetWidth/snakeHeight] = 0;
-        playArea.removeChild(snakePart);
-    }
-}
-
-function deleteAll(){
-    while(snake.length>0)
-        snake.pop()
-    document.body.removeEventListener("keypress", getDirection);
-}
-var coords = {x : 0, y : 0};
-
 function move(finalDirection){
     switch(finalDirection){
         case "up":{
@@ -510,6 +472,7 @@ function move(finalDirection){
     }
 }
 
+var coords = {x : 0, y : 0};
 function executePath(coord, semn){
     disappearTail();
 
@@ -550,6 +513,35 @@ function moveTail(){
     }
 }
 
+function drawSnake(){
+    if(status == 'OK'){
+        let snakeBody = document.createElement('div');
+        snakeBody.className = "snake";
+        snakeBody.id = "snake" + indexTail;
+        snakeBody.style.left = snake[0][0] + 'px';
+        snakeBody.style.top = snake[0][1] + 'px';
+        playArea.appendChild(snakeBody);
+
+        matrix[snake[0][1]/snakeWidth][snake[0][0]/snakeHeight] = 'S';
+        indexTail++;
+        indexTail %= snake.length;
+    }
+}
+
+function disappearTail(){
+    if(status == 'OK'){
+        let snakePart = document.getElementById("snake" + indexTail);
+        matrix[snakePart.offsetHeight/snakeWidth][snakePart.offsetWidth/snakeHeight] = 0;
+        playArea.removeChild(snakePart);
+    }
+}
+
+function deleteAll(){
+    while(snake.length>0)
+        snake.pop()
+    document.body.removeEventListener("keypress", getDirection);
+}
+
 function createWall(div){
     document.getElementById(div).classList.add('tile_wall');
 }
@@ -557,6 +549,7 @@ function createWall(div){
 function gameOver(){
     clearInterval(timer);
     disappearTail();
+
     let text = document.createTextNode("GAME OVER");
     let message = document.createElement('span');
     message.appendChild(text);
