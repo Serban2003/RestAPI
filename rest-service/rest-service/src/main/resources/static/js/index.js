@@ -5,7 +5,7 @@ let allUsers;
 window.onload = function () {
     getAll();
 }
-
+{
 function submitGreetingKey() {
     if (event.which == 13 || event.keyCode == 13) //call submitGreeting if "Enter" was pressed
         submitGreeting();
@@ -39,6 +39,7 @@ function submitGreeting() {
         xhr.send("{\"name\": \"" + name + "\"}");
     }
 }
+
 //creating a new table row
 function createTable(myObj) {
     let newRow = document.createElement('tr'); //creating a new row for user table
@@ -207,6 +208,7 @@ function getAll() {
     }
     x.send();
 }
+}
 /**********************************************/
 
 /***************** Snake Game *****************/
@@ -223,21 +225,15 @@ function getAll() {
 
 //TODO: create a matrix to hold board
 //  -> create gutters | walls | generate board //done
-//  -> Lee ( A -> B) + show number of moves
+//  -> Lee ( A -> B) + show number of moves //done -ish
 
 let playArea;
-var snake = [],
-    matrix = [];
+var snake = [], matrix = [];
 
-var snakeWidth = 10,
-    snakeHeight = 10;
-var playAreaWidth = 500,
-    playAreaHeight = 500;
+var snakeWidth = 10, snakeHeight = 10;
+var playAreaWidth = 500, playAreaHeight = 500;
 
-var food = {
-    x: 0,
-    y: 0
-};
+var food = {x: 0, y: 0};
 
 var timer, direction = "right",
     indexTail;
@@ -331,7 +327,6 @@ function submitConfiguration() {
     }
     indexTail = 0;
 
-
     if (document.body.contains(document.getElementById('playArea'))) {
         quit();
     } else {
@@ -405,14 +400,14 @@ function startSnake() {
         var y2 = y1 - y1 % snakeHeight;
 
         snake.push([x2, y2]);
-        matrix[y2 / snakeWidth][x2 / snakeHeight] = 'S';
+        //matrix[y2 / snakeWidth][x2 / snakeHeight] = 'S';
 
         createFood();
         drawSnake();
 
         //receiving the input keys
         document.body.addEventListener("keypress", getDirection);
-
+        //Lee();
         timer = setInterval(function () {
             move(direction);
         }, 300);
@@ -439,7 +434,7 @@ function createFood() {
     food.x = x1 - x1 % snakeWidth;
     food.y = y1 - y1 % snakeHeight;
 
-    matrix[food.y / snakeHeight][food.x / snakeWidth] = 'F';
+    //matrix[food.y / snakeHeight][food.x / snakeWidth] = 'F';
 
     foodNew.style.left = food.x;
     foodNew.style.top = food.y;
@@ -571,7 +566,7 @@ function drawSnake() {
         snakeBody.style.top = snake[0][1] + 'px';
         playArea.appendChild(snakeBody); // show it
 
-        matrix[snake[0][1] / snakeWidth][snake[0][0] / snakeHeight] = 'S';
+        //matrix[snake[0][1] / snakeWidth][snake[0][0] / snakeHeight] = 'S';
         indexTail++;
         indexTail %= snake.length;
     }
@@ -582,8 +577,11 @@ function disappearTail() {
     if (status == 'OK') {
         // getting the snake part which must be hided
         let snakePart = document.getElementById("snake" + indexTail);
-        matrix[snakePart.offsetHeight / snakeWidth][snakePart.offsetWidth / snakeHeight] = 0;
-        playArea.removeChild(snakePart); // hide it
+        if(snakePart != null){
+            matrix[snakePart.offsetHeight / snakeWidth][snakePart.offsetWidth / snakeHeight] = 0;
+            playArea.removeChild(snakePart); // hide it
+        }
+
     }
 }
 
@@ -647,4 +645,69 @@ function quit() {
 function retry() {
     quit();
     startConfig();
+}
+
+//create a Queue class
+class Queue {
+    // array is used to implement a Queue
+    constructor() {
+        this.items = [];
+    }
+
+    qpush(element) {
+        // adding element to the queue
+        this.items.push(element);
+    }
+
+    pop() {
+        // removing element from the queue
+        // returns underflow when called
+        // on empty queue
+        if(this.isEmpty())
+            return "Underflow";
+        return this.items.shift();
+    }
+
+    front() {
+        // returns the Front element of
+        // the queue without removing it.
+        if(this.isEmpty())
+            return "No elements in Queue";
+        return this.items[0];
+    }
+
+    isEmpty() {
+        // return true if the queue is empty.
+        return this.items.length == 0;
+    }
+}
+
+var queue = new Queue();
+
+var dx = [0, 0, 1, -1];
+var dy = [-1, 1, 0, 0];
+
+function Lee() {
+    queue.qpush([5, 5]);
+    while(!queue.isEmpty()){
+        var x1 = queue.front()[0];
+        var y1 = queue.front()[1];
+        queue.pop();
+
+        if(x1 == food.x && y1 == food.y){
+            console.log(matrix[y1][x1]);
+            return 1;
+        }
+
+        for(var i = 0; i < 4; ++i){
+            var x2 = x1 + dx[i];
+            var y2 = y1 + dy[i];
+
+            if(x2 > 0 && x2 <= playAreaWidth / snakeWidth  && y2 > 0 && y2 <= playAreaHeight / snakeHeight)
+                if(matrix[y2][x2] == 0 || matrix[y2][x2] == 'F' || matrix[y2][x2] > matrix[y1][x1] + 1){
+                    matrix[y2][x2] = matrix[y1][x1] + 1;
+                    queue.qpush([x2, y2]);
+                }
+        }
+    }
 }
