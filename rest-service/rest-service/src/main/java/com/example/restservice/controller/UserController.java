@@ -1,6 +1,6 @@
 package com.example.restservice.controller;
 
-import com.example.restservice.User;
+import com.example.restservice.dao.User;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,9 +20,9 @@ import java.util.Map;
 @Controller
 public class UserController {
 
-    Integer id = 1;
+    Long id = 1L;
 
-    private Map<Integer, User> userlist = new HashMap<>();
+    private Map<Long, User> userlist = new HashMap<Long, User>();
     private static final Logger logger = LoggerFactory.getLogger(GreetingController.class);
 
     @ResponseBody
@@ -58,7 +58,7 @@ public class UserController {
         JSONArray jsArray = new JSONArray();
         Gson gson = new Gson();
 
-        for (Map.Entry<Integer, User> value : userlist.entrySet()) {
+        for (Map.Entry<Long, User> value : userlist.entrySet()) {
             JSONObject jObj = new JSONObject();
             try {
                 jObj.put("id", value.getValue().getId());
