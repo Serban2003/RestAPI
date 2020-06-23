@@ -5,7 +5,7 @@ import java.util.Date;
 public class User {
 
     Long id;
-    String name;
+    String lastname;
     String firstname, email, password;
     Long billing_address_id, shipping_address_id;
 
@@ -63,32 +63,32 @@ public class User {
 
     Date create_ts;
 
-    public User(Long id, String name) {
+    public User(Long id, String lastname) {
         this.id = id;
-        this.name = name;
+        this.lastname = lastname;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getLastname() {
+        return lastname;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + lastname + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

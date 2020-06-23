@@ -18,7 +18,7 @@ public class UserDao extends Dao<User> {
         while (resultSet.next()) {
             User user = new User();
             user.setId(resultSet.getLong(1));
-            user.setName(resultSet.getString(2));
+            user.setLastname(resultSet.getString(2));
             user.setFirstname(resultSet.getString(3));
             user.setEmail(resultSet.getString(4));
             user.setPassword(resultSet.getString(5));
