@@ -318,8 +318,6 @@ function deleteUser(id) {
     x.open('POST', '/user/delete/');
     x.setRequestHeader("Content-Type", "application/json");
 
-    console.info("Deleting user: " + document.getElementById("namez").value + " id: " + newId);
-
     //deleting the row containing the username from the table
     var row = document.getElementById("user_row" + newId);
     row.remove();

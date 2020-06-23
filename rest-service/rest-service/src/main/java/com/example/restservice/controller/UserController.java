@@ -56,7 +56,7 @@ public class UserController {
     @ResponseBody
     @PostMapping("/user/delete/")
     public void delete(@RequestBody User user) throws SQLException {
-        statement.executeQuery("DELETE FROM `User` WHERE u_id = " + user.getId());
+        statement.executeUpdate("DELETE FROM `User` WHERE u_id = " + user.getId());
     }
 
     @ResponseBody
