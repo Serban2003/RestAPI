@@ -4,7 +4,7 @@
 window.onload = function () {
     getAll();
 }
-{
+
 function submitGreetingKey() {
     if (event.which == 13 || event.keyCode == 13) //call submitGreeting if "Enter" was pressed
         submitGreeting();
@@ -137,14 +137,6 @@ function createTable(myObj) {
     //creating a new table cell for buttons
     let newAction = document.createElement('td');
 
-    //creating an edit button
-    let newEdit = document.createElement('button');
-    var textValue = document.createTextNode("Edit");
-    newEdit.appendChild(textValue);
-    newEdit.id = "edit_user" + myObj.id;
-
-    addNewEvent(newEdit, myObj.id, "click", editUser); //adding an onclick event for the edit button
-
     //creating a delete button
     let newDelete = document.createElement('button');
     var textValue = document.createTextNode("Delete");
@@ -153,7 +145,6 @@ function createTable(myObj) {
 
     addNewEvent(newDelete, myObj.id, "click", deleteUser); //adding an onclick event for the delete button
 
-    newAction.appendChild(newEdit);
     newAction.appendChild(newDelete);
     newRow.appendChild(newAction);
 
@@ -164,12 +155,9 @@ function createTable(myObj) {
 
 //edit username on button click or double click
 function editFirstname(id) {
-
-    var index = this.id.length - 1; //length of the username
-    while (this.id[index] >= '0' && this.id[index] <= '9') //finding the first digit of the id
-        index--;
-
-    var newId = this.id.substr(index + 1, this.id.length - 1); //creating the new id
+    console.log(id);
+   if(typeof id === 'string') var newId = id.match(/\d+/g);
+           else var newId = this.id.match(/\d+/g); //creating the new id
 
     //saving temporally the username in a new input form and deleting the current span container
     var div = document.getElementById("user_firstname_span" + newId);
@@ -182,19 +170,15 @@ function editFirstname(id) {
     editInput.value = div.textContent;
 
     //adding an onkeypress event for the input form
-    addNewEvent(editInput, newId, "keypress", press)
+    addNewEvent(editInput, newId, "keypress", pressFirstname)
 
     row.appendChild(editInput);
     row.removeChild(div);
 }
 
 function editLastname(id) {
-
-    var index = this.id.length - 1; //length of the username
-    while (this.id[index] >= '0' && this.id[index] <= '9') //finding the first digit of the id
-        index--;
-
-    var newId = this.id.substr(index + 1, this.id.length - 1); //creating the new id
+        if(typeof id === 'string') var newId = id.match(/\d+/g);
+        else var newId = this.id.match(/\d+/g); //creating the new id
 
     //saving temporally the username in a new input form and deleting the current span container
     var div = document.getElementById("user_lastname_span" + newId);
@@ -207,20 +191,15 @@ function editLastname(id) {
     editInput.value = div.textContent;
 
     //adding an onkeypress event for the input form
-    addNewEvent(editInput, newId, "keypress", press)
+    addNewEvent(editInput, newId, "keypress", pressLastname)
 
     row.appendChild(editInput);
     row.removeChild(div);
 }
 
 function editPassword(id) {
-
-    var index = this.id.length - 1; //length of the username
-    while (this.id[index] >= '0' && this.id[index] <= '9') //finding the first digit of the id
-        index--;
-
-    var newId = this.id.substr(index + 1, this.id.length - 1); //creating the new id
-
+if(typeof id === 'string') var newId = id.match(/\d+/g);
+           else var newId = this.id.match(/\d+/g); //creating the new id
     //saving temporally the username in a new input form and deleting the current span container
     var div = document.getElementById("user_password_span" + newId);
     var row = document.getElementById("user_password" + newId);
@@ -232,19 +211,15 @@ function editPassword(id) {
     editInput.value = div.textContent;
 
     //adding an onkeypress event for the input form
-    addNewEvent(editInput, newId, "keypress", press)
+    addNewEvent(editInput, newId, "keypress", pressPassword)
 
     row.appendChild(editInput);
     row.removeChild(div);
 }
 
 function editEmail(id) {
-
-    var index = this.id.length - 1; //length of the username
-    while (this.id[index] >= '0' && this.id[index] <= '9') //finding the first digit of the id
-        index--;
-
-    var newId = this.id.substr(index + 1, this.id.length - 1); //creating the new id
+if(typeof id === 'string') var newId = id.match(/\d+/g);
+           else var newId = this.id.match(/\d+/g); //creating the new id
 
     //saving temporally the username in a new input form and deleting the current span container
     var div = document.getElementById("user_email_span" + newId);
@@ -257,28 +232,17 @@ function editEmail(id) {
     editInput.value = div.textContent;
 
     //adding an onkeypress event for the input form
-    addNewEvent(editInput, newId, "keypress", press)
+    addNewEvent(editInput, newId, "keypress", pressEmail)
 
     row.appendChild(editInput);
     row.removeChild(div);
 }
 
-function editUser(id) {
-    editFirstname(this.id);
-    editLastname(this.id);
-    editPassword(this.id);
-    editEmail(this.id);
-}
 //updating the new username and putting it back in the table
-function press(id) {
+function pressFirstname(id) {
     if (event.which == 13 || event.keyCode == 13) { //if "Enter" was pressed
 
-        var index = this.id.length - 1; //length of the username
-        while (this.id[index] >= '0' && this.id[index] <= '9') //finding the first digit of the id
-            index--;
-
-        var newId = this.id.substr(index + 1, this.id.length - 1); //creating the new id
-
+        var newId = this.id.match(/\d+/g); //creating the new id
         var editInput = document.getElementById("input" + newId);
         if (editInput.value != "") {
             var x = new XMLHttpRequest();
@@ -295,7 +259,7 @@ function press(id) {
             row.removeChild(editInput);
 
             var data = JSON.stringify({
-                "id": newId,
+                "id": newId[0],
                 "firstname": editInput.value,
                 "lastname": document.getElementById("user_lastname_span" + newId).innerHTML,
                 "password": document.getElementById("user_password_span" + newId).innerHTML,
@@ -306,13 +270,105 @@ function press(id) {
     }
 }
 
+//updating the new username and putting it back in the table
+function pressLastname(id) {
+    if (event.which == 13 || event.keyCode == 13) { //if "Enter" was pressed
+
+        var newId = this.id.match(/\d+/g); //creating the new id
+
+        var editInput = document.getElementById("input" + newId);
+        if (editInput.value != "") {
+            var x = new XMLHttpRequest();
+            x.open('POST', '/user/update/');
+            x.setRequestHeader("Content-Type", "application/json");
+
+            //creating a new span container for the username
+            let newSpan = document.createElement('span');
+            newSpan.innerHTML = editInput.value;
+            newSpan.id = "user_lastname_span" + newId;
+
+            var row = document.getElementById("user_lastname" + newId);
+            row.appendChild(newSpan);
+            row.removeChild(editInput);
+
+            var data = JSON.stringify({
+                "id": newId[0],
+                "firstname": document.getElementById("user_firstname_span" + newId).innerHTML,
+                "lastname": editInput.value,
+                "password": document.getElementById("user_password_span" + newId).innerHTML,
+                "email": document.getElementById("user_email_span" + newId).innerHTML
+            });
+            x.send(data);
+        }
+    }
+}
+
+function pressPassword(id) {
+    if (event.which == 13 || event.keyCode == 13) { //if "Enter" was pressed
+
+        var newId = this.id.match(/\d+/g); //creating the new id
+
+        var editInput = document.getElementById("input" + newId);
+        if (editInput.value != "") {
+            var x = new XMLHttpRequest();
+            x.open('POST', '/user/update/');
+            x.setRequestHeader("Content-Type", "application/json");
+
+            //creating a new span container for the username
+            let newSpan = document.createElement('span');
+            newSpan.innerHTML = editInput.value;
+            newSpan.id = "user_password_span" + newId;
+
+            var row = document.getElementById("user_password" + newId);
+            row.appendChild(newSpan);
+            row.removeChild(editInput);
+
+            var data = JSON.stringify({
+                "id": newId[0],
+                "firstname": document.getElementById("user_firstname_span" + newId).innerHTML,
+                "lastname": document.getElementById("user_lastname_span" + newId).innerHTML,
+                "password": editInput.value,
+                "email": document.getElementById("user_email_span" + newId).innerHTML
+            });
+            x.send(data);
+        }
+    }
+}
+
+function pressEmail(id) {
+    if (event.which == 13 || event.keyCode == 13) { //if "Enter" was pressed
+
+        var newId = this.id.match(/\d+/g); //creating the new id
+
+        var editInput = document.getElementById("input" + newId);
+        if (editInput.value != "") {
+            var x = new XMLHttpRequest();
+            x.open('POST', '/user/update/');
+            x.setRequestHeader("Content-Type", "application/json");
+
+            //creating a new span container for the username
+            let newSpan = document.createElement('span');
+            newSpan.innerHTML = editInput.value;
+            newSpan.id = "user_email_span" + newId;
+
+            var row = document.getElementById("user_email" + newId);
+            row.appendChild(newSpan);
+            row.removeChild(editInput);
+
+            var data = JSON.stringify({
+                "id": newId[0],
+                "firstname": document.getElementById("user_firstname_span" + newId).innerHTML,
+                "lastname": document.getElementById("user_lastname_span" + newId).innerHTML,
+                "password": document.getElementById("user_password_span" + newId).innerHTML,
+                "email": editInput.value
+            });
+            x.send(data);
+        }
+    }
+}
 //deleting the username on button click
 function deleteUser(id) {
-    var index = this.id.length - 1; //length of the username
-    while (this.id[index] >= '0' && this.id[index] <= '9') //finding the first digit of the id
-        index--;
-
-    var newId = this.id.substr(index + 1, this.id.length - 1); //creating the new id
+    var newId = this.id.match(/\d+/g); //creating the new id
 
     var x = new XMLHttpRequest();
     x.open('POST', '/user/delete/');
@@ -322,7 +378,7 @@ function deleteUser(id) {
     var row = document.getElementById("user_row" + newId);
     row.remove();
 
-    x.send("{\"id\": \"" + newId + "\"}");
+    x.send("{\"id\": \"" + newId[0] + "\"}");
 }
 
 // adding a new event listener for a variable
@@ -360,5 +416,4 @@ function getAll() {
         } else console.log('Error: ' + x.status);
     }
     x.send();
-}
 }
