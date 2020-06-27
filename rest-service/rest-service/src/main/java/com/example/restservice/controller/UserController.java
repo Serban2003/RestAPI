@@ -5,22 +5,20 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Controller
 public class UserController {
-    Long id = 1L;
     Connection conn;
     Statement statement;
 
@@ -33,24 +31,27 @@ public class UserController {
         }
     }
 
-    private Map<Long, User> userlist = new HashMap<Long, User>();
-    private static final Logger logger = LoggerFactory.getLogger(GreetingController.class);
-
     @ResponseBody
     @PostMapping("/user/")
-    public User create(@RequestBody User user) throws SQLException {
-
+    public User create(@RequestBody User user) throws SQLException, NoSuchAlgorithmException {
+        String password = getMD5Encrypted(user);
         statement.executeUpdate("INSERT INTO `User` (`firstname`, `lastname`, `email`, `password`)" +
-                "VALUES ('" + user.getFirstname() + "', '" + user.getLastname() + "', '" + user.getEmail() + "', '" + user.getPassword() + "')");
+                "VALUES ('" + user.getFirstname() + "', '" + user.getLastname() + "', '" + user.getEmail() + "', '" + password + "')");
         return user;
+    }
+
+    private String getMD5Encrypted(@RequestBody User user) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(user.getPassword().getBytes());
+        return DatatypeConverter.printHexBinary(md.digest()).toUpperCase();
     }
 
     @ResponseBody
     @PostMapping("/user/update/")
-    public void update(@RequestBody User user) throws SQLException {
-
+    public void update(@RequestBody User user) throws SQLException, NoSuchAlgorithmException {
+        String password = getMD5Encrypted(user);
         statement.executeUpdate("UPDATE `User` SET firstname = '" + user.getFirstname() +
-                "', lastname = '" + user.getLastname() + "', email = '" + user.getEmail() + "', password = '" + user.getPassword() + "' WHERE u_id = " + user.getId());
+                "', lastname = '" + user.getLastname() + "', email = '" + user.getEmail() + "', password = '" + password + "' WHERE u_id = " + user.getId());
     }
 
     @ResponseBody
