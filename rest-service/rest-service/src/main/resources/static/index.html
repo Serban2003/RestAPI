@@ -3,22 +3,36 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png">
     <script type="text/javascript" src="/js/index.js"></script>
+    <script type="text/javascript" src="/js/userTable.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <title>Greeting</title>
 </head>
 <body>
+    <div class="user_form" id="user_form">
+    <label for="firstname"> Firstname:</label>
+    <input type="text" name="firstname" id="firstname" placeholder="insert your firstname here..." maxlength="20"/>
+        <label for="lastname"> Lastname:</label>
+        <input type="text" name="lastname" id="lastname" placeholder="insert your lastname here..." maxlength="20"/>
+    <label for="password">Password:</label>
+    <input type="text" name="password" id="password" placeholder="type your password here..." maxlength="20"/>
+        <label for="email">Email:</label>
+        <input type="text" name="email" id="email" placeholder="type your email here..." maxlength="50"/>
+        <label for="billing_address">Billing address:</label>
+        <input type="text" name="billing_address" id="billing_address" placeholder="type your billing address here..." maxlength="200"/>
+        <label for="shipping_address">Shipping address:</label>
+        <input type="text" name="shipping_address" id="shipping_address" placeholder="type your shipping address here..." maxlength="200"/>
+    <button onclick="submitGreeting()" style="position: relative; top: 1px; width: 80px;">Submit</button>
 
-    <label for="namez"> Name:</label>
-    <input type="text" name="namez" id="namez" placeholder="insert your name here ..." maxlength="20"
-           onkeypress="submitGreetingKey()"/>
-    <button onclick="submitGreeting()" style="position: relative; top: 1px; width: 50px;">Greet</button>
-
+    </div>
     <table class="user_table" border="1">
         <thead>
         <tr>
             <td width="20px">ID</td>
-            <td width="200px">User</td>
+            <td width="200px">Firstname</td>
+            <td width="200px">Lastname</td>
+            <td width="200px">Password</td>
+            <td width="200px">Email</td>
             <td width="110px">Actions</td>
         </tr>
         </thead>
