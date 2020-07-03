@@ -18,7 +18,7 @@ import java.sql.*;
 
 
 @Controller
-public class UserController {
+public class UserController extends UniversalController<User>{
     Connection conn;
     Statement statement;
 
@@ -29,6 +29,10 @@ public class UserController {
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
+    }
+
+    public UserController(Connection conn, Statement state) {
+        super(conn, state);
     }
 
     @ResponseBody

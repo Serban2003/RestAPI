@@ -5,8 +5,8 @@ import java.util.Date;
 public class User {
 
     Long id;
-    String lastname;
-    String firstname, email, password;
+    String firstname;
+    String lastname, email, password;
     Long billing_address_id, shipping_address_id;
 
     public User() {
