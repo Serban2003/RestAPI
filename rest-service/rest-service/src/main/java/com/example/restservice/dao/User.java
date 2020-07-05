@@ -8,6 +8,7 @@ public class User {
     String firstname;
     String lastname, email, password;
     Long billing_address_id, shipping_address_id;
+    Date create_ts;
 
     public User() {
 
@@ -59,13 +60,6 @@ public class User {
 
     public void setCreate_ts(Date create_ts) {
         this.create_ts = create_ts;
-    }
-
-    Date create_ts;
-
-    public User(Long id, String lastname) {
-        this.id = id;
-        this.lastname = lastname;
     }
 
     public void setId(Long id) {

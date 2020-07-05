@@ -3,16 +3,15 @@ package com.example.restservice;
 import com.example.restservice.dao.User;
 import org.junit.jupiter.api.Test;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class UniversalControllerTest {
     User user = new User();
 
     @Test
-    public void generateQuery() {
+    public void generateQuery() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         user.setFirstname("Serban");
         user.setLastname("Iustinian");
@@ -33,6 +32,13 @@ public class UniversalControllerTest {
 
             String var = fields[i].getName();
 
+
+            Method sumInstanceMethod
+                    = clazz.getMethod("get" + var.substring(0, 1).toUpperCase() + var.substring(1));
+
+            String result
+                    = (String) sumInstanceMethod.invoke(user);
+            System.out.println(result);
             getConstructor += ("'" + className.toLowerCase() + ".get" + var.substring(0, 1).toUpperCase() + var.substring(1) + "()" + "'");
             if (i < fields.length - 1) {
                 field += ",";
@@ -40,17 +46,8 @@ public class UniversalControllerTest {
             }
         }
 
-        try {
-            for(PropertyDescriptor propertyDescriptor :
-                    Introspector.getBeanInfo(clazz).getPropertyDescriptors()){
-
-                System.out.println(propertyDescriptor.getReadMethod().getName());
-            }
-        } catch (IntrospectionException e) {
-            e.printStackTrace();
-        }
-        System.out.println(field);
-        System.out.println(getConstructor);
+//        System.out.println(field);
+//        System.out.println(getConstructor);
     }
 
 }
