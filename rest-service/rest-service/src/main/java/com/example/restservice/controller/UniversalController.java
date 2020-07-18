@@ -6,71 +6,128 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.xml.bind.DatatypeConverter;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.StringJoiner;
 
-// Reflection API
+/**
+ * Magic controller that connects to MySQL database and provides default INSERT, UPDATE, DELETE querys based on <T>
+ *
+ * @param <T>
+ */
 public abstract class UniversalController<T> {
 
     private Connection connection;
     private Statement statement;
 
-    public UniversalController(Connection conn, Statement state) {
-        connection = conn;
-        statement = state;
-    }
-
-    T obj;
-    Class clazz = obj.getClass();
-    String className = clazz.getName().toLowerCase();
-
-    final Field[] fields = clazz.getDeclaredFields();
-    String field = "";
-    String getConstructor = "";
-    String getSetter = "";
-    String password;
-
-    public void createSetterAndGetter() throws NoSuchMethodException, NoSuchAlgorithmException, IllegalAccessException, InvocationTargetException {
-        createFields(field, getConstructor);
-        createFields(getSetter, field);
-    }
-
-    public void createFields(String field, String string) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchAlgorithmException {
-        for (int i = 1; i < fields.length; ++i) {
-            field += ("`" + fields[i].getName() + "`");
-
-            String var = fields[i].getName();
-            String name = "get" + var.substring(0, 1).toUpperCase() + var.substring(1);
-
-            Method sumInstanceMethod = clazz.getMethod(name);
-            String result = sumInstanceMethod.invoke(obj).toString();
-
-            if(var.equals("password")){
-                password = getMD5Encrypted(result);
-                result = password;
-            }
-
-            string += ("'" + result + "'");
-            if (i < fields.length - 1) {
-                field += ",";
-                string += ",";
-            }
+    {
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/store", "root", "");
+            statement = connection.createStatement();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 
-    public String getID() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        String var = fields[0].getName();
-        String name = "get" + var.substring(0, 1).toUpperCase() + var.substring(1);
-        Method sumInstanceMethod = clazz.getMethod(name);
+    public T create(T object) throws SQLException, NoSuchAlgorithmException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        statement.execute("INSERT INTO " + getTableName() + "(" + getFieldsNames(object) + ")" + "VALUES (" + getFieldsValues(object) + ")");
+        return object;
+    }
 
-        return sumInstanceMethod.invoke(obj).toString();
+
+    public void update(T object) throws SQLException, NoSuchAlgorithmException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        statement.executeUpdate("UPDATE " + getTableName() + "SET " + getUpdateFields() + " WHERE " + getIdFieldName() + " = " + getIdFieldValue(object));
+    }
+
+    public void delete(T object) throws SQLException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        statement.executeUpdate("DELETE FROM " + getTableName() + "WHERE " + getIdFieldName() + " = " + getIdFieldValue(object));
+    }
+
+    public String get() throws SQLException {
+        JSONArray jsArray = new JSONArray();
+        Gson gson = new Gson();
+
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM " + getTypeParameterClass());
+        while (resultSet.next()) {
+            JSONObject jObj = new JSONObject();
+            try {
+                for (Field value : getTypeParameterClass().getFields()) jObj.put(value.getName(), resultSet.getString("u_id"));
+                jsArray.put(jObj);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return gson.toJson(jsArray);
+    }
+
+
+    private String getUpdateFields() {
+        return null;
+    }
+
+
+    private String getIdFieldValue(T obj) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String fieldName = getIdFieldName();
+        return getTypeParameterClass()
+                .getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1))
+                .invoke(obj)
+                .toString();
+    }
+
+    private String getIdFieldName() {
+        String idFieldName = "";
+        for (int i=0;i< getTypeParameterClass().getName().length(); i ++ ){
+            char c =  getTypeParameterClass().getName().charAt(i);
+            idFieldName += Character.isUpperCase(c) ? c+"" : "";
+        }
+        return idFieldName + "_id";
+    }
+
+
+    @SuppressWarnings ("unchecked")
+    private Class<T> getTypeParameterClass()
+    {
+        Type type = getClass().getGenericSuperclass();
+        ParameterizedType paramType = (ParameterizedType) type;
+        return (Class<T>) paramType.getActualTypeArguments()[0];
+    }
+
+    private String getFieldsValues(T object) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        StringJoiner fieldsValuesBuilder = new StringJoiner(",");
+        Field[] fields = getTypeParameterClass().getFields();
+
+        for (int i = 1; i < fields.length; ++i) {
+            String fieldName = fields[i].getName();
+
+            String fieldValue = getTypeParameterClass()
+                    .getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1))
+                    .invoke(object)
+                    .toString();
+
+            if (fieldName.equals("password")) {
+                try {
+                    fieldValue = getMD5Encrypted(fieldValue);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            fieldsValuesBuilder.add("'" + fieldValue + "'");
+        }
+
+        return fieldsValuesBuilder.toString();
+    }
+
+    private String getFieldsNames(T object) {
+        StringJoiner fieldNamesBuilder = new StringJoiner(",");
+        Field[] fields = getTypeParameterClass().getFields();
+
+        for (int i = 1; i < fields.length; ++i) {
+            fieldNamesBuilder.add("`" + fields[i].getName() + "`");
+        }
+        return fieldNamesBuilder.toString();
     }
 
     private String getMD5Encrypted(String string) throws NoSuchAlgorithmException {
@@ -79,32 +136,8 @@ public abstract class UniversalController<T> {
         return DatatypeConverter.printHexBinary(md.digest()).toUpperCase();
     }
 
-    public T create(T object) throws SQLException, NoSuchAlgorithmException {
-        statement.executeUpdate("INSERT INTO " + className + "(" + field + ")" + "VALUES (" + getConstructor + ")");
-        return object;
-    }
-    public void update(T object) throws SQLException, NoSuchAlgorithmException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        statement.executeUpdate("UPDATE " + className + "SET " + getSetter + " WHERE " + fields[0].getName() + " = " + getID());
-    }
-    public void delete(T object) throws SQLException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        statement.executeUpdate("DELETE FROM " + className + "WHERE " + fields[0].getName() + " = " + getID());
-    }
-
-    protected String doGet() throws SQLException {
-        JSONArray jsArray = new JSONArray();
-        Gson gson = new Gson();
-
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM " + className);
-        while(resultSet.next()){
-            JSONObject jObj = new JSONObject();
-            try {
-                for (Field value : fields) jObj.put(value.getName(), resultSet.getString("u_id"));
-                jsArray.put(jObj);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return gson.toJson(jsArray);
+    private String getTableName(){
+        return getTypeParameterClass().toString().toLowerCase();
     }
 
 }
