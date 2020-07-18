@@ -1,0 +1,159 @@
+body{
+    background: linear-gradient(45deg, #53092adc, rgba(191, 0, 51, 0.849), #ff6237dc, #febb01dc, #fede0bdc, #EFF5AB);
+    background-size: 200% 200%;
+    animation: backgroundAnimation 12s ease infinite;
+}
+
+@keyframes backgroundAnimation {
+    0%{background-position:0% 50%}
+    50%{background-position:50% 50%}
+    100%{background-position:0% 50%}
+}
+
+.register_title{
+    font-family: sans-serif;
+    position:absolute;
+    top: 20px;
+    left: 50%;
+    margin-left: -55px;
+}
+.user_form{
+    font-family: sans-serif;
+    position: absolute;
+    top: 250px;
+    left: 50%;
+    margin-top: -155px;
+    margin-left: -125px;
+    width: 250px;
+    height: 315px;
+    padding: 10px;
+    background: linear-gradient(45deg, #ffab8491, #faf88885);
+    border-radius: 5px;
+    border: solid 1px rgb(204, 133, 0);
+    font-size: 18px;
+}
+
+.advertisement{
+    position: absolute;
+    left: 50%;
+    margin-left: -125px;
+    width: 270px;
+    height: 55px;
+    font-size: 15px;
+    color: white;
+    margin-top: 5px;
+    background-color: #F44336;
+    border: 1px solid #eb2c1e;
+    border-radius: 5px;
+}
+
+.submit_button{
+    position: absolute;
+    top: 275px;
+    height: 30px;
+    width: 60%;
+    left: 20%;
+    border-radius: 10px;
+    border: rgb(131, 131, 131)(114, 99, 99) solid 1px;
+    outline: none;
+    font-size: 15px;
+    padding-top: 2px;
+}
+
+.message{
+    position: absolute;
+    bottom: 5px;
+    font-size: 16px;
+}
+
+.title_span{
+    position: absolute;
+    font-size: 22px;
+    top: 6px;
+    left: 8px;
+}
+.text_span{
+    position: absolute;
+    top: 31px;
+    left: 8px;
+}
+.close_div{
+    position: absolute;
+    top: 0px;
+    font-size: 17px;
+    right: 0px;
+    width: 20px;
+    border-radius: 3px;
+    text-align: center;
+    -webkit-user-select: none;
+}
+.close_div:hover{
+    background-color: rgb(253, 138, 138);
+}
+
+input{
+    width: 94%;
+    height: 25px;
+    position: absolute;
+    background: rgb(255, 255, 255);
+    left:3%;
+    font-size: 16px;
+    border: 1px grey solid;
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    outline: none;
+}
+
+input:focus,
+input:hover {
+    box-shadow: black 0.5px 0.5px 0.5px;
+    border-color: black;
+}
+
+label{
+    position: absolute;
+    left: 4%;
+}
+
+@keyframes appearAnimation {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        display: none;
+        opacity: 1;
+    }
+}
+
+.appear {
+    animation-name: appearAnimation;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes disappearAnimation {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        display: none;
+        opacity: 0;
+    }
+}
+
+.disappear {
+    animation-name: disappearAnimation;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+}
