@@ -3,26 +3,26 @@ package com.example.restservice.dao;
 import java.util.Date;
 
 public class Order {
-    private Long orderId;
-    private Long userId;
+    private Long o_id;
+    private Long u_id;
     private double total;
     private String status;
     private Date create_ts;
 
-    public Long getOrderId() {
-        return orderId;
+    public Long getO_id() {
+        return o_id;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setO_id(Long o_id) {
+        this.o_id = o_id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getU_id() {
+        return u_id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setU_id(Long u_id) {
+        this.u_id = u_id;
     }
 
     public double getTotal() {
@@ -52,8 +52,8 @@ public class Order {
     @Override
     public String toString() {
         return "Order{" +
-                "o_id=" + orderId +
-                ", u_id=" + userId +
+                "o_id=" + o_id +
+                ", u_id=" + u_id +
                 ", total=" + total +
                 ", status='" + status + '\'' +
                 ", create_ts=" + create_ts +

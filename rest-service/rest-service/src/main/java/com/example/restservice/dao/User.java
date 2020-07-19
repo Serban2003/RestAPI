@@ -4,11 +4,10 @@ import java.util.Date;
 
 public class User {
 
-    Long id;
+    Long u_id;
     String firstname;
     String lastname, email, password;
-    Long billing_address_id, shipping_address_id;
-    Date create_ts;
+    Long address_id;
 
     public User() {
 
@@ -38,40 +37,24 @@ public class User {
         this.password = password;
     }
 
-    public Long getBilling_address_id() {
-        return billing_address_id;
+    public Long getAddress_id() {
+        return address_id;
     }
 
-    public void setBilling_address_id(Long billing_address_id) {
-        this.billing_address_id = billing_address_id;
+    public void setAddress_id(Long address_id) {
+        this.address_id = address_id;
     }
 
-    public Long getShipping_address_id() {
-        return shipping_address_id;
-    }
-
-    public void setShipping_address_id(Long shipping_address_id) {
-        this.shipping_address_id = shipping_address_id;
-    }
-
-    public Date getCreate_ts() {
-        return create_ts;
-    }
-
-    public void setCreate_ts(Date create_ts) {
-        this.create_ts = create_ts;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setU_id(Long u_id) {
+        this.u_id = u_id;
     }
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
-    public Long getId() {
-        return id;
+    public Long getU_id() {
+        return u_id;
     }
 
     public String getLastname() {
@@ -81,14 +64,12 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", name='" + lastname + '\'' +
+                "u_id=" + u_id +
                 ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", billing_address_id=" + billing_address_id +
-                ", shipping_address_id=" + shipping_address_id +
-                ", create_ts=" + create_ts +
+                ", address_id=" + address_id +
                 '}';
     }
 }

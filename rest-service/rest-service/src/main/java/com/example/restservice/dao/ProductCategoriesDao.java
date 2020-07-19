@@ -6,20 +6,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductCategoriesDao extends Dao<ProductCategories>{
+public class ProductCategoriesDao extends Dao<Product_Categories>{
 
     public ProductCategoriesDao(Connection conn) {
         super(conn);
     }
 
     @Override
-    public List<ProductCategories> transform(ResultSet resultSet) throws SQLException {
+    public List<Product_Categories> transform(ResultSet resultSet) throws SQLException {
 
-        List<ProductCategories> productCategories = new ArrayList<>();
+        List<Product_Categories> productCategories = new ArrayList<>();
 
         while (resultSet.next()) {
-            ProductCategories productCategory = new ProductCategories();
-            productCategory.setId(resultSet.getLong(1));
+            Product_Categories productCategory = new Product_Categories();
+            productCategory.setPc_id(resultSet.getLong(1));
             productCategory.setCategory(resultSet.getString(2));
             productCategories.add(productCategory);
         }

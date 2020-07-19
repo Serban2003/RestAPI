@@ -18,8 +18,8 @@ public class OrderDao extends Dao<Order> {
 
         while (resultSet.next()) {
             Order order = new Order();
-            order.setOrderId(resultSet.getLong(1));
-            order.setUserId(resultSet.getLong(2));
+            order.setO_id(resultSet.getLong(1));
+            order.setU_id(resultSet.getLong(2));
             order.setTotal(resultSet.getDouble(3));
             order.setStatus(resultSet.getString(4));
             order.setCreate_ts(resultSet.getDate(5));

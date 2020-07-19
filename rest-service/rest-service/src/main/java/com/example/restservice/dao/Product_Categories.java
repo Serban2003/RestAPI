@@ -1,15 +1,15 @@
 package com.example.restservice.dao;
 
-public class ProductCategories {
-    private Long id;
+public class Product_Categories {
+    private Long pc_id;
     private String category;
 
-    public Long getId() {
-        return id;
+    public Long getPc_id() {
+        return pc_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPc_id(Long pc_id) {
+        this.pc_id = pc_id;
     }
 
     public String getCategory() {
@@ -22,8 +22,8 @@ public class ProductCategories {
 
     @Override
     public String toString() {
-        return "ProductCategories{" +
-                "id=" + id +
+        return "Product_Categories{" +
+                "id=" + pc_id +
                 ", category='" + category + '\'' +
                 '}';
     }

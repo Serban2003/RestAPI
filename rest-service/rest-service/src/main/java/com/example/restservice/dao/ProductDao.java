@@ -17,9 +17,9 @@ public class ProductDao extends Dao<Product> {
 
         while (resultSet.next()) {
             Product product = new Product();
-            product.setId(resultSet.getLong(1));
+            product.setP_id(resultSet.getLong(1));
             product.setName(resultSet.getString(2));
-            product.setCategoryId(resultSet.getLong(3));
+            product.setCategory_id(resultSet.getLong(3));
             product.setPrice(resultSet.getDouble(4));
             products.add(product);
         }

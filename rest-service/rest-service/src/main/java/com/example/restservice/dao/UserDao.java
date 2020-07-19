@@ -17,13 +17,13 @@ public class UserDao extends Dao<User> {
 
         while (resultSet.next()) {
             User user = new User();
-            user.setId(resultSet.getLong(1));
+            user.setU_id(resultSet.getLong(1));
             user.setLastname(resultSet.getString(2));
             user.setFirstname(resultSet.getString(3));
             user.setEmail(resultSet.getString(4));
             user.setPassword(resultSet.getString(5));
-            user.setBilling_address_id(resultSet.getLong(6));
-            user.setShipping_address_id(resultSet.getLong(7));
+//            user.setBilling_address_id(resultSet.getLong(6));
+//            user.setShipping_address_id(resultSet.getLong(7));
             users.add(user);
         }
         return users;

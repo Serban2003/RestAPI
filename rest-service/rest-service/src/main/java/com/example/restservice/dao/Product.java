@@ -2,17 +2,17 @@ package com.example.restservice.dao;
 
 public class Product {
 
-    private Long id;
+    private Long p_id;
     private String name;
-    private Long categoryId;
+    private Long category_id;
     private Double price;
 
-    public Long getId() {
-        return id;
+    public Long getP_id() {
+        return p_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setP_id(Long p_id) {
+        this.p_id = p_id;
     }
 
     public String getName() {
@@ -23,12 +23,12 @@ public class Product {
         this.name = name;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Long getCategory_id() {
+        return category_id;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory_id(Long category_id) {
+        this.category_id = category_id;
     }
 
     public Double getPrice() {
@@ -42,9 +42,9 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + id +
+                "p_id=" + p_id +
                 ", name='" + name + '\'' +
-                ", categoryId=" + categoryId +
+                ", category_id=" + category_id +
                 ", price=" + price +
                 '}';
     }
