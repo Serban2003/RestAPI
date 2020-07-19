@@ -1,5 +1,6 @@
 package com.example.restservice.controller;
 
+import com.example.restservice.dao.User;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,7 +110,7 @@ public abstract class UniversalController<T> {
 
             String typeWrapper = fieldType.getName().equals("java.lang.String") ? "'" : "";
 
-            if(!fieldName.contains("id")) {
+            if(!fieldName.equals(getIdFieldName())) {
                 String fieldValue = getTypeParameterClass()
                         .getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1))
                         .invoke(object)
@@ -145,9 +146,37 @@ public abstract class UniversalController<T> {
         return DatatypeConverter.printHexBinary(md.digest()).toUpperCase();
     }
 
-    private String getTableName(){
+    private String getTableName() {
         String[] className = getTypeParameterClass().getName().split("\\.");
         return className[className.length - 1].toLowerCase();
     }
 
+    public boolean userExist(User user) throws SQLException {
+        PreparedStatement pstmt1 = null;
+        ResultSet rs = null;
+
+            pstmt1 = connection.prepareStatement("SELECT email FROM `user` where email=?");
+            pstmt1.setString(1, user.getEmail());
+
+            rs = pstmt1.executeQuery();
+
+        return rs.next();
+    }
+
+    public int userValid(User user) throws SQLException, NoSuchAlgorithmException {
+        if(userExist(user)) return 0;
+        else{
+            PreparedStatement pstmt1 = null;
+            ResultSet rs = null;
+
+            pstmt1 = connection.prepareStatement("SELECT password FROM `user` where email=?");
+            pstmt1.setString(1, user.getEmail());
+
+            rs = pstmt1.executeQuery();
+
+            if(rs.toString().equals(getMD5Encrypted(user.getPassword()))) return 1;
+             return 2;
+        }
+
+    }
 }

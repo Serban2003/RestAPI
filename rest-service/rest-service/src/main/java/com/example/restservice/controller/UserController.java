@@ -19,7 +19,9 @@ public class UserController extends UniversalController<User>{
     @PostMapping("/user/")
     @Override
     public User create(@RequestBody User user) throws SQLException, NoSuchAlgorithmException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        return super.create(user);
+        if(!super.userExist(user))
+            return super.create(user);
+        return new User();
     }
 
     @ResponseBody
@@ -35,8 +37,16 @@ public class UserController extends UniversalController<User>{
     }
 
     @ResponseBody
+    @PostMapping("/user/connect/")
+    public int connect(@RequestBody User user) throws SQLException, NoSuchAlgorithmException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        return super.userValid(user);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "user/allusers/")
     protected String doGet() throws SQLException {
         return super.get();
     }
+
+
 }

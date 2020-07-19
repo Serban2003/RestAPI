@@ -1,13 +1,11 @@
 package com.example.restservice.dao;
 
-import java.util.Date;
-
 public class User {
 
     Long u_id;
     String firstname;
     String lastname, email, password;
-    Long address_id;
+    String address;
 
     public User() {
 
@@ -37,12 +35,12 @@ public class User {
         this.password = password;
     }
 
-    public Long getAddress_id() {
-        return address_id;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddress_id(Long address_id) {
-        this.address_id = address_id;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void setU_id(Long u_id) {
@@ -69,7 +67,7 @@ public class User {
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", address_id=" + address_id +
+                ", address=" + address +
                 '}';
     }
 }

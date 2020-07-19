@@ -126,6 +126,10 @@ function registerUser() {
                     document.getElementById("lastname").value = '';
                     document.getElementById("password").value = '';
                     document.getElementById("email").value = '';
+                    document.getElementById("address").value = '';
+
+                    if(jsonResult.firstname == null)
+                        createAdvertisement("user exist", 1);
 
                     console.log(xhrUser.responseText); // 'This is the output.'
                 } else {
@@ -138,30 +142,8 @@ function registerUser() {
             firstname: firstname,
             lastname: lastname,
             password: password,
-            email: email
-        }));
-
-
-        var xhrAddress = new XMLHttpRequest();
-        xhrAddress.open('POST', '/address/');
-        xhrAddress.setRequestHeader("Content-Type", "application/json");
-        xhrAddress.onreadystatechange = function () {
-            var DONE = 4; // readyState 4 means the request is done.
-            var OK = 200; // status 200 is a successful return.
-
-            if (xhrAddress.readyState === DONE) {
-                if (xhrAddress.status === OK) {
-                    let jsonResult = JSON.parse(xhrAddress.responseText);
-                    document.getElementById("address").value = '';
-
-                    console.log(xhrAddress.responseText); // 'This is the output.'
-                } else {
-                    console.log('Error: ' + xhrAddress.status); // An error occurred during the request.
-                }
-            }
-        };
-        xhrAddress.send(JSON.stringify({
-            address: address
+            email: email,
+            address : address
         }));
     }
 }
@@ -176,8 +158,12 @@ function createAdvertisement(message, type) {
     titleSpan.className = "title_span";
     titleSpan.appendChild(title);
 
-
     let text = document.createTextNode("To proceed, please type your " + message + ".");
+    if(message == "user exist"){
+        text = document.createTextNode("An user with this email is already registered. Please log in to continue.");
+        advertisement.style.height = "70px";
+    }
+
     let textSpan = document.createElement("span");
     textSpan.className = "text_span";
     textSpan.appendChild(text);
@@ -272,6 +258,43 @@ function loginUser() {
     if (email == "") {
         createAdvertisement("email", 2);
     } else if (password == "") {
-        createAdvertisement("address", 2);
-    } else window.location.replace("dashboard.html");
+        createAdvertisement("password", 2);
+    } else {
+
+        var xhrUser = new XMLHttpRequest();
+                xhrUser.open('POST', '/user/connect');
+                xhrUser.setRequestHeader("Content-Type", "application/json");
+                // Track the state changes of the request.
+                xhrUser.onreadystatechange = function () {
+                    var DONE = 4; // readyState 4 means the request is done.
+                    var OK = 200; // status 200 is a successful return.
+
+                    if (xhrUser.readyState === DONE) {
+                        if (xhrUser.status === OK) {
+
+                            let jsonResult = JSON.parse(xhrUser.responseText);
+                            //refreshing the input form
+
+                            document.getElementById("password").value = '';
+                            document.getElementById("email").value = '';
+
+                            if(jsonResult.firstname == null)
+                                createAdvertisement("user exist", 1);
+
+                            console.log(xhrUser.responseText); // 'This is the output.'
+                        } else {
+                            console.log('Error: ' + xhrUser.status); // An error occurred during the request.
+                        }
+                    }
+                };
+
+                xhrUser.send(JSON.stringify({
+                    password: password,
+                    email: email,
+                }));
+
+
+
+    //window.location.replace("dashboard.html");
+    }
 }

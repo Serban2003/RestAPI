@@ -22,8 +22,7 @@ public class UserDao extends Dao<User> {
             user.setFirstname(resultSet.getString(3));
             user.setEmail(resultSet.getString(4));
             user.setPassword(resultSet.getString(5));
-//            user.setBilling_address_id(resultSet.getLong(6));
-//            user.setShipping_address_id(resultSet.getLong(7));
+            user.setAddress(resultSet.getString(6));
             users.add(user);
         }
         return users;
