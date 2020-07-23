@@ -128,7 +128,7 @@ function registerUser() {
                     document.getElementById("email").value = '';
                     document.getElementById("address").value = '';
 
-                    if(jsonResult.firstname == null)
+                    if (jsonResult.firstname == null)
                         createAdvertisement("user exist", 1);
 
                     console.log(xhrUser.responseText); // 'This is the output.'
@@ -143,7 +143,7 @@ function registerUser() {
             lastname: lastname,
             password: password,
             email: email,
-            address : address
+            address: address
         }));
     }
 }
@@ -159,10 +159,16 @@ function createAdvertisement(message, type) {
     titleSpan.appendChild(title);
 
     let text = document.createTextNode("To proceed, please type your " + message + ".");
-    if(message == "user exist"){
+    if (message == "user exist") {
         text = document.createTextNode("An user with this email is already registered. Please log in to continue.");
         advertisement.style.height = "70px";
     }
+    if (message == "user doesn't exist") {
+        text = document.createTextNode("No user exists with this email. Please register.");
+        advertisement.style.height = "70px";
+    }
+    if (message == "wrong password")
+        text = document.createTextNode("Wrong password. Please try again.");
 
     let textSpan = document.createElement("span");
     textSpan.className = "text_span";
@@ -262,39 +268,36 @@ function loginUser() {
     } else {
 
         var xhrUser = new XMLHttpRequest();
-                xhrUser.open('POST', '/user/connect');
-                xhrUser.setRequestHeader("Content-Type", "application/json");
-                // Track the state changes of the request.
-                xhrUser.onreadystatechange = function () {
-                    var DONE = 4; // readyState 4 means the request is done.
-                    var OK = 200; // status 200 is a successful return.
+        xhrUser.open('POST', '/user/connect/');
+        xhrUser.setRequestHeader("Content-Type", "application/json");
+        // Track the state changes of the request.
+        xhrUser.onreadystatechange = function () {
+            var DONE = 4; // readyState 4 means the request is done.
+            var OK = 200; // status 200 is a successful return.
 
-                    if (xhrUser.readyState === DONE) {
-                        if (xhrUser.status === OK) {
+            if (xhrUser.readyState === DONE) {
+                if (xhrUser.status === OK) {
 
-                            let jsonResult = JSON.parse(xhrUser.responseText);
-                            //refreshing the input form
+                    let jsonResult = JSON.parse(xhrUser.responseText);
+                    //refreshing the input form
 
-                            document.getElementById("password").value = '';
-                            document.getElementById("email").value = '';
+                    document.getElementById("password").value = '';
+                    document.getElementById("email").value = '';
 
-                            if(jsonResult.firstname == null)
-                                createAdvertisement("user exist", 1);
+                    if (jsonResult == 0) createAdvertisement("user doesn't exist", 2);
+                    else if (jsonResult == 2) createAdvertisement("wrong password", 2);
+                    else window.location.replace("dashboard.html");
 
-                            console.log(xhrUser.responseText); // 'This is the output.'
-                        } else {
-                            console.log('Error: ' + xhrUser.status); // An error occurred during the request.
-                        }
-                    }
-                };
+                    console.log(xhrUser.responseText); // 'This is the output.'
+                } else {
+                    console.log('Error: ' + xhrUser.status); // An error occurred during the request.
+                }
+            }
+        };
 
-                xhrUser.send(JSON.stringify({
-                    password: password,
-                    email: email,
-                }));
-
-
-
-    //window.location.replace("dashboard.html");
+        xhrUser.send(JSON.stringify({
+            password: password,
+            email: email,
+        }));
     }
 }

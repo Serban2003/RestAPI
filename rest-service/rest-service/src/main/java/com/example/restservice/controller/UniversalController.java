@@ -33,7 +33,7 @@ public abstract class UniversalController<T> {
     }
 
     public T create(T object) throws SQLException, NoSuchAlgorithmException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        statement.execute("INSERT INTO " + getTableName() + " (" + getFieldsName(object) + ") " + "VALUES (" + getFieldsValues(object) + ")");
+        statement.execute("INSERT INTO " + getTableName() + " (" + getFieldsName() + ") " + "VALUES (" + getFieldsValues(object) + ")");
         return object;
     }
 
@@ -53,7 +53,8 @@ public abstract class UniversalController<T> {
         while (resultSet.next()) {
             JSONObject jObj = new JSONObject();
             try {
-                for (Field value : getTypeParameterClass().getFields()) jObj.put(value.getName(), resultSet.getString(getIdFieldName()));
+                for (Field value : getTypeParameterClass().getFields())
+                    jObj.put(value.getName(), resultSet.getString(getIdFieldName()));
                 jsArray.put(jObj);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -63,11 +64,11 @@ public abstract class UniversalController<T> {
     }
 
     private String getUpdateFields(T obj) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        String[] fieldsName = getFieldsName(obj).split(","); //'u_id','firstaname'...
+        String[] fieldsName = getFieldsName().split(","); //'u_id','firstaname'...
         String[] fieldsValue = getIdFieldsValue(obj).split(","); //1,
         StringJoiner sj = new StringJoiner(",");
 
-        for(int i = 0; i<fieldsName.length; ++i){
+        for (int i = 0; i < fieldsName.length; ++i) {
             sj.add(fieldsName[i] + "=" + fieldsValue[i]);
         }
         return sj.toString();
@@ -83,18 +84,17 @@ public abstract class UniversalController<T> {
     }
 
     private String getIdFieldName() {
-        String idFieldName = "";
-        for (int i=0;i< getTypeParameterClass().getName().length(); i ++ ){
-            char c =  getTypeParameterClass().getName().charAt(i);
-            idFieldName += Character.isUpperCase(c) ? c+"" : "";
+        StringBuilder idFieldName = new StringBuilder();
+        for (int i = 0; i < getTypeParameterClass().getName().length(); i++) {
+            char c = getTypeParameterClass().getName().charAt(i);
+            idFieldName.append(Character.isUpperCase(c) ? c + "" : "");
         }
         return idFieldName + "_id";
     }
 
 
-    @SuppressWarnings ("unchecked")
-    private Class<T> getTypeParameterClass()
-    {
+    @SuppressWarnings("unchecked")
+    private Class<T> getTypeParameterClass() {
         Type type = getClass().getGenericSuperclass();
         ParameterizedType paramType = (ParameterizedType) type;
         return (Class<T>) paramType.getActualTypeArguments()[0];
@@ -110,7 +110,7 @@ public abstract class UniversalController<T> {
 
             String typeWrapper = fieldType.getName().equals("java.lang.String") ? "'" : "";
 
-            if(!fieldName.equals(getIdFieldName())) {
+            if (!fieldName.equals(getIdFieldName())) {
                 String fieldValue = getTypeParameterClass()
                         .getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1))
                         .invoke(object)
@@ -123,18 +123,18 @@ public abstract class UniversalController<T> {
                         e.printStackTrace();
                     }
                 }
-                fieldsValuesBuilder.add(typeWrapper + fieldValue +  typeWrapper);
+                fieldsValuesBuilder.add(typeWrapper + fieldValue + typeWrapper);
             }
         }
         return fieldsValuesBuilder.toString();
     }
 
-    private String getFieldsName(T object) {
+    private String getFieldsName() {
         StringJoiner fieldNamesBuilder = new StringJoiner(",");
         Field[] fields = getTypeParameterClass().getDeclaredFields();
 
         for (int i = 1; i < fields.length; ++i) {
-            String[] fieldsName =  fields[i].getName().split("\\.");
+            String[] fieldsName = fields[i].getName().split("\\.");
             fieldNamesBuilder.add("`" + fieldsName[fieldsName.length - 1] + "`");
         }
         return fieldNamesBuilder.toString();
@@ -152,30 +152,30 @@ public abstract class UniversalController<T> {
     }
 
     public boolean userExist(User user) throws SQLException {
-        PreparedStatement pstmt1 = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt1;
+        ResultSet rs;
 
-            pstmt1 = connection.prepareStatement("SELECT email FROM `user` where email=?");
-            pstmt1.setString(1, user.getEmail());
+        pstmt1 = connection.prepareStatement("SELECT email FROM `user` where email=?");
+        pstmt1.setString(1, user.getEmail());
 
-            rs = pstmt1.executeQuery();
+        rs = pstmt1.executeQuery();
 
-        return rs.next();
+        return !rs.next();
     }
 
     public int userValid(User user) throws SQLException, NoSuchAlgorithmException {
-        if(userExist(user)) return 0;
-        else{
-            PreparedStatement pstmt1 = null;
-            ResultSet rs = null;
+        if (userExist(user)) return 0; //user doesn't exist
+        else {
+            PreparedStatement pstmt1;
+            ResultSet rs;
 
             pstmt1 = connection.prepareStatement("SELECT password FROM `user` where email=?");
             pstmt1.setString(1, user.getEmail());
 
             rs = pstmt1.executeQuery();
-
-            if(rs.toString().equals(getMD5Encrypted(user.getPassword()))) return 1;
-             return 2;
+            rs.next();
+            if (rs.getString(1).equals(getMD5Encrypted(user.getPassword()))) return 1; //connecting
+            return 2; //wrong password
         }
 
     }

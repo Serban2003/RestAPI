@@ -13,13 +13,13 @@ import java.sql.SQLException;
 
 
 @Controller
-public class UserController extends UniversalController<User>{
+public class UserController extends UniversalController<User> {
 
     @ResponseBody
     @PostMapping("/user/")
     @Override
     public User create(@RequestBody User user) throws SQLException, NoSuchAlgorithmException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        if(!super.userExist(user))
+        if (super.userExist(user))
             return super.create(user);
         return new User();
     }
@@ -38,7 +38,7 @@ public class UserController extends UniversalController<User>{
 
     @ResponseBody
     @PostMapping("/user/connect/")
-    public int connect(@RequestBody User user) throws SQLException, NoSuchAlgorithmException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public int connect(@RequestBody User user) throws SQLException, NoSuchAlgorithmException {
         return super.userValid(user);
     }
 
