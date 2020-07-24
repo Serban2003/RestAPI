@@ -1,13 +1,8 @@
 package com.example.restservice.controller;
 
 
-import com.example.restservice.algorithms.classes.RandomNumber;
-import com.example.restservice.dao.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
 
@@ -15,9 +10,9 @@ import java.util.Random;
 public class AlgorithmsController {
 
     @ResponseBody
-    @PostMapping("/algorithms/randomNumberGenerator/")
-    public int getRandomNumber(@RequestBody RandomNumber number) {
+    @PostMapping("/algorithms/randomNumberGenerator")
+    public int getRandomNumber(@RequestParam(name="firstNumber", required = true, defaultValue = "0") int firstNumber, @RequestParam(name="secondNumber", required = true, defaultValue = "0") int secondNumber) {
         Random randomNumber = new Random();
-        return randomNumber.nextInt(number.getSecondNumber() - number.getFirstNumber() + 1) + number.getFirstNumber();
+        return randomNumber.nextInt(secondNumber - firstNumber + 1) + firstNumber;
     }
 }

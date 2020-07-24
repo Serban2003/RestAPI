@@ -168,7 +168,7 @@ function submitRandomNumber() {
     var number2 = document.getElementById("randomNumber2").value;
 
     var xhrRandomNumber = new XMLHttpRequest();
-    xhrRandomNumber.open('POST', '/algorithms/randomNumberGenerator/');
+    xhrRandomNumber.open('POST', '/algorithms/randomNumberGenerator?firstNumber='+ number1 + '&secondNumber=' + number2);
     xhrRandomNumber.setRequestHeader("Content-Type", "application/json");
     // Track the state changes of the request.
     xhrRandomNumber.onreadystatechange = function () {
