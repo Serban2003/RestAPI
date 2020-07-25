@@ -202,3 +202,78 @@ body {
     user-select: none;
     cursor: pointer;
 }
+
+.check {
+    position: absolute;
+    top: 5px;
+    left: 3px;
+}
+
+@keyframes animationwow {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        display: none;
+        opacity: 1;
+    }
+}
+
+.appear {
+    animation-name: animationwow;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes animationnotwow {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        display: none;
+        opacity: 0;
+    }
+}
+
+.disappear {
+    animation-name: animationnotwow;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+}
+
+.advertisement {
+    position: absolute;
+    top: 590px;
+    left: 320px;
+    width: 370px;
+    height: 70px;
+    font-size: 15px;
+    color: white;
+    margin-top: 5px;
+    background-color: #F44336;
+    border: 1px solid #eb2c1e;
+    border-radius: 5px;
+}
+
+.title_span {
+    position: absolute;
+    font-size: 22px;
+    top: 6px;
+    left: 8px;
+}
+
+.text_span {
+    position: absolute;
+    top: 31px;
+    left: 8px;
+}

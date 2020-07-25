@@ -130,6 +130,7 @@ function registerUser() {
 
                     if (jsonResult.firstname == null)
                         createAdvertisement("user exist", 1);
+                    else window.location.replace("dashboard.html");
 
                     console.log(xhrUser.responseText); // 'This is the output.'
                 } else {
