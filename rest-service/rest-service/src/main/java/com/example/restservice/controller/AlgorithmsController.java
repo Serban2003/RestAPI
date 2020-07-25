@@ -2,6 +2,8 @@ package com.example.restservice.controller;
 
 
 import com.example.restservice.algorithms.general.EratosthenesSieve;
+import com.example.restservice.algorithms.numbers.ArabToRoman;
+import com.example.restservice.algorithms.numbers.RomanToArab;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +38,20 @@ public class AlgorithmsController {
         for(int i = 1; i<=number; ++i)
             result.add(Integer.toString(primeNumbers[i]));
 
-        System.out.println(result);
         return result.toString();
+    }
+
+    @ResponseBody
+    @PostMapping("/algorithms/arabToRoman")
+    public String transformArabToRoman(@RequestParam(name="number", required = true, defaultValue = "0") int number) {
+        ArabToRoman romanNumber = new ArabToRoman();
+        return romanNumber.transform(number);
+    }
+
+    @ResponseBody
+    @PostMapping("/algorithms/romanToArab")
+    public int transformRomanToArab(@RequestParam(name="number", required = true, defaultValue = "") String number) {
+        RomanToArab arabNumber = new RomanToArab();
+        return arabNumber.transform(number);
     }
 }

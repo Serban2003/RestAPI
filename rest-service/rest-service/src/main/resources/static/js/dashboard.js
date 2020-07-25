@@ -80,6 +80,8 @@ function createButtons(menu) {
     romanNumberButton.id = "romanNumberButton";
     romanNumberButton.className = "custom_button";
 
+    romanNumberButton.addEventListener("click", manageRomanNumberPanel);
+
     text = document.createTextNode("Roman Numbers");
     romanNumberButton.appendChild(text);
     menu.appendChild(romanNumberButton);
@@ -106,12 +108,16 @@ function deleteButtons(menu) {
 function manageRandomNumberPanel() {
 
     if (document.body.contains(document.getElementById("randomNumberPanel"))) {
-        document.getElementById("randomNumberPanel").classList.add("hidden_div");
+        document.getElementById("randomNumberPanel").classList.add("disappear");
 
         setTimeout(function () {
             document.body.removeChild(document.getElementById("randomNumberPanel"));
         }, 500);
+
+
     } else {
+        verifyExistence();
+
         let panel = document.createElement("div");
         panel.id = "randomNumberPanel";
         panel.className = "panel";
@@ -122,12 +128,6 @@ function manageRandomNumberPanel() {
         title.innerHTML = "Random Number Generator"
         title.style.textAlign = "center";
         panel.appendChild(title);
-
-        let closeButton = document.createElement("div");
-        closeButton.className = "close_button";
-        closeButton.innerHTML = "x";
-        panel.appendChild(closeButton);
-        closeButton.addEventListener("click", manageRandomNumberPanel);
 
         let text = document.createElement("span");
         text.innerHTML = "Generate number between: ";
@@ -173,6 +173,7 @@ function manageRandomNumberPanel() {
 
         submitButton.addEventListener("click", submitRandomNumber);
     }
+
 }
 
 function submitRandomNumber() {
@@ -206,13 +207,22 @@ function submitRandomNumber() {
 }
 
 function managePrimeNumbersPanel() {
+
     if (document.body.contains(document.getElementById("nthPrimeNumbersPanel"))) {
-        document.getElementById("nthPrimeNumbersPanel").classList.add("hidden_div");
+        document.getElementById("nthPrimeNumbersPanel").classList.add("disappear");
+        document.getElementById("primeNumbersPanel").classList.add("disappear");
 
         setTimeout(function () {
             document.body.removeChild(document.getElementById("nthPrimeNumbersPanel"));
+            document.body.removeChild(document.getElementById("primeNumbersPanel"));
         }, 500);
+
+
     } else {
+
+
+        verifyExistence();
+
         let panel = document.createElement("div");
         panel.id = "nthPrimeNumbersPanel";
         panel.className = "panel";
@@ -224,12 +234,6 @@ function managePrimeNumbersPanel() {
         title.innerHTML = "N-th Prime Number"
         title.style.textAlign = "center";
         panel.appendChild(title);
-
-        let closeButton = document.createElement("div");
-        closeButton.className = "close_button";
-        closeButton.innerHTML = "x";
-        panel.appendChild(closeButton);
-        closeButton.addEventListener("click", managePrimeNumbersPanel);
 
         let text = document.createElement("span");
         text.innerHTML = "Select N: ";
@@ -275,7 +279,6 @@ function managePrimeNumbersPanel() {
         radioInput.className = "check";
         panel.appendChild(radioInput);
 
-
         panel = document.createElement("div");
         panel.id = "primeNumbersPanel";
         panel.className = "panel";
@@ -289,12 +292,6 @@ function managePrimeNumbersPanel() {
         title.innerHTML = "First N Prime Numbers"
         title.style.textAlign = "center";
         panel.appendChild(title);
-
-        closeButton = document.createElement("div");
-        closeButton.className = "close_button";
-        closeButton.innerHTML = "x";
-        panel.appendChild(closeButton);
-        closeButton.addEventListener("click", managePrimeNumbersPanel);
 
         text = document.createElement("span");
         text.innerHTML = "Select N: ";
@@ -390,6 +387,182 @@ function submitPrimeNumber() {
     }));
 }
 
+function manageRomanNumberPanel() {
+
+    if (document.body.contains(document.getElementById("arabToRomanPanel"))) {
+        document.getElementById("arabToRomanPanel").classList.add("disappear");
+        document.getElementById("romanToArabPanel").classList.add("disappear");
+
+        setTimeout(function () {
+            document.body.removeChild(document.getElementById("arabToRomanPanel"));
+            document.body.removeChild(document.getElementById("romanToArabPanel"));
+        }, 500);
+
+
+    } else {
+
+        verifyExistence();
+
+        let panel = document.createElement("div");
+        panel.id = "arabToRomanPanel";
+        panel.className = "panel";
+        panel.classList.add("show_div");
+        panel.style.width = "370px"
+        document.body.appendChild(panel);
+
+        let title = document.createElement("h3");
+        title.innerHTML = "Arab - Roman Converter"
+        title.style.textAlign = "center";
+        panel.appendChild(title);
+
+        let text = document.createElement("span");
+        text.innerHTML = "Select number: ";
+        text.style.paddingLeft = "18px";
+        panel.appendChild(text);
+
+        let inputNumber = document.createElement("input");
+        inputNumber.type = "number";
+        inputNumber.className = "number_input";
+        inputNumber.id = "arabNumber";
+        inputNumber.min = "-5000";
+        inputNumber.max = "5000";
+        panel.appendChild(inputNumber);
+
+        text = document.createElement("div");
+        text.innerHTML = "Your roman number: ";
+        text.style.paddingLeft = "18px";
+        text.style.position = "relative";
+        text.style.top = "15px";
+        panel.appendChild(text);
+
+        let inputPrimeNumbersResult = document.createElement("input");
+        inputPrimeNumbersResult.type = "text";
+        inputPrimeNumbersResult.className = "number_input";
+        inputPrimeNumbersResult.id = "inputArabNumberResult";
+        inputPrimeNumbersResult.style.top = "-10px";
+        inputPrimeNumbersResult.style.left = "185px";
+        inputPrimeNumbersResult.style.position = "relative";
+        inputPrimeNumbersResult.readOnly = "true";
+        panel.appendChild(inputPrimeNumbersResult);
+
+        let submitButton = document.createElement("button");
+        submitButton.className = "custom_button";
+        submitButton.innerHTML = "Submit";
+        submitButton.style.top = "0px";
+        panel.appendChild(submitButton);
+
+        submitButton.addEventListener("click", submitRomanNumber);
+
+        let radioInput = document.createElement("input");
+        radioInput.type = "radio";
+        radioInput.id = "arabNumbers";
+        radioInput.name = "romanArabNumbers";
+        radioInput.className = "check";
+        panel.appendChild(radioInput);
+
+        panel = document.createElement("div");
+        panel.id = "romanToArabPanel";
+        panel.className = "panel";
+        panel.classList.add("show_div");
+        panel.style.width = "370px"
+        panel.style.top = "300px";
+        document.body.appendChild(panel);
+
+        title = document.createElement("h3");
+        title.innerHTML = "Roman - Arab Converter"
+        title.style.textAlign = "center";
+        panel.appendChild(title);
+
+        text = document.createElement("span");
+        text.innerHTML = "Write number: ";
+        text.style.paddingLeft = "18px";
+        panel.appendChild(text);
+
+        inputNumber = document.createElement("input");
+        inputNumber.type = "text";
+        inputNumber.className = "number_input";
+        inputNumber.id = "romanNumber";
+        panel.appendChild(inputNumber);
+
+        text = document.createElement("div");
+        text.innerHTML = "Your arab number: ";
+        text.style.paddingLeft = "18px";
+        text.style.position = "relative";
+        text.style.top = "15px";
+        panel.appendChild(text);
+
+        inputPrimeNumbersResult = document.createElement("input");
+        inputPrimeNumbersResult.type = "number";
+        inputPrimeNumbersResult.className = "number_input";
+        inputPrimeNumbersResult.id = "inputRomanNumberResult";
+        inputPrimeNumbersResult.style.top = "-10px";
+        inputPrimeNumbersResult.style.left = "172px";
+        inputPrimeNumbersResult.style.position = "relative";
+        inputPrimeNumbersResult.readOnly = "true";
+        panel.appendChild(inputPrimeNumbersResult);
+
+        submitButton = document.createElement("button");
+        submitButton.className = "custom_button";
+        submitButton.innerHTML = "Submit";
+        submitButton.style.top = "0px";
+        panel.appendChild(submitButton);
+
+        submitButton.addEventListener("click", submitRomanNumber);
+
+        radioInput = document.createElement("input");
+        radioInput.type = "radio";
+        radioInput.id = "romanNumbers";
+        radioInput.name = "romanArabNumbers";
+        radioInput.className = "check";
+        panel.appendChild(radioInput);
+    }
+}
+
+function submitRomanNumber() {
+    var number, id, path;
+
+    var xhrPrimeNumber = new XMLHttpRequest();
+    if (document.body.contains(document.getElementById("advertisement")))
+        document.body.removeChild(document.getElementById("advertisement"));
+
+    if (document.getElementById("arabNumbers").checked) {
+        number = document.getElementById("arabNumber").value;
+        path = '/algorithms/arabToRoman?number=';
+        id = "inputArabNumberResult";
+    } else if (document.getElementById("romanNumbers").checked) {
+        number = document.getElementById("romanNumber").value;
+        path = '/algorithms/romanToArab?number=';
+        id = "inputRomanNumberResult";
+    } else {
+        createAdvertisement();
+        return;
+    }
+
+    xhrPrimeNumber.open('POST', path + number);
+    xhrPrimeNumber.setRequestHeader("Content-Type", "application/json");
+
+    // Track the state changes of the request.
+    xhrPrimeNumber.onreadystatechange = function () {
+        var DONE = 4; // readyState 4 means the request is done.
+        var OK = 200; // status 200 is a successful return.
+
+        if (xhrPrimeNumber.readyState === DONE) {
+            if (xhrPrimeNumber.status === OK) {
+
+                document.getElementById(id).value = xhrPrimeNumber.responseText;
+
+                console.log(xhrPrimeNumber.responseText); // 'This is the output.'
+            } else {
+                console.log('Error: ' + xhrPrimeNumber.status); // An error occurred during the request.
+            }
+        }
+    };
+
+    xhrPrimeNumber.send(JSON.stringify({
+        number: number
+    }));
+}
+
 function createAdvertisement() {
     let advertisement = document.createElement('div');
     advertisement.id = "advertisement";
@@ -423,4 +596,19 @@ function createAdvertisement() {
             document.body.removeChild(advertisement);
         }, 600);
     });
+}
+
+function verifyExistence() {
+    var main = document.body;
+
+    if (main.contains(document.getElementById("randomNumberPanel")))
+        main.removeChild(document.getElementById("randomNumberPanel"));
+    if (main.contains(document.getElementById("nthPrimeNumbersPanel")))
+        main.removeChild(document.getElementById("nthPrimeNumbersPanel"));
+    if (main.contains(document.getElementById("primeNumbersPanel")))
+        main.removeChild(document.getElementById("primeNumbersPanel"));
+    if (main.contains(document.getElementById("romanToArabPanel")))
+        main.removeChild(document.getElementById("romanToArabPanel"));
+    if (main.contains(document.getElementById("arabToRomanPanel")))
+        main.removeChild(document.getElementById("arabToRomanPanel"));
 }
