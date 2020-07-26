@@ -17,13 +17,15 @@ public class NumbersSequenceGenerator {
     int MAX = 10_000_000;
     ArrayList<Integer> numberList = new ArrayList<>();
 
-    public void generateNumbers() {
-        for (int i = 0; i < MAX; ++i)
+    public void generateNumbers(int min, int max) {
+        for (int i = min; i <= max; ++i)
             numberList.add(i);
         Collections.shuffle(numberList);
     }
 
-    public Integer[] generate(int numberOfElements, int frequency, String distribution) {
+    public Integer[] generate(int numberOfElements, int frequency, String distribution, int minim, int maxim) {
+
+        generateNumbers(minim, maxim);
 
         ArrayList<Integer> randomNumberList = new ArrayList<>();
         Integer[] finalArray = new Integer[numberOfElements];
@@ -61,12 +63,9 @@ public class NumbersSequenceGenerator {
                 }
             }
         }
-
-        for (int i = 0; i < numberOfElements; ++i) {
+        for (int i = 0; i < numberOfElements; ++i)
             finalArray[i] = randomNumberList.get(i);
-            System.out.print(finalArray[i] + " ");
-        }
-        System.out.println();
+
         return finalArray;
     }
 }

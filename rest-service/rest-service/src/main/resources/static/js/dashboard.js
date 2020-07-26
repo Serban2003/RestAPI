@@ -60,6 +60,8 @@ function createButtons(menu) {
     sequenceGeneratorButton.id = "sequenceGeneratorButton";
     sequenceGeneratorButton.className = "custom_button";
 
+    sequenceGeneratorButton.addEventListener("click", manageSequenceGenerator);
+
     text = document.createTextNode("Number Sequence Generator");
     sequenceGeneratorButton.appendChild(text);
     menu.appendChild(sequenceGeneratorButton);
@@ -177,33 +179,38 @@ function manageRandomNumberPanel() {
 }
 
 function submitRandomNumber() {
-    var number1 = document.getElementById("randomNumber1").value;
-    var number2 = document.getElementById("randomNumber2").value;
+
+    if(document.body.contains(document.getElementById("advertisement")))
+            document.body.removeChild(document.getElementById("advertisement"));
+
+    var minim = document.getElementById("randomNumber1").value;
+    var maxim = document.getElementById("randomNumber2").value;
+
+    if(!minim){
+        createAdvertisement("minim");
+        return;
+    }
+    if(!maxim){
+        createAdvertisement("maxim");
+        return;
+    }
+    if(minim > maxim){
+        createAdvertisement("minim greater then maxim");
+        return;
+    }
 
     var xhrRandomNumber = new XMLHttpRequest();
-    xhrRandomNumber.open('POST', '/algorithms/randomNumberGenerator?firstNumber=' + number1 + '&secondNumber=' + number2);
+    xhrRandomNumber.open('POST', '/algorithms/randomNumberGenerator?minim=' + minim + '&maxim=' + maxim);
     xhrRandomNumber.setRequestHeader("Content-Type", "application/json");
     // Track the state changes of the request.
     xhrRandomNumber.onreadystatechange = function () {
         var DONE = 4; // readyState 4 means the request is done.
         var OK = 200; // status 200 is a successful return.
 
-        if (xhrRandomNumber.readyState === DONE) {
-            if (xhrRandomNumber.status === OK) {
-
-                document.getElementById("randomNumberResult").value = xhrRandomNumber.responseText;
-
-                console.log(xhrRandomNumber.responseText); // 'This is the output.'
-            } else {
-                console.log('Error: ' + xhrRandomNumber.status); // An error occurred during the request.
-            }
-        }
+        if (xhrRandomNumber.readyState === DONE)
+            if (xhrRandomNumber.status === OK) document.getElementById("randomNumberResult").value = xhrRandomNumber.responseText;
     };
-
-    xhrRandomNumber.send(JSON.stringify({
-        firstNumber: number1,
-        secondNumber: number2
-    }));
+    xhrRandomNumber.send(null);
 }
 
 function managePrimeNumbersPanel() {
@@ -217,9 +224,7 @@ function managePrimeNumbersPanel() {
             document.body.removeChild(document.getElementById("primeNumbersPanel"));
         }, 500);
 
-
     } else {
-
 
         verifyExistence();
 
@@ -344,7 +349,16 @@ function managePrimeNumbersPanel() {
 }
 
 function submitPrimeNumber() {
+
+    if(document.body.contains(document.getElementById("advertisement")))
+            document.body.removeChild(document.getElementById("advertisement"));
+
     var number, id, path;
+
+    if(!number){
+        createAdvertisement("number");
+        return;
+    }
 
     var xhrPrimeNumber = new XMLHttpRequest();
     if (document.body.contains(document.getElementById("advertisement")))
@@ -358,7 +372,7 @@ function submitPrimeNumber() {
         path = '/algorithms/primeNumbers?number=';
         id = "inputNPrimeNumbersResult";
     } else {
-        createAdvertisement();
+        createAdvertisement("not checked");
         return;
     }
 
@@ -370,21 +384,11 @@ function submitPrimeNumber() {
         var DONE = 4; // readyState 4 means the request is done.
         var OK = 200; // status 200 is a successful return.
 
-        if (xhrPrimeNumber.readyState === DONE) {
-            if (xhrPrimeNumber.status === OK) {
+        if (xhrPrimeNumber.readyState === DONE)
+            if (xhrPrimeNumber.status === OK) document.getElementById(id).value = xhrPrimeNumber.responseText;
 
-                document.getElementById(id).value = xhrPrimeNumber.responseText;
-
-                console.log(xhrPrimeNumber.responseText); // 'This is the output.'
-            } else {
-                console.log('Error: ' + xhrPrimeNumber.status); // An error occurred during the request.
-            }
-        }
     };
-
-    xhrPrimeNumber.send(JSON.stringify({
-        number: number
-    }));
+    xhrPrimeNumber.send(null);
 }
 
 function manageRomanNumberPanel() {
@@ -397,7 +401,6 @@ function manageRomanNumberPanel() {
             document.body.removeChild(document.getElementById("arabToRomanPanel"));
             document.body.removeChild(document.getElementById("romanToArabPanel"));
         }, 500);
-
 
     } else {
 
@@ -435,15 +438,15 @@ function manageRomanNumberPanel() {
         text.style.top = "15px";
         panel.appendChild(text);
 
-        let inputPrimeNumbersResult = document.createElement("input");
-        inputPrimeNumbersResult.type = "text";
-        inputPrimeNumbersResult.className = "number_input";
-        inputPrimeNumbersResult.id = "inputArabNumberResult";
-        inputPrimeNumbersResult.style.top = "-10px";
-        inputPrimeNumbersResult.style.left = "185px";
-        inputPrimeNumbersResult.style.position = "relative";
-        inputPrimeNumbersResult.readOnly = "true";
-        panel.appendChild(inputPrimeNumbersResult);
+        let inputRomanNumbersResult = document.createElement("input");
+        inputRomanNumbersResult.type = "text";
+        inputRomanNumbersResult.className = "number_input";
+        inputRomanNumbersResult.id = "inputArabNumberResult";
+        inputRomanNumbersResult.style.top = "-10px";
+        inputRomanNumbersResult.style.left = "185px";
+        inputRomanNumbersResult.style.position = "relative";
+        inputRomanNumbersResult.readOnly = "true";
+        panel.appendChild(inputRomanNumbersResult);
 
         let submitButton = document.createElement("button");
         submitButton.className = "custom_button";
@@ -491,15 +494,15 @@ function manageRomanNumberPanel() {
         text.style.top = "15px";
         panel.appendChild(text);
 
-        inputPrimeNumbersResult = document.createElement("input");
-        inputPrimeNumbersResult.type = "number";
-        inputPrimeNumbersResult.className = "number_input";
-        inputPrimeNumbersResult.id = "inputRomanNumberResult";
-        inputPrimeNumbersResult.style.top = "-10px";
-        inputPrimeNumbersResult.style.left = "172px";
-        inputPrimeNumbersResult.style.position = "relative";
-        inputPrimeNumbersResult.readOnly = "true";
-        panel.appendChild(inputPrimeNumbersResult);
+        inputRomanNumbersResult = document.createElement("input");
+        inputRomanNumbersResult.type = "number";
+        inputRomanNumbersResult.className = "number_input";
+        inputRomanNumbersResult.id = "inputRomanNumberResult";
+        inputRomanNumbersResult.style.top = "-10px";
+        inputRomanNumbersResult.style.left = "172px";
+        inputRomanNumbersResult.style.position = "relative";
+        inputRomanNumbersResult.readOnly = "true";
+        panel.appendChild(inputRomanNumbersResult);
 
         submitButton = document.createElement("button");
         submitButton.className = "custom_button";
@@ -519,9 +522,18 @@ function manageRomanNumberPanel() {
 }
 
 function submitRomanNumber() {
+
+    if(document.body.contains(document.getElementById("advertisement")))
+            document.body.removeChild(document.getElementById("advertisement"));
+
     var number, id, path;
 
-    var xhrPrimeNumber = new XMLHttpRequest();
+    if(!number){
+        createAdvertisement("number");
+        return;
+    }
+
+    var xhrRomanNumber = new XMLHttpRequest();
     if (document.body.contains(document.getElementById("advertisement")))
         document.body.removeChild(document.getElementById("advertisement"));
 
@@ -530,40 +542,241 @@ function submitRomanNumber() {
         path = '/algorithms/arabToRoman?number=';
         id = "inputArabNumberResult";
     } else if (document.getElementById("romanNumbers").checked) {
-        number = document.getElementById("romanNumber").value;
         path = '/algorithms/romanToArab?number=';
         id = "inputRomanNumberResult";
+        number = document.getElementById("romanNumber").value;
     } else {
-        createAdvertisement();
+        createAdvertisement("not checked");
         return;
     }
-
-    xhrPrimeNumber.open('POST', path + number);
-    xhrPrimeNumber.setRequestHeader("Content-Type", "application/json");
+    xhrRomanNumber.open('POST', path + number);
+    xhrRomanNumber.setRequestHeader("Content-Type", "application/json");
 
     // Track the state changes of the request.
-    xhrPrimeNumber.onreadystatechange = function () {
+    xhrRomanNumber.onreadystatechange = function () {
         var DONE = 4; // readyState 4 means the request is done.
         var OK = 200; // status 200 is a successful return.
 
-        if (xhrPrimeNumber.readyState === DONE) {
-            if (xhrPrimeNumber.status === OK) {
-
-                document.getElementById(id).value = xhrPrimeNumber.responseText;
-
-                console.log(xhrPrimeNumber.responseText); // 'This is the output.'
-            } else {
-                console.log('Error: ' + xhrPrimeNumber.status); // An error occurred during the request.
+        if (xhrRomanNumber.readyState === DONE)
+            if (xhrRomanNumber.status === OK) {
+                if (xhrRomanNumber.responseText == 0) createAdvertisement("invalid roman input");
+                else document.getElementById(id).value = xhrRomanNumber.responseText;
             }
-        }
     };
-
-    xhrPrimeNumber.send(JSON.stringify({
-        number: number
-    }));
+    xhrRomanNumber.send(null);
 }
 
-function createAdvertisement() {
+function manageSequenceGenerator() {
+
+    if (document.body.contains(document.getElementById("sequenceGeneratorPanel"))) {
+        document.getElementById("sequenceGeneratorPanel").classList.add("disappear");
+
+        setTimeout(function () {
+            document.body.removeChild(document.getElementById("sequenceGeneratorPanel"));
+        }, 500);
+
+    } else {
+
+        verifyExistence();
+
+        let panel = document.createElement("div");
+        panel.id = "sequenceGeneratorPanel";
+        panel.className = "panel";
+        panel.classList.add("show_div");
+        panel.style.width = "510px"
+        panel.style.height = "415px";
+        document.body.appendChild(panel);
+
+        let title = document.createElement("h3");
+        title.innerHTML = "Number Sequence Generator"
+        title.style.textAlign = "center";
+        panel.appendChild(title);
+
+        let text = document.createElement("span");
+        text.innerHTML = "Select the number of numbers: ";
+        text.style.paddingLeft = "18px";
+        panel.appendChild(text);
+
+        let inputNumber = document.createElement("input");
+        inputNumber.type = "number";
+        inputNumber.className = "number_input";
+        inputNumber.id = "sequenceNumber";
+        inputNumber.min = "0";
+        inputNumber.max = "10000000";
+        panel.appendChild(inputNumber);
+
+        text = document.createElement("span");
+        text.innerHTML = "Generate numbers between: ";
+        text.style.left = "18px";
+        text.style.position = "absolute";
+        text.style.top = "110px";
+        panel.appendChild(text);
+
+        let inputMinim = document.createElement("input");
+        inputMinim.type = "number";
+        inputMinim.className = "number_input";
+        inputMinim.id = "minimNumber";
+        inputMinim.style.position = "absolute";
+        inputMinim.style.left = "250px";
+        inputMinim.style.top = "105px";
+        panel.appendChild(inputMinim);
+
+        text = document.createElement("span");
+        text.innerHTML = " and ";
+        text.style.position = "absolute";
+        text.style.top = "110px";
+        text.style.left = "355px";
+        panel.appendChild(text);
+
+        let inputMaxim = document.createElement("input");
+        inputMaxim.type = "number";
+        inputMaxim.className = "number_input";
+        inputMaxim.id = "maximNumber";
+        inputMaxim.style.position = "absolute";
+        inputMaxim.style.left = "390px";
+        inputMaxim.style.top = "105px";
+        panel.appendChild(inputMaxim);
+
+        text = document.createElement("div");
+        text.innerHTML = "Select the distribution: ";
+        text.style.paddingLeft = "18px";
+        text.style.position = "relative";
+        text.style.top = "55px";
+        panel.appendChild(text);
+
+        let inputDistribution = document.createElement("input");
+        inputDistribution.setAttribute('list', "sequenceDistributionData");
+        inputDistribution.className = "number_input";
+        inputDistribution.id = "sequenceDistribution";
+        inputDistribution.style.position = "absolute";
+        inputDistribution.style.left = "200px";
+        inputDistribution.style.top = "145px";
+        inputDistribution.style.width = "170px";
+        panel.appendChild(inputDistribution);
+
+        let dataList = document.createElement("datalist");
+        dataList.id = "sequenceDistributionData";
+        panel.appendChild(dataList);
+
+        let option = document.createElement("option");
+        option.value = "random";
+        dataList.appendChild(option);
+
+        option = document.createElement("option");
+        option.value = "nearly sorted";
+        dataList.appendChild(option);
+
+        option = document.createElement("option");
+        option.value = "reversed";
+        dataList.appendChild(option);
+
+        text = document.createElement("div");
+        text.innerHTML = "Select the maximum frequency: ";
+        text.style.paddingLeft = "18px";
+        text.style.position = "relative";
+        text.style.top = "75px";
+        panel.appendChild(text);
+
+        let inputFrequency = document.createElement("input");
+        inputFrequency.type = "number";
+        inputFrequency.className = "number_input";
+        inputFrequency.id = "frequencyNumber";
+        inputFrequency.min = "1";
+        inputFrequency.max = "10000000";
+        inputFrequency.style.position = "absolute";
+        inputFrequency.style.top = "187px";
+        inputFrequency.style.left = "275px";
+        inputFrequency.style.width = "95px";
+        panel.appendChild(inputFrequency);
+
+        text = document.createElement("div");
+        text.innerHTML = "Your sequence: ";
+        text.style.paddingLeft = "18px";
+        text.style.position = "relative";
+        text.style.top = "95px";
+        panel.appendChild(text);
+
+        let inputSequenceResult = document.createElement("textarea");
+        inputSequenceResult.type = "text";
+        inputSequenceResult.className = "number_input";
+        inputSequenceResult.id = "inputSequenceResult";
+        inputSequenceResult.style.width = "474px";
+        inputSequenceResult.style.height = "100px";
+        inputSequenceResult.style.top = "100px";
+        inputSequenceResult.style.left = "18px";
+        inputSequenceResult.style.position = "relative";
+        inputSequenceResult.style.overflowY = "scroll";
+        inputSequenceResult.readOnly = "true";
+        inputSequenceResult.style.resize = "none";
+        panel.appendChild(inputSequenceResult);
+
+        let submitButton = document.createElement("button");
+        submitButton.className = "custom_button";
+        submitButton.innerHTML = "Submit";
+        submitButton.style.top = "110px";
+        panel.appendChild(submitButton);
+
+        submitButton.addEventListener("click", submitSequence);
+    }
+}
+
+function submitSequence() {
+
+    if(document.body.contains(document.getElementById("advertisement")))
+        document.body.removeChild(document.getElementById("advertisement"));
+
+    var number = document.getElementById("sequenceNumber").value;
+    var distribution = document.getElementById("sequenceDistribution").value;
+    var frequency = document.getElementById("frequencyNumber").value;
+    var minim = document.getElementById("minimNumber").value;
+    var maxim = document.getElementById("maximNumber").value;
+
+    if(!number){
+        createAdvertisement("number");
+        return;
+    }
+    if(!distribution){
+        createAdvertisement("distribution");
+        return;
+    }
+    if(!frequency){
+        createAdvertisement("frequency");
+        return;
+    }
+    if(!minim){
+        createAdvertisement("minim");
+        return;
+    }
+    if(!maxim){
+        createAdvertisement("maxim");
+        return;
+    }
+    if(minim > maxim){
+        createAdvertisement("minim greater then maxim");
+        return;
+    }
+
+    var xhrSequence = new XMLHttpRequest();
+    xhrSequence.open('POST', '/algorithms/sequenceGenerator?number=' + number + '&distribution=' + distribution + '&frequency=' + frequency + '&minim=' + minim + '&maxim=' + maxim);
+    xhrSequence.setRequestHeader("Content-Type", "application/json");
+
+    xhrSequence.onreadystatechange = function () {
+        var DONE = 4; // readyState 4 means the request is done.
+        var OK = 200; // status 200 is a successful return.
+
+        if (xhrSequence.readyState === DONE)
+            if (xhrSequence.status === OK) {
+                if(xhrSequence.responseText == "invalid input")
+                    createAdvertisement("invalid input");
+                    else document.getElementById("inputSequenceResult").value = xhrSequence.responseText;
+            }
+
+
+    };
+    xhrSequence.send(null);
+}
+
+function createAdvertisement(message) {
     let advertisement = document.createElement('div');
     advertisement.id = "advertisement";
     advertisement.className = "advertisement";
@@ -573,10 +786,19 @@ function createAdvertisement() {
     titleSpan.className = "title_span";
     titleSpan.appendChild(title);
 
-    let text = document.createTextNode("Please select a method by clicking the check circle located at the top-left corner of each method.");
+    let text;
+    if (message == "not checked")
+        text = "Please select a method by clicking the check circle located at the top-left corner of each method.";
+    else if (message == "invalid roman input")
+        text = "Please write a valid roman number.";
+    else if (message == "invalid input")
+        text = "Invalid input. <br> << frequency * ( maxim - minim + 1) >= number of numbers >>"
+    else if (message == "minim greater then maxim")
+        text = "Invalid input. <br> << " + message + " >>";
+    else text = "You need to choose a " + message + ".";
     let textSpan = document.createElement("span");
     textSpan.className = "text_span";
-    textSpan.appendChild(text);
+    textSpan.innerHTML = text;
 
     let closeDiv = document.createElement("div");
     closeDiv.innerHTML = "x";
@@ -603,6 +825,8 @@ function verifyExistence() {
 
     if (main.contains(document.getElementById("randomNumberPanel")))
         main.removeChild(document.getElementById("randomNumberPanel"));
+    if (main.contains(document.getElementById("sequenceGeneratorPanel")))
+        main.removeChild(document.getElementById("sequenceGeneratorPanel"));
     if (main.contains(document.getElementById("nthPrimeNumbersPanel")))
         main.removeChild(document.getElementById("nthPrimeNumbersPanel"));
     if (main.contains(document.getElementById("primeNumbersPanel")))

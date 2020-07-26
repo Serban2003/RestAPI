@@ -14,13 +14,13 @@ public class TestSorting {
     public void testSorting() {
 
         NumbersSequenceGenerator generator = new NumbersSequenceGenerator();
-        generator.generateNumbers();
+        generator.generateNumbers(0, 10000000);
 
         Map<String, Integer[]> generatedNumbers = new HashMap<>();
-        generatedNumbers.put("100_1_random", generator.generate(100, 1, "random"));
-        generatedNumbers.put("100_1_nearlySorted", generator.generate(100, 1, "nearlySorted"));
-        generatedNumbers.put("100_1_reversed", generator.generate(100, 1, "reversed"));
-        generatedNumbers.put("100_10_random", generator.generate(100, 10, "random"));
+        generatedNumbers.put("100_1_random", generator.generate(100, 1, "random", 0, 10000000));
+        generatedNumbers.put("100_1_nearlySorted", generator.generate(100, 1, "nearlySorted", 0, 10000000));
+        generatedNumbers.put("100_1_reversed", generator.generate(100, 1, "reversed", 0, 10000000));
+        generatedNumbers.put("100_10_random", generator.generate(100, 10, "random", 0, 10000000));
 //        generatedNumbers.put("1000000_100000_random", generator.generate(1_000_000, 100_000, "random"));
 
         System.out.println();
