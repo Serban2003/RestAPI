@@ -97,6 +97,13 @@ function createButtons(menu) {
     numberSorterButton.appendChild(text);
     menu.appendChild(numberSorterButton);
 
+    //sort button
+    let sortButton = document.createElement("button");
+    sortButton.id = "sortButton";
+    sortButton.className = "custom_button";
+    sortButton.innerHTML = "Sorting";
+    menu.appendChild(sortButton);
+    sortButton.addEventListener("click", manageSortButton);
 }
 
 function deleteButtons(menu) {
@@ -105,6 +112,7 @@ function deleteButtons(menu) {
     menu.removeChild(document.getElementById("sequenceGeneratorButton"));
     menu.removeChild(document.getElementById("romanNumberButton"));
     menu.removeChild(document.getElementById("numberSorterButton"));
+    menu.removeChild(document.getElementById("sortButton"));
 }
 
 function manageRandomNumberPanel() {
@@ -355,11 +363,6 @@ function submitPrimeNumber() {
 
     var number, id, path;
 
-    if(!number){
-        createAdvertisement("number");
-        return;
-    }
-
     var xhrPrimeNumber = new XMLHttpRequest();
     if (document.body.contains(document.getElementById("advertisement")))
         document.body.removeChild(document.getElementById("advertisement"));
@@ -375,7 +378,10 @@ function submitPrimeNumber() {
         createAdvertisement("not checked");
         return;
     }
-
+    if(!number){
+        createAdvertisement("number");
+        return;
+    }
     xhrPrimeNumber.open('POST', path + number);
     xhrPrimeNumber.setRequestHeader("Content-Type", "application/json");
 
@@ -528,11 +534,6 @@ function submitRomanNumber() {
 
     var number, id, path;
 
-    if(!number){
-        createAdvertisement("number");
-        return;
-    }
-
     var xhrRomanNumber = new XMLHttpRequest();
     if (document.body.contains(document.getElementById("advertisement")))
         document.body.removeChild(document.getElementById("advertisement"));
@@ -549,6 +550,10 @@ function submitRomanNumber() {
         createAdvertisement("not checked");
         return;
     }
+     if(!number){
+            createAdvertisement("number");
+            return;
+        }
     xhrRomanNumber.open('POST', path + number);
     xhrRomanNumber.setRequestHeader("Content-Type", "application/json");
 
@@ -835,4 +840,296 @@ function verifyExistence() {
         main.removeChild(document.getElementById("romanToArabPanel"));
     if (main.contains(document.getElementById("arabToRomanPanel")))
         main.removeChild(document.getElementById("arabToRomanPanel"));
+    if (main.contains(document.getElementById("sortPanel"))){
+        main.removeChild(document.getElementById("sortPanel"));
+        if(document.body.contains(document.getElementById("resultPanel")))
+            document.body.removeChild(document.getElementById("resultPanel"));
+    }
+
+}
+
+function manageSortButton() {
+        if (document.body.contains(document.getElementById("sortPanel")) && document.body.contains(document.getElementById("resultPanel"))) {
+            document.getElementById("sortPanel").classList.add("disappear");
+            document.getElementById("resultPanel").classList.add("disappear");
+
+            setTimeout(function () {
+                document.body.removeChild(document.getElementById("sortPanel"));
+                document.body.removeChild(document.getElementById("resultPanel"));
+            }, 500);
+
+
+        }else if(document.body.contains(document.getElementById("sortPanel"))){
+            document.getElementById("sortPanel").classList.add("disappear");
+
+            setTimeout(function () {
+                document.body.removeChild(document.getElementById("sortPanel"));
+            }, 500);
+        }
+        else {
+            verifyExistence();
+
+            let panel = document.createElement("div");
+            panel.id = "sortPanel";
+            panel.className = "panel";
+            panel.classList.add("show_div");
+            panel.style.height = "150px";
+            document.body.appendChild(panel);
+
+            let title = document.createElement("h3");
+            title.innerHTML = "Sorting"
+            title.style.textAlign = "center";
+            panel.appendChild(title);
+
+            let text = document.createElement("span");
+            text.innerHTML = "Generate sets: ";
+            text.style.paddingLeft = "18px";
+            panel.appendChild(text);
+
+            let inputNumber = document.createElement("input");
+            inputNumber.type = "number";
+            inputNumber.className = "number_input";
+            inputNumber.id = "setNumber";
+            panel.appendChild(inputNumber);
+
+            let submitButton = document.createElement("button");
+            submitButton.className = "custom_button";
+            submitButton.innerHTML = "Submit";
+            submitButton.style.top = "10px";
+            panel.appendChild(submitButton);
+
+            submitButton.addEventListener("click", submitSort);
+         }
+}
+
+function createCanvases(){
+    let resultPanel = document.createElement("div");
+    resultPanel.id = "resultPanel";
+    resultPanel.className = "result_panel";
+    resultPanel.classList.add("show_div");
+    document.body.appendChild(resultPanel);
+
+    let randomResultSet = document.createElement("div");
+    randomResultSet.id = "randomResultSet";
+    randomResultSet.className = "result_set";
+    resultPanel.appendChild(randomResultSet);
+
+    let nearlySortedResultSet = document.createElement("div");
+    nearlySortedResultSet.id = "nearlySortedResultSet";
+    nearlySortedResultSet.className = "result_set";
+    resultPanel.appendChild(nearlySortedResultSet);
+
+    let reversedResultSet = document.createElement("div");
+    reversedResultSet.id = "reversedResultSet";
+    reversedResultSet.className = "result_set";
+    resultPanel.appendChild(reversedResultSet);
+
+    let randomResultDiv = document.createElement("canvas");
+    randomResultDiv.id = "randomSortChart";
+    randomResultSet.appendChild(randomResultDiv);
+
+    let nearlySortedResultDiv = document.createElement("canvas");
+    nearlySortedResultDiv.id = "nearlySortedSortChart";
+    nearlySortedResultSet.appendChild(nearlySortedResultDiv);
+
+    let reversedResultDiv = document.createElement("canvas");
+    reversedResultDiv.id = "reversedSortChart";
+    reversedResultSet.appendChild(reversedResultDiv);
+}
+
+function submitSort(){
+        if(document.body.contains(document.getElementById("advertisement")))
+            document.body.removeChild(document.getElementById("advertisement"));
+
+        var number = document.getElementById("setNumber").value;
+
+        if(!number){
+            createAdvertisement("number");
+            return;
+        }
+
+        if(document.body.contains(document.getElementById("resultPanel")))
+            document.body.removeChild(document.getElementById("resultPanel"));
+
+        createCanvases();
+
+        var xhrSort = new XMLHttpRequest();
+        xhrSort.open('GET', '/sort/' + number);
+        xhrSort.setRequestHeader("Content-Type", "application/json");
+
+        xhrSort.onreadystatechange = function () {
+            var DONE = 4; // readyState 4 means the request is done.
+            var OK = 200; // status 200 is a successful return.
+
+            if (xhrSort.readyState === DONE)
+                if (xhrSort.status === OK) {
+                    if(xhrSort.responseText == "invalid input")
+                        createAdvertisement("invalid input");
+                        else{
+                            var response = JSON.parse(xhrSort.responseText);
+                            console.log(response);
+
+                            var values = [];
+                            var sampleSizes = [];
+                            var dataSets = [];
+
+                            for(var i in response){
+                                if(typeof sampleSizes[response[i].sampleSize] === "undefined")
+                                    sampleSizes.push(response[i].sampleSize);
+
+                                if(typeof values[response[i].distribution] === "undefined")
+                                    values[response[i].distribution] = [];
+                                if(typeof values[response[i].distribution][response[i].algorithm.name] === "undefined")
+                                    values[response[i].distribution][response[i].algorithm.name] = [];
+
+                                values[response[i].distribution][response[i].algorithm.name].push(response[i].totalTime);
+                            }
+                            console.log(sampleSizes);
+
+                            dataSets.push(
+                                {
+                                    label: "Bubble Sort",
+                                    backgroundColor: "blue",
+                                    data: values["random"]["BubbleSort"]
+                                }
+                             );
+                             dataSets.push(
+                                {
+                                    label: "Quick Sort",
+                                    backgroundColor: "red",
+                                    data: values["random"]["QuickSort"]
+                                }
+                             );
+                            dataSets.push(
+                                {
+                                    label: "Selection Sort",
+                                    backgroundColor: "orange",
+                                    data: values["random"]["SelectionSort"]
+                                }
+                            );
+
+                            console.log(dataSets);
+
+                            var ctx = document.getElementById('randomSortChart').getContext('2d');
+                            var randomChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                        labels: sampleSizes,
+                                        datasets: dataSets
+                                },
+                                options: {
+                                    title: {
+                                            display: true,
+                                            text: 'Random Numbers Set'
+                                    },
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero: true
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+
+                             dataSets = [];
+                             dataSets.push(
+                                 {
+                                     label: "Bubble Sort",
+                                     backgroundColor: "blue",
+                                     data: values["nearlySorted"]["BubbleSort"]
+                                 }
+                              );
+                              dataSets.push(
+                                 {
+                                     label: "Quick Sort",
+                                     backgroundColor: "red",
+                                     data: values["nearlySorted"]["QuickSort"]
+                                 }
+                              );
+                             dataSets.push(
+                                 {
+                                     label: "Selection Sort",
+                                     backgroundColor: "orange",
+                                     data: values["nearlySorted"]["SelectionSort"]
+                                 }
+                             );
+
+                           ctx = document.getElementById('nearlySortedSortChart').getContext('2d');
+                           var nearlySortedChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: sampleSizes,
+                                    datasets: dataSets
+                                },
+                                options: {
+                                    title: {
+                                        display: true,
+                                        text: 'Nearly-Sorted Numbers Set'
+                                    },
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                         yAxes: [{
+                                            ticks: {
+                                               beginAtZero: true
+                                            }
+                                         }]
+                                    }
+                                }
+                           });
+
+                             dataSets = [];
+                             dataSets.push(
+                                 {
+                                     label: "Bubble Sort",
+                                     backgroundColor: "blue",
+                                     data: values["reversed"]["BubbleSort"]
+                                 }
+                              );
+                              dataSets.push(
+                                 {
+                                     label: "Quick Sort",
+                                     backgroundColor: "red",
+                                     data: values["reversed"]["QuickSort"]
+                                 }
+                              );
+                             dataSets.push(
+                                 {
+                                     label: "Selection Sort",
+                                     backgroundColor: "orange",
+                                     data: values["reversed"]["SelectionSort"]
+                                 }
+                             );
+
+                           ctx = document.getElementById('reversedSortChart').getContext('2d');
+                           var reversedChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: sampleSizes,
+                                    datasets: dataSets
+                                },
+                                options: {
+                                    title: {
+                                        display: true,
+                                        text: 'Reversed Numbers Set'
+                                    },
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                         yAxes: [{
+                                            ticks: {
+                                               beginAtZero: true
+                                            }
+                                         }]
+                                    }
+                                }
+                           });
+
+                        }
+                    }
+        };
+        xhrSort.send(null);
 }

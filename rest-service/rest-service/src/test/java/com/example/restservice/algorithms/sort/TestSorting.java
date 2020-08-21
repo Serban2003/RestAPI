@@ -3,10 +3,7 @@ package com.example.restservice.algorithms.sort;
 import com.example.restservice.algorithms.numbers.NumbersSequenceGenerator;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TestSorting {
 
@@ -21,7 +18,7 @@ public class TestSorting {
         generatedNumbers.put("100_1_nearlySorted", generator.generate(100, 1, "nearlySorted", 0, 10000000));
         generatedNumbers.put("100_1_reversed", generator.generate(100, 1, "reversed", 0, 10000000));
         generatedNumbers.put("100_10_random", generator.generate(100, 10, "random", 0, 10000000));
-//        generatedNumbers.put("1000000_100000_random", generator.generate(1_000_000, 100_000, "random"));
+//      generatedNumbers.put("1000000_100000_random", generator.generate(1_000_000, 100_000, "random"));
 
         System.out.println();
 
@@ -39,6 +36,17 @@ public class TestSorting {
             }
             System.out.println();
         }
+    }
+
+    @Test
+    public void test(){
+        NumbersSequenceGenerator generator = new NumbersSequenceGenerator();
+        StringJoiner result = new StringJoiner(", ");
+        Integer[] numbers= generator.generate(100,100 , "random", 0, 100);
+        for (Integer number : numbers) {
+            result.add(number.toString());
+        }
+        System.out.println(result);
     }
 }
 /**

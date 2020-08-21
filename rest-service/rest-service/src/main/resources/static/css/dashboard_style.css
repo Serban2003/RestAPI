@@ -278,6 +278,26 @@ body {
     left: 8px;
 }
 
+/* Sorting */
+.result_panel{
+    position: absolute;
+    border: solid 0.5px black;
+    border-radius: 5px;
+    font-size: 18px;
+    top: 260px;
+    left: 320px;
+    height: 700px;
+    width: 1500px;
+    border-radius: 5px;
+    background-color: rgb(207, 205, 205);
+}
+
+.result_set{
+    position: relative;
+    width: 100%;
+    height: 33%;
+}
+
 /* Loading spinner */
 
 .back {
