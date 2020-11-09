@@ -104,6 +104,14 @@ function createButtons(menu) {
     sortButton.innerHTML = "Sorting";
     menu.appendChild(sortButton);
     sortButton.addEventListener("click", manageSortButton);
+
+    //matrix button
+    let matrixButton = document.createElement("button");
+    matrixButton.id = "matrixButton";
+    matrixButton.className = "custom_button";
+    matrixButton.innerHTML = "Matrix";
+    menu.appendChild(matrixButton);
+    matrixButton.addEventListener("click", manageMatrixButton);
 }
 
 function deleteButtons(menu) {
@@ -845,6 +853,11 @@ function verifyExistence() {
         if(document.body.contains(document.getElementById("resultPanel")))
             document.body.removeChild(document.getElementById("resultPanel"));
     }
+    if (main.contains(document.getElementById("matrixPanel"))){
+        main.removeChild(document.getElementById("matrixPanel"));
+        if(document.body.contains(document.getElementById("resultPanel")))
+            document.body.removeChild(document.getElementById("resultPanel"));
+    }
 
 }
 
@@ -902,7 +915,7 @@ function manageSortButton() {
          }
 }
 
-function createCanvases(){
+function createSortCanvases(){
     let resultPanel = document.createElement("div");
     resultPanel.id = "resultPanel";
     resultPanel.className = "result_panel";
@@ -951,7 +964,7 @@ function submitSort(){
         if(document.body.contains(document.getElementById("resultPanel")))
             document.body.removeChild(document.getElementById("resultPanel"));
 
-        createCanvases();
+        createSortCanvases();
 
         var xhrSort = new XMLHttpRequest();
         xhrSort.open('GET', '/sort/' + number);
@@ -1130,6 +1143,165 @@ function submitSort(){
 
                         }
                     }
+        };
+        xhrSort.send(null);
+}
+
+function manageMatrixButton(){
+        if (document.body.contains(document.getElementById("matrixPanel")) && document.body.contains(document.getElementById("resultPanel"))) {
+            document.getElementById("matrixPanel").classList.add("disappear");
+            document.getElementById("resultPanel").classList.add("disappear");
+
+            setTimeout(function () {
+                document.body.removeChild(document.getElementById("matrixPanel"));
+                document.body.removeChild(document.getElementById("resultPanel"));
+            }, 500);
+
+
+        }else if(document.body.contains(document.getElementById("matrixPanel"))){
+            document.getElementById("matrixPanel").classList.add("disappear");
+
+            setTimeout(function () {
+                document.body.removeChild(document.getElementById("matrixPanel"));
+            }, 500);
+        }
+        else {
+            verifyExistence();
+
+            let panel = document.createElement("div");
+            panel.id = "matrixPanel";
+            panel.className = "panel";
+            panel.classList.add("show_div");
+            panel.style.height = "150px";
+            document.body.appendChild(panel);
+
+            let title = document.createElement("h3");
+            title.innerHTML = "Matrix Product"
+            title.style.textAlign = "center";
+            panel.appendChild(title);
+
+            let text = document.createElement("span");
+            text.innerHTML = "Generate sets: ";
+            text.style.paddingLeft = "18px";
+            panel.appendChild(text);
+
+            let inputNumber = document.createElement("input");
+            inputNumber.type = "number";
+            inputNumber.className = "number_input";
+            inputNumber.id = "setNumber";
+            panel.appendChild(inputNumber);
+
+            let submitButton = document.createElement("button");
+            submitButton.className = "custom_button";
+            submitButton.innerHTML = "Submit";
+            submitButton.style.top = "10px";
+            panel.appendChild(submitButton);
+
+            submitButton.addEventListener("click", submitMatrixProduct);
+         }
+}
+
+function createMatrixCanvases(){
+    let resultPanel = document.createElement("div");
+    resultPanel.id = "resultPanel";
+    resultPanel.className = "result_panel";
+    resultPanel.style.height = "200px";
+    resultPanel.classList.add("show_div");
+    document.body.appendChild(resultPanel);
+
+    let resultSet = document.createElement("div");
+    resultSet.id = "resultSet";
+    resultSet.className = "result_set";
+    resultSet.style.height = "98%";
+    resultPanel.appendChild(resultSet);
+
+    let resultDiv = document.createElement("canvas");
+    resultDiv.id = "matrixChart";
+    resultSet.appendChild(resultDiv);
+}
+
+function submitMatrixProduct(){
+        if(document.body.contains(document.getElementById("advertisement")))
+            document.body.removeChild(document.getElementById("advertisement"));
+
+        var number = document.getElementById("setNumber").value;
+
+        if(!number){
+            createAdvertisement("number");
+            return;
+        }
+
+        if(document.body.contains(document.getElementById("resultPanel")))
+            document.body.removeChild(document.getElementById("resultPanel"));
+
+        createMatrixCanvases();
+
+        var xhrSort = new XMLHttpRequest();
+        xhrSort.open('GET', '/matrix/' + number);
+        xhrSort.setRequestHeader("Content-Type", "application/json");
+
+        xhrSort.onreadystatechange = function () {
+            var DONE = 4; // readyState 4 means the request is done.
+            var OK = 200; // status 200 is a successful return.
+
+            if (xhrSort.readyState === DONE)
+                if (xhrSort.status === OK) {
+                    if(xhrSort.responseText == "invalid input")
+                        createAdvertisement("invalid input");
+                        else{
+                            var response = JSON.parse(xhrSort.responseText);
+                            console.log(response);
+
+                            var values = [];
+                            var sampleSizes = [];
+                            var dataSets = [];
+
+                            for(var i in response){
+                                if(typeof sampleSizes[response[i].sampleSize] === "undefined")
+                                    sampleSizes.push(response[i].sampleSize);
+
+                                if(typeof values[response[i].algorithm.name] === "undefined")
+                                    values[response[i].algorithm.name] = [];
+                                values[response[i].algorithm.name].push(response[i].totalTime);
+                            }
+                            console.log(sampleSizes);
+
+                            dataSets.push(
+                                {
+                                    label: "Matrix Product",
+                                    backgroundColor: "blue",
+                                    data: values["Product Set"]
+                                }
+                             );
+
+                            console.log(dataSets);
+
+                            var ctx = document.getElementById('matrixChart').getContext('2d');
+                            var randomChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                        labels: sampleSizes,
+                                        datasets: dataSets
+                                },
+                                options: {
+                                    title: {
+                                            display: true,
+                                            text: 'Matrix Product'
+                                    },
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero: true
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                        }
+                    }
+
         };
         xhrSort.send(null);
 }

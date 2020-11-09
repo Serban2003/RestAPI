@@ -42,8 +42,6 @@ public class MatrixTest {
 
     @Test
     public void testComplexity(){
-
-
         for(int i = 1; i <= 150; ++i){
 
             double totalTime = 0.0;
