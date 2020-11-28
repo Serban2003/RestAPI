@@ -41,6 +41,13 @@ public class MatrixTest {
     }
 
     @Test
+    public void testInverse(){
+        Matrix matrix = new Matrix(new double[][]{{1, 1, 3}, {1, 2, 4}, {1, 1, 2}});
+        InverseMatrix result = new InverseMatrix(matrix);
+        assertEquals("0.0 -1.0 2.0 \n" + "-2.0 1.0 1.0 \n" + "1.0 0.0 -1.0 \n", result.getInverseByGaussian(matrix).toString());
+    }
+
+    @Test
     public void testComplexity(){
         for(int i = 1; i <= 150; ++i){
 
