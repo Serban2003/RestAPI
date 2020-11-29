@@ -70,6 +70,43 @@ public class Matrix {
         return this;
     }
 
+    public double calculateDeterminant(){
+        if(n != m) throw new IllegalArgumentException("The matrix isn't square");
+
+        if(n == 1) return mat[0][0];
+        if(n == 2) return mat[0][0] * mat[1][1] + mat[0][1] * mat[1][0];
+
+        double determinant = 0.0;
+        for(int k = 0; k < n; ++k){
+            double product = 1.0;
+            for(int i = k; i < n + k; ++i)
+                product *= mat[i % n][i  - k];
+            determinant += product;
+        }
+
+        for(int k = 0; k < n; ++k){
+            double product = 1.0;
+            for(int i = k; i < n + k; ++i)
+                product *= mat[i % n][n - i + k - 1];
+            determinant -= product;
+        }
+        return determinant;
+    }
+
+    public Matrix calculateInverse(){
+        double determinant = calculateDeterminant();
+
+        if(determinant == 0) throw new IllegalArgumentException("The matrix is 'Singular' (determinant = 0)");
+
+        if(n == 2){
+            double aux = mat[0][0];
+            mat[0][0] = mat[1][1] * determinant;
+            mat[1][1] = aux * determinant;
+            mat[0][1] *= -determinant;
+            mat[1][0] *= -determinant;
+        }
+    }
+
     public Matrix generate(int n, int m, int min, int max){
         for(int i = 0; i < n; ++i)
             for(int j = 0; j < m; ++j)

@@ -41,6 +41,12 @@ public class MatrixTest {
     }
 
     @Test
+    public void testDeterminant(){
+        Matrix matrix = new Matrix(new double[][]{{2, 0}, {1, 3}});
+        assertEquals(6, matrix.calculateDeterminant());
+    }
+
+    @Test
     public void testInverse(){
         Matrix matrix = new Matrix(new double[][]{{1, 1, 3}, {1, 2, 4}, {1, 1, 2}});
         InverseMatrix result = new InverseMatrix(matrix);
