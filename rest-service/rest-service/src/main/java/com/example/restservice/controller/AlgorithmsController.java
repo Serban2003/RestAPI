@@ -9,10 +9,12 @@ import com.example.restservice.db.CustomDb;
 import com.example.restservice.dto.AlgorithmExecutionDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.hibernate.validator.constraints.pl.REGON;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.StringJoiner;
 
@@ -90,4 +92,15 @@ public class AlgorithmsController {
     public void getAllExecutions(){
         db.getAll();
     }
+
+    @PostMapping("/algorithms/searchById")
+    public AlgorithmExecutionDTO searchById(@RequestParam(name = "id", required = true, defaultValue = "") Long id) throws IOException, JSONException {
+        return db.searchById(id);
+    }
+
+    @PostMapping("/algorithms/delete")
+    public void deleteExecution(@RequestParam(name = "id", required = true, defaultValue = "") Long id) throws IOException {
+        db.delete(id);
+    }
+
 }
