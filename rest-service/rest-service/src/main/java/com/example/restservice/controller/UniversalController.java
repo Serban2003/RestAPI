@@ -64,7 +64,7 @@ public abstract class UniversalController<T> {
     }
 
     private String getUpdateFields(T obj) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        String[] fieldsName = getFieldsName().split(","); //'u_id','firstaname'...
+        String[] fieldsName = getFieldsName().split(","); //'u_id','firstname'...
         String[] fieldsValue = getIdFieldsValue(obj).split(","); //1,
         StringJoiner sj = new StringJoiner(",");
 

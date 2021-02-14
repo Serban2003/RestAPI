@@ -5,6 +5,11 @@ import com.example.restservice.algorithms.general.EratosthenesSieve;
 import com.example.restservice.algorithms.numbers.ArabToRoman;
 import com.example.restservice.algorithms.numbers.NumbersSequenceGenerator;
 import com.example.restservice.algorithms.numbers.RomanToArab;
+import com.example.restservice.db.CustomDb;
+import com.example.restservice.dto.AlgorithmExecutionDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.hibernate.validator.constraints.pl.REGON;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +18,8 @@ import java.util.StringJoiner;
 
 @Controller
 public class AlgorithmsController {
+    @Autowired
+    private CustomDb db;
 
     @ResponseBody
     @PostMapping("/algorithms/randomNumberGenerator")
@@ -73,5 +80,14 @@ public class AlgorithmsController {
             return arabNumber.transform(number.toUpperCase());
         }
         return 0;
+    }
+    @PostMapping("/algorithms/execution")
+    public void insertNewExecution(@RequestBody AlgorithmExecutionDTO algorithm) throws JsonProcessingException {
+        db.insert(algorithm);
+    }
+
+    @PostMapping("/algorithms/getAll")
+    public void getAllExecutions(){
+        db.getAll();
     }
 }
