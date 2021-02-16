@@ -1,6 +1,7 @@
 package com.example.restservice.controller;
 
 
+import com.example.restservice.algorithms.general.AlgorithmsGenerator;
 import com.example.restservice.algorithms.general.EratosthenesSieve;
 import com.example.restservice.algorithms.numbers.ArabToRoman;
 import com.example.restservice.algorithms.numbers.NumbersSequenceGenerator;
@@ -101,6 +102,15 @@ public class AlgorithmsController {
     @PostMapping("/algorithms/delete")
     public void deleteExecution(@RequestParam(name = "id", required = true, defaultValue = "") Long id) throws IOException {
         db.delete(id);
+    }
+
+    @PostMapping("/algorithms/generate")
+    public void generateAlgorithms(@RequestParam(name = "tests", required = true, defaultValue = "1") Long test) throws JsonProcessingException {
+
+        AlgorithmsGenerator generator = new AlgorithmsGenerator();
+        for(int i = 1; i <= test; ++i){
+            db.insert(generator.createAlgorithms());
+        }
     }
 
 }
