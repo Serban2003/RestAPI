@@ -11,6 +11,8 @@ import com.example.restservice.dto.AlgorithmExecutionDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.hibernate.validator.constraints.pl.REGON;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,9 @@ import java.util.StringJoiner;
 
 @Controller
 public class AlgorithmsController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AlgorithmsController.class);
+
     @Autowired
     private CustomDb db;
 
@@ -110,6 +115,7 @@ public class AlgorithmsController {
         AlgorithmsGenerator generator = new AlgorithmsGenerator();
         for(int i = 1; i <= test; ++i){
             db.insert(generator.createAlgorithms());
+            logger.info("Algorithm " + i + " generated.");
         }
     }
 

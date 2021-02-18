@@ -1,13 +1,18 @@
 package com.example.restservice.algorithms.general;
 
+import com.example.restservice.db.CustomDb;
 import com.example.restservice.dto.AlgorithmExecutionDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class AlgorithmsGenerator {
 
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
     String[] name = new String[]{"BubbleSort", "EratosthenesSieves", "MatrixProduct", "HeapsAlgorithm", "NumberSequenceGenerator", "RomanToArab", "QuickSort", "SelectionSort"};
     String[] types = new String[]{"Integer", "Long", "Double", "String"};
     Long numberOfInputs;
@@ -26,14 +31,13 @@ public class AlgorithmsGenerator {
         int index = random.nextInt(7 + 1);
         algorithmExecutionDTO.setName(name[index]);
 
-        numberOfInputs = (long) random.nextInt(1000 + 1);
+        numberOfInputs = (long) random.nextInt(10 + 1);
         algorithmExecutionDTO.setNumberOfInputs(numberOfInputs);
 
         for(int i = 0; i < numberOfInputs; ++i){
             int indexType = random.nextInt(3 + 1);
             typesOfInputs.add(types[indexType]);
             createSet(inputs, indexType);
-
 
             indexType = random.nextInt(3 + 1);
             typesOfOutputs.add(types[indexType]);
@@ -56,26 +60,26 @@ public class AlgorithmsGenerator {
 
         switch (types[indexType]){
             case "Integer":{
-                int number = random.nextInt();
+                int number = random.nextInt(100 + 1 - (-100)) + (-100);
                 set.add(String.valueOf(number));
                 break;
             }
             case "Long":{
-                Long number = random.nextLong();
+                Long number = (long) random.nextInt(100 + 1 - (-100)) + (-100);
                 set.add(number.toString());
                 break;
             }
             case "Double":{
-                Double number = random.nextDouble();
-                set.add(number.toString());
+                set.add(df2.format(random.nextDouble()));
                 break;
             }
             case "String":{
-                int maxLength = random.nextInt(255 + 1);
+                int maxLength = random.nextInt(10 + 1);
 
                 StringBuilder stringInput = new StringBuilder();
                 for(int j = 0; j < maxLength; ++j){
-                    stringInput.append(random.nextInt(126 + 1 - 32) + 32);
+                    char digit = (char) random.nextInt((126 + 1 - 32) + 32);
+                    stringInput.append(digit);
                 }
                 set.add(stringInput.toString());
                 break;

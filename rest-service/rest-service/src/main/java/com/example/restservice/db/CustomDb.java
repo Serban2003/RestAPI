@@ -35,7 +35,7 @@ public class CustomDb {
     List<File> files = new ArrayList<>();
     List<Long> entries = new ArrayList<>();
     String rootPath = "C:\\Customdb";
-    Long maxPerFile = 10_000L;
+    Long maxPerFile = 1_000L;
     File file;
 
     @PostConstruct
@@ -122,9 +122,10 @@ public class CustomDb {
            if(entries.get(entries.size() - 1).equals(maxPerFile)){
                createDbStorage("myDb" + entries.size() + ".txt");
                files.add(new File(rootPath + "\\" + "myDb" + entries.size() + ".txt"));
+               newJSONData += (getMaxId(rootPath + "\\" + "myDb" + (files.size() - 2) + ".txt") + 1);
                entries.add(0L);
            }
-            newJSONData += (getMaxId(rootPath + "\\" + "myDb" + (files.size() - 1) + ".txt") + 1);
+           else newJSONData += (getMaxId(rootPath + "\\" + "myDb" + (files.size() - 1) + ".txt") + 1);
             newJSONData += data.substring(6 + numberOfDigits);
 
             FileWriter myWriter = new FileWriter(files.get(files.size() - 1).getAbsolutePath(), true);

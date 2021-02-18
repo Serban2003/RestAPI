@@ -78,18 +78,14 @@ public class Matrix {
 
         double determinant = 0.0;
         for(int k = 0; k < n; ++k){
-            double product = 1.0;
-            for(int i = k; i < n + k; ++i)
-                product *= mat[i % n][i  - k];
-            determinant += product;
+            double product1 = 1.0, product2 = 1.0;
+            for(int i = k; i < n + k; ++i){
+                product1 *= mat[i % n][i  - k];
+                product2 *= mat[i % n][n - i + k - 1];
+            }
+            determinant += (product1 - product2);
         }
 
-        for(int k = 0; k < n; ++k){
-            double product = 1.0;
-            for(int i = k; i < n + k; ++i)
-                product *= mat[i % n][n - i + k - 1];
-            determinant -= product;
-        }
         return determinant;
     }
 

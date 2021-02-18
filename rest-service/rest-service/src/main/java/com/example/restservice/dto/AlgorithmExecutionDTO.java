@@ -90,4 +90,20 @@ public class AlgorithmExecutionDTO {
     public void setImplementationMonth(String implementationMonth) {
         this.implementationMonth = implementationMonth;
     }
+
+    @Override
+    public String toString() {
+        return "AlgorithmExecutionDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", numberOfInputs=" + numberOfInputs +
+                ", typesOfInputs=" + typesOfInputs +
+                ", typesOfOutputs=" + typesOfOutputs +
+                ", inputs=" + inputs +
+                ", outputs=" + outputs +
+                ", executionTime=" + executionTime +
+                ", implementationYear='" + implementationYear + '\'' +
+                ", implementationMonth='" + implementationMonth + '\'' +
+                '}';
+    }
 }
