@@ -121,15 +121,18 @@ function deleteButtons(menu) {
     menu.removeChild(document.getElementById("romanNumberButton"));
     menu.removeChild(document.getElementById("numberSorterButton"));
     menu.removeChild(document.getElementById("sortButton"));
+    menu.removeChild(document.getElementById("matrixButton"));
 }
 
 function manageRandomNumberPanel() {
 
     if (document.body.contains(document.getElementById("randomNumberPanel"))) {
         document.getElementById("randomNumberPanel").classList.add("disappear");
+        document.getElementById("randomPersonPanel").classList.add("disappear");
 
         setTimeout(function () {
             document.body.removeChild(document.getElementById("randomNumberPanel"));
+            document.body.removeChild(document.getElementById("randomPersonPanel"));
         }, 500);
 
 
@@ -189,7 +192,60 @@ function manageRandomNumberPanel() {
         submitButton.innerHTML = "Submit";
         panel.appendChild(submitButton);
 
+        let radioInput = document.createElement("input");
+        radioInput.type = "radio";
+        radioInput.id = "randomNumberRadio";
+        radioInput.name = "randomNumbers";
+        radioInput.className = "check";
+        panel.appendChild(radioInput);
+
         submitButton.addEventListener("click", submitRandomNumber);
+
+        panel = document.createElement("div");
+        panel.id = "randomPersonPanel";
+        panel.className = "panel";
+        panel.classList.add("show_div");
+        panel.style.top = "300px";
+        panel.style.height = "160px";
+        document.body.appendChild(panel);
+
+        title = document.createElement("h3");
+        title.innerHTML = "Pick a Random Person"
+        title.style.textAlign = "center";
+        panel.appendChild(title);
+
+        text = document.createElement("div");
+        text.innerHTML = "Your randomly picked person: ";
+        text.style.paddingLeft = "18px";
+        text.style.position = "relative";
+        text.style.top = "10px";
+        panel.appendChild(text);
+
+        inputNumberResult = document.createElement("input");
+        inputNumberResult.type = "text";
+        inputNumberResult.className = "number_input";
+        inputNumberResult.id = "randomPersonResult";
+        inputNumberResult.style.position = "absolute";
+        inputNumberResult.style.left = "260px";
+        inputNumberResult.style.top = "72px";
+        inputNumberResult.readOnly = "true";
+        inputNumberResult.style.width = "215px";
+        panel.appendChild(inputNumberResult);
+
+        submitButton = document.createElement("button");
+        submitButton.className = "custom_button";
+        submitButton.innerHTML = "Submit";
+        submitButton.style.top = "25px";
+        panel.appendChild(submitButton);
+
+        submitButton.addEventListener("click", submitRandomNumber);
+
+        radioInput = document.createElement("input");
+        radioInput.type = "radio";
+        radioInput.id = "randomPersonRadio";
+        radioInput.name = "randomNumbers";
+        radioInput.className = "check";
+        panel.appendChild(radioInput);
     }
 
 }
@@ -199,32 +255,45 @@ function submitRandomNumber() {
     if(document.body.contains(document.getElementById("advertisement")))
             document.body.removeChild(document.getElementById("advertisement"));
 
-    var minim = document.getElementById("randomNumber1").value;
-    var maxim = document.getElementById("randomNumber2").value;
+    if (document.getElementById("randomNumberRadio").checked) {
+         var minim = document.getElementById("randomNumber1").value;
+         var maxim = document.getElementById("randomNumber2").value;
 
-    if(!minim){
-        createAdvertisement("minim");
-        return;
-    }
-    if(!maxim){
-        createAdvertisement("maxim");
-        return;
-    }
-    if(minim > maxim){
-        createAdvertisement("minim greater then maxim");
-        return;
-    }
+        if(!minim){
+            createAdvertisement("minim");
+            return;
+        }
+        if(!maxim){
+            createAdvertisement("maxim");
+            return;
+        }
+        if(minim > maxim){
+            createAdvertisement("minim greater then maxim");
+            return;
+        }
 
+        path = '/algorithms/randomNumberGenerator?minim='  + minim + '&maxim=' + maxim;
+        id = "inputRandomNumbersResult";
+
+    } else if (document.getElementById("randomPersonRadio").checked) {
+        path = '/algorithms/randomPersonPicker';
+        id = "randomPersonResult";
+    } else {
+        createAdvertisement("not checked");
+        return;
+    }
     var xhrRandomNumber = new XMLHttpRequest();
-    xhrRandomNumber.open('POST', '/algorithms/randomNumberGenerator?minim=' + minim + '&maxim=' + maxim);
+    xhrRandomNumber.open('POST', path);
     xhrRandomNumber.setRequestHeader("Content-Type", "application/json");
+
     // Track the state changes of the request.
     xhrRandomNumber.onreadystatechange = function () {
         var DONE = 4; // readyState 4 means the request is done.
         var OK = 200; // status 200 is a successful return.
 
         if (xhrRandomNumber.readyState === DONE)
-            if (xhrRandomNumber.status === OK) document.getElementById("randomNumberResult").value = xhrRandomNumber.responseText;
+            if (xhrRandomNumber.status === OK) document.getElementById(id).value = xhrRandomNumber.responseText;
+
     };
     xhrRandomNumber.send(null);
 }
@@ -372,8 +441,7 @@ function submitPrimeNumber() {
     var number, id, path;
 
     var xhrPrimeNumber = new XMLHttpRequest();
-    if (document.body.contains(document.getElementById("advertisement")))
-        document.body.removeChild(document.getElementById("advertisement"));
+
     if (document.getElementById("nthPrimeNumbers").checked) {
         number = document.getElementById("primeNumber").value;
         path = '/algorithms/nthPrimeNumber?number=';
@@ -836,8 +904,10 @@ function createAdvertisement(message) {
 function verifyExistence() {
     var main = document.body;
 
-    if (main.contains(document.getElementById("randomNumberPanel")))
+    if (main.contains(document.getElementById("randomNumberPanel"))){
         main.removeChild(document.getElementById("randomNumberPanel"));
+        main.removeChild(document.getElementById("randomPersonPanel"));
+    }
     if (main.contains(document.getElementById("sequenceGeneratorPanel")))
         main.removeChild(document.getElementById("sequenceGeneratorPanel"));
     if (main.contains(document.getElementById("nthPrimeNumbersPanel")))

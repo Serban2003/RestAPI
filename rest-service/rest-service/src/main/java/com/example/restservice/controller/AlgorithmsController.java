@@ -3,6 +3,7 @@ package com.example.restservice.controller;
 
 import com.example.restservice.algorithms.general.AlgorithmsGenerator;
 import com.example.restservice.algorithms.general.EratosthenesSieve;
+import com.example.restservice.algorithms.general.RandomPerson;
 import com.example.restservice.algorithms.numbers.ArabToRoman;
 import com.example.restservice.algorithms.numbers.NumbersSequenceGenerator;
 import com.example.restservice.algorithms.numbers.RomanToArab;
@@ -28,6 +29,7 @@ public class AlgorithmsController {
 
     @Autowired
     private CustomDb db;
+    RandomPerson person = new RandomPerson();
 
     @ResponseBody
     @PostMapping("/algorithms/randomNumberGenerator")
@@ -89,6 +91,14 @@ public class AlgorithmsController {
         }
         return 0;
     }
+
+    @ResponseBody
+    @PostMapping("/algorithms/randomPersonPicker")
+    public String getRandomPerson() {
+        return person.getRandomPerson();
+    }
+
+
     @PostMapping("/algorithms/execution")
     public void insertNewExecution(@RequestBody AlgorithmExecutionDTO algorithm) throws JsonProcessingException {
         db.insert(algorithm);
