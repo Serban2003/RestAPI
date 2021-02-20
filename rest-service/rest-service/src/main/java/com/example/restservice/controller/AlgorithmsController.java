@@ -105,9 +105,22 @@ public class AlgorithmsController {
     }
 
     @PostMapping("/algorithms/getAll")
-    public void getAllExecutions(){
-        db.getAll();
+    public void getAllExecutions(@RequestParam(name = "number", required = true, defaultValue = "-1") Long number){
+        double timeBefore = System.nanoTime();
+        db.getAll(number);
+
+        logger.info((System.nanoTime() - timeBefore) / 1_000_000 + " ms");
     }
+    /**
+     * 10.000 - 2208,4778 ms - 2,2 s
+     * 100.000 - 7556,1161 ms - 7,55 s
+     * 200.000 - 13545,559 ms - 13,54 s
+     * 300.000 - 19748,5466 ms - 19,74 s
+     * 400.000 - 25399,6063 ms - 25,39 s
+     * 500.000 - 31823,9709 ms - 31,82 s
+     * 600.000 - 39738,7963 ms - 39,73 s
+     * 700.000 - 45036,8879 ms - 45,03 s
+    */
 
     @PostMapping("/algorithms/searchById")
     public AlgorithmExecutionDTO searchById(@RequestParam(name = "id", required = true, defaultValue = "") Long id) throws IOException, JSONException {

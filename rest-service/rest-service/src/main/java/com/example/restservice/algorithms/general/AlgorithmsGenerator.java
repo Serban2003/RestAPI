@@ -1,9 +1,6 @@
 package com.example.restservice.algorithms.general;
 
-import com.example.restservice.db.CustomDb;
 import com.example.restservice.dto.AlgorithmExecutionDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -12,7 +9,7 @@ import java.util.Random;
 
 public class AlgorithmsGenerator {
 
-    private static DecimalFormat df2 = new DecimalFormat("#.##");
+    private static final DecimalFormat df2 = new DecimalFormat("#.##");
     String[] name = new String[]{"BubbleSort", "EratosthenesSieves", "MatrixProduct", "HeapsAlgorithm", "NumberSequenceGenerator", "RomanToArab", "QuickSort", "SelectionSort"};
     String[] types = new String[]{"Integer", "Long", "Double", "String"};
     Long numberOfInputs;
@@ -23,6 +20,11 @@ public class AlgorithmsGenerator {
 
     public AlgorithmExecutionDTO createAlgorithms(){
 
+        typesOfInputs.clear();
+        typesOfOutputs.clear();
+        inputs.clear();
+        outputs.clear();
+
         AlgorithmExecutionDTO algorithmExecutionDTO = new AlgorithmExecutionDTO();
         algorithmExecutionDTO.setId(0L);
 
@@ -31,7 +33,7 @@ public class AlgorithmsGenerator {
         int index = random.nextInt(7 + 1);
         algorithmExecutionDTO.setName(name[index]);
 
-        numberOfInputs = (long) random.nextInt(10 + 1);
+        numberOfInputs = (long) random.nextInt(10 - 1) + 1;
         algorithmExecutionDTO.setNumberOfInputs(numberOfInputs);
 
         for(int i = 0; i < numberOfInputs; ++i){
@@ -65,8 +67,8 @@ public class AlgorithmsGenerator {
                 break;
             }
             case "Long":{
-                Long number = (long) random.nextInt(100 + 1 - (-100)) + (-100);
-                set.add(number.toString());
+                long number = (long) random.nextInt(100 + 1 - (-100)) + (-100);
+                set.add(Long.toString(number));
                 break;
             }
             case "Double":{

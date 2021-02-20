@@ -4,7 +4,6 @@ import com.example.restservice.dto.AlgorithmExecutionDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.mysql.cj.protocol.PacketReceivedTimeHolder;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -35,7 +34,7 @@ public class CustomDb {
     List<File> files = new ArrayList<>();
     List<Long> entries = new ArrayList<>();
     String rootPath = "C:\\Customdb";
-    Long maxPerFile = 1_000L;
+    Long maxPerFile = 100_000L;
     File file;
 
     @PostConstruct
@@ -60,12 +59,11 @@ public class CustomDb {
         } catch (IOException e){
             logger.error("An error occurred.", e);
         }
-
     }
 
     private Long getMaxId(String path) throws IOException {
-        String line = "";
-        Long maxId = 0L;
+        String line;
+        long maxId = 0L;
 
         BufferedReader buffer = new BufferedReader(new FileReader(path));
 
@@ -148,7 +146,6 @@ public class CustomDb {
     }
 
     public void delete(Long id) throws IOException {
-        String line = "";
 
         long indexFile = id / maxPerFile;
         if(id % maxPerFile == 0) indexFile--;
@@ -159,6 +156,7 @@ public class CustomDb {
         FileWriter writer = new FileWriter(rootPath + "\\" + "temporaryFile.txt");
         BufferedReader buffer = new BufferedReader(new FileReader(filePath));
 
+        String line;
         while((line = buffer.readLine()) != null) {
             //struct: {"id":...
 
@@ -185,7 +183,7 @@ public class CustomDb {
         entries.set((int) indexFile, getLines(filePath));
     }
 
-    public List<AlgorithmExecutionDTO> getAll(){
+    public List<AlgorithmExecutionDTO> getAll(Long number){
 
         List<AlgorithmExecutionDTO> allAlgorithms = new ArrayList<>();
 
@@ -195,8 +193,9 @@ public class CustomDb {
             for (File child : directoryListing) {
                 try (BufferedReader br = new BufferedReader(new FileReader(child))) {
                     String line;
-                    while ((line = br.readLine()) != null) {
+                    while ((line = br.readLine()) != null && number != 0) {
                         allAlgorithms.add(convertLineToClass(line));
+                        number--;
                     }
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -217,15 +216,16 @@ public class CustomDb {
     }
 
     public AlgorithmExecutionDTO searchById(Long id) throws IOException, JSONException {
-        String line = "";
         AlgorithmExecutionDTO algorithm;
 
-        Long indexFile = id / maxPerFile;
+        long indexFile;
+        indexFile = id / maxPerFile;
         if(id % maxPerFile == 0) indexFile--;
 
         String filePath = rootPath + "\\myDb" + indexFile + ".txt";
         BufferedReader buffer = new BufferedReader(new FileReader(filePath));
 
+        String line;
         while((line = buffer.readLine()) != null) {
             //struct: {"id":...
 
