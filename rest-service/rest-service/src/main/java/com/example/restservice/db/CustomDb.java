@@ -21,13 +21,13 @@ import java.util.stream.Stream;
 
 import static java.lang.Character.isDigit;
 
-//TODO
-/*
-implement getAll - done
-implement getById (by id - make id unique) - done
-insert 10.000.000 and measure getAll() for 10k, 100k, 1 mil, 2 mil, etc.
-create folder if missing line 62 - done
+/** TODO
+ *implement getAll - done
+ * implement getById (by id - make id unique) - done
+ * insert 10.000.000 and measure getAll() for 10k, 100k, 1 mil, 2 mil, etc.
+ * create folder if missing - line 62 - done
 */
+
 @Service
 public class CustomDb {
     private static final Logger logger = LoggerFactory.getLogger(CustomDb.class);

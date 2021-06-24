@@ -13,6 +13,8 @@ window.onload = function () {
     var menuIcon = document.getElementById('menu_icon');
     var menu = document.getElementById('menu');
 
+    createIcons(menu);
+
     menuIcon.addEventListener("click", function () {
         if (menu.classList.contains("menu_expanded")) {
             menu.classList.remove("menu_expanded");
@@ -23,10 +25,11 @@ window.onload = function () {
 
             setTimeout(function () {
                 deleteButtons(menu);
+                createIcons(menu);
+
                 setTimeout(function () {
                     menuIcon.classList.remove("transition_out");
-                    menu.classList.remove("menu_out")
-
+                    menu.classList.remove("menu_out");
                 }, 300);
             }, 200);
 
@@ -34,17 +37,59 @@ window.onload = function () {
             menu.classList.add("menu_expanded");
             menuIcon.classList.add("transition_in");
             createButtons(menu);
+            deleteIcons(menu);
         }
     });
+}
 
-    var banner = document.getElementById("banner");
-    banner.style.width = (screen.width - 6) + "px";
-    banner.style.left = "2px";
+function createIcons(menu){
+    var time = 120;
+    createIcon(menu, "random_number_generator_icon");
+    setTimeout(function () {
+        createIcon(menu, "number_sequence_generator_icon");
+        setTimeout(function () {
+            createIcon(menu, "prime_numbers_icon");
+            setTimeout(function () {
+                createIcon(menu, "roman_numbers_icon");
+                setTimeout(function () {
+                    createIcon(menu, "number_sorter_icon");
+                    setTimeout(function () {
+                        createIcon(menu, "sorting_icon");
+                        setTimeout(function () {
+                            createIcon(menu, "matrix_icon");
+                        }, time);
+                    }, time);
+                }, time);
+            }, time);
+        }, time);
+    }, time);
+}
 
+function deleteIcons(menu){
+    menu.removeChild(document.getElementById("random_number_generator_icon"));
+    menu.removeChild(document.getElementById("number_sequence_generator_icon"));
+    menu.removeChild(document.getElementById("prime_numbers_icon"));
+    menu.removeChild(document.getElementById("roman_numbers_icon"));
+    menu.removeChild(document.getElementById("number_sorter_icon"));
+    menu.removeChild(document.getElementById("sorting_icon"));
+    menu.removeChild(document.getElementById("matrix_icon"));
+}
+
+function createIcon(menu, string){
+    let icon = document.createElement("img");
+    icon.src = "/images/" + string + ".png";
+    icon.className = "menu_icon";
+    icon.id = string;
+    menu.appendChild(icon);
+
+    setTimeout(function () {
+        document.getElementById(string).classList.add("icon_in");
+    }, 110);
 }
 
 function createButtons(menu) {
     // random number generator button
+
     let randomNumberButton = document.createElement("button");
     randomNumberButton.id = "randomNumberButton";
     randomNumberButton.className = "custom_button";
@@ -273,7 +318,7 @@ function submitRandomNumber() {
         }
 
         path = '/algorithms/randomNumberGenerator?minim='  + minim + '&maxim=' + maxim;
-        id = "inputRandomNumbersResult";
+        id = "randomNumberResult";
 
     } else if (document.getElementById("randomPersonRadio").checked) {
         path = '/algorithms/randomPersonPicker';
