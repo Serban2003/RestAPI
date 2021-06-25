@@ -47,6 +47,22 @@ window.onload = function () {
     });
 }
 
+function createPanels(stringId){
+    let panel = document.createElement("div");
+    panel.id = stringId;
+    panel.className = "panel";
+    document.body.appendChild(panel);
+    return panel;
+}
+
+function createResultPanels(stringId){
+    let resultPanel = document.createElement("div");
+    resultPanel.id = "resultPanel";
+    resultPanel.className = "result_panel";
+    document.body.appendChild(resultPanel);
+    return resultPanel;
+}
+
 function createIcons(menu){
     var time = 120;
     createIcon(menu, "random_number_generator_icon", manageRandomNumberPanel);
@@ -93,78 +109,23 @@ function createIcon(menu, stringId, eventName){
     }, 110);
 }
 
+function createMenuButton(menu, stringId, eventName, name){
+    let button = document.createElement("button");
+    button.id = stringId;
+    button.className = "custom_button";
+    button.innerHTML = name;
+    button.addEventListener("click", eventName);
+    menu.appendChild(button);
+}
+
 function createButtons(menu) {
-    // random number generator button
-
-    let randomNumberButton = document.createElement("button");
-    randomNumberButton.id = "randomNumberButton";
-    randomNumberButton.className = "custom_button";
-
-    randomNumberButton.addEventListener("click", manageRandomNumberPanel);
-
-    let text = document.createTextNode("Random Number Generator");
-    randomNumberButton.appendChild(text);
-    menu.appendChild(randomNumberButton);
-
-    // number sequence generator
-    let sequenceGeneratorButton = document.createElement("button");
-    sequenceGeneratorButton.id = "sequenceGeneratorButton";
-    sequenceGeneratorButton.className = "custom_button";
-
-    sequenceGeneratorButton.addEventListener("click", manageSequenceGenerator);
-
-    text = document.createTextNode("Number Sequence Generator");
-    sequenceGeneratorButton.appendChild(text);
-    menu.appendChild(sequenceGeneratorButton);
-
-    //prime numbers
-    let primeNumbersButton = document.createElement("button");
-    primeNumbersButton.id = "primeNumbersButton";
-    primeNumbersButton.className = "custom_button";
-
-    primeNumbersButton.addEventListener("click", managePrimeNumbersPanel);
-
-    text = document.createTextNode("Prime Numbers");
-    primeNumbersButton.appendChild(text);
-    menu.appendChild(primeNumbersButton);
-
-    //roman numbers
-    let romanNumberButton = document.createElement("button");
-    romanNumberButton.id = "romanNumberButton";
-    romanNumberButton.className = "custom_button";
-
-    romanNumberButton.addEventListener("click", manageRomanNumberPanel);
-
-    text = document.createTextNode("Roman Numbers");
-    romanNumberButton.appendChild(text);
-    menu.appendChild(romanNumberButton);
-
-    //number sorter
-    let numberSorterButton = document.createElement("button");
-    numberSorterButton.id = "numberSorterButton";
-    numberSorterButton.className = "custom_button";
-
-    romanNumberButton.addEventListener("click", manageNumberSorter);
-
-    text = document.createTextNode("Number Sorter");
-    numberSorterButton.appendChild(text);
-    menu.appendChild(numberSorterButton);
-
-    //sort button
-    let sortButton = document.createElement("button");
-    sortButton.id = "sortButton";
-    sortButton.className = "custom_button";
-    sortButton.innerHTML = "Sorting";
-    menu.appendChild(sortButton);
-    sortButton.addEventListener("click", manageSortButton);
-
-    //matrix button
-    let matrixButton = document.createElement("button");
-    matrixButton.id = "matrixButton";
-    matrixButton.className = "custom_button";
-    matrixButton.innerHTML = "Matrix";
-    menu.appendChild(matrixButton);
-    matrixButton.addEventListener("click", manageMatrixButton);
+    createMenuButton(menu, "randomNumberButton", manageRandomNumberPanel, "Random Number Generator");
+    createMenuButton(menu, "sequenceGeneratorButton", manageSequenceGenerator, "Number Sequence Generator");
+    createMenuButton(menu, "primeNumbersButton", managePrimeNumbersPanel, "Prime Numbers");
+    createMenuButton(menu, "romanNumberButton", manageRomanNumberPanel, "Roman Numbers");
+    createMenuButton(menu, "numberSorterButton",  manageNumberSorter, "Number Sorter");
+    createMenuButton(menu, "sortButton",  manageSortButton, "Sorting");
+    createMenuButton(menu, "matrixButton",  manageMatrixButton, "Matrix");
 }
 
 function deleteButtons(menu) {
@@ -175,6 +136,58 @@ function deleteButtons(menu) {
     menu.removeChild(document.getElementById("numberSorterButton"));
     menu.removeChild(document.getElementById("sortButton"));
     menu.removeChild(document.getElementById("matrixButton"));
+}
+
+function createRadioInputs(panel, stringId, name){
+    let radioInput = document.createElement("input");
+    radioInput.type = "radio";
+    radioInput.id = stringId;
+    radioInput.name = name;
+    radioInput.className = "check";
+    panel.appendChild(radioInput);
+}
+
+function createTitles(panel, content){
+    let title = document.createElement("h3");
+    title.innerHTML = content;
+    title.className = "title";
+    panel.appendChild(title);
+}
+
+function createTexts(panel, content){
+    let text = document.createElement("span");
+    text.innerHTML = content;
+    panel.appendChild(text);
+}
+
+function createInputs(panel, type, stringId){
+    let inputNumber = document.createElement("input");
+    inputNumber.id = stringId;
+    inputNumber.type = type;
+    inputNumber.className = "number_input";
+    panel.appendChild(inputNumber);
+
+    return inputNumber;
+}
+
+function createOutputs(panel, typeOfInput, stringId){
+    let output = document.createElement(typeOfInput);
+    output.type = "text";
+    output.id = stringId;
+    output.className = "number_input";
+    output.readOnly = "true";
+    panel.appendChild(output);
+
+    return output;
+}
+
+function createSubmitButtons(panel, eventName){
+    let submitButton = document.createElement("button");
+    submitButton.className = "custom_button";
+    submitButton.innerHTML = "Submit";
+    panel.appendChild(submitButton);
+
+    submitButton.addEventListener("click", eventName);
 }
 
 function manageRandomNumberPanel() {
@@ -192,106 +205,36 @@ function manageRandomNumberPanel() {
     } else {
         verifyExistence();
 
-        let panel = document.createElement("div");
-        panel.id = "randomNumberPanel";
-        panel.className = "panel";
-        document.body.appendChild(panel);
-
-        let radioInput = document.createElement("input");
-        radioInput.type = "radio";
-        radioInput.id = "randomNumberRadio";
-        radioInput.name = "randomNumbers";
-        radioInput.className = "check";
-        panel.appendChild(radioInput);
-
-        let title = document.createElement("h3");
-        title.innerHTML = "Random Number Generator"
-        title.className = "title";
-        panel.appendChild(title);
+        let panel = createPanels("randomNumberPanel");
+        createRadioInputs(panel, "randomNumberRadio", "randomNumbers");
+        createTitles(panel, "Random Number Generator");
 
         let contentDiv = document.createElement("div");
         contentDiv.className = "content";
 
-        let text = document.createElement("span");
-        text.innerHTML = "Generate number between: ";
-        contentDiv.appendChild(text);
-
-        let inputNumber1 = document.createElement("input");
-        inputNumber1.type = "number";
-        inputNumber1.className = "number_input";
-        inputNumber1.id = "randomNumber1";
-        contentDiv.appendChild(inputNumber1);
-
-        text = document.createElement("span");
-        text.innerHTML = " and ";
-        contentDiv.appendChild(text);
-
-        let inputNumber2 = document.createElement("input");
-        inputNumber2.type = "number";
-        inputNumber2.className = "number_input";
-        inputNumber2.id = "randomNumber2";
-        contentDiv.appendChild(inputNumber2);
-
-        text = document.createElement("span");
-        text.innerHTML = "Your number is: ";
-        contentDiv.appendChild(text);
-
-        let inputNumberResult = document.createElement("input");
-        inputNumberResult.type = "text";
-        inputNumberResult.className = "number_input";
-        inputNumberResult.id = "randomNumberResult";
-        inputNumberResult.readOnly = "true";
-        contentDiv.appendChild(inputNumberResult);
-
+        createTexts(contentDiv, "Generate number between: ");
+        createInputs(contentDiv, "number", "randomNumber1")
+        createTexts(contentDiv, " and ");
+        createInputs(contentDiv, "number", "randomNumber2")
+        createTexts(contentDiv, "Your number is: ");
+        createOutputs(contentDiv, "input", "randomNumberResult");
         panel.appendChild(contentDiv);
 
-        let submitButton = document.createElement("button");
-        submitButton.className = "custom_button";
-        submitButton.innerHTML = "Submit";
-        panel.appendChild(submitButton);
+        createSubmitButtons(panel, submitRandomNumber);
 
-        submitButton.addEventListener("click", submitRandomNumber);
-
-        panel = document.createElement("div");
-        panel.id = "randomPersonPanel";
-        panel.className = "panel";
-        document.body.appendChild(panel);
-
-        radioInput = document.createElement("input");
-        radioInput.type = "radio";
-        radioInput.id = "randomPersonRadio";
-        radioInput.name = "randomNumbers";
-        radioInput.className = "check";
-        panel.appendChild(radioInput);
-
-        title = document.createElement("h3");
-        title.innerHTML = "Pick a Random Person"
-        title.className = "title";
-        panel.appendChild(title);
+        panel = createPanels("randomPersonPanel");
+        createRadioInputs(panel, "randomPersonRadio", "randomNumbers");
+        createTitles(panel, "Pick a Random Person");
 
         contentDiv = document.createElement("div");
         contentDiv.className = "content";
+        createTexts(contentDiv, "Your randomly picked person:");
 
-        text = document.createElement("span");
-        text.innerHTML = "Your randomly picked person:";
-        contentDiv.appendChild(text);
-
-        inputNumberResult = document.createElement("input");
-        inputNumberResult.type = "text";
-        inputNumberResult.className = "number_input";
-        inputNumberResult.id = "randomPersonResult";
-        inputNumberResult.readOnly = "true";
-        inputNumberResult.style.width = "215px";
-        contentDiv.appendChild(inputNumberResult);
-
+        let output = createOutputs(contentDiv, "input", "randomPersonResult");
+        output.style.width = "215px";
         panel.appendChild(contentDiv);
 
-        submitButton = document.createElement("button");
-        submitButton.className = "custom_button";
-        submitButton.innerHTML = "Submit";
-        panel.appendChild(submitButton);
-
-        submitButton.addEventListener("click", submitRandomNumber);
+        createSubmitButtons(panel, submitRandomNumber);
     }
 }
 
@@ -356,60 +299,30 @@ function manageSequenceGenerator() {
 
         verifyExistence();
 
-        let panel = document.createElement("div");
-        panel.id = "sequenceGeneratorPanel";
-        panel.className = "panel";
+        let panel = createPanels("sequenceGeneratorPanel");
         panel.style.width = "510px"
-        document.body.appendChild(panel);
-
-        let title = document.createElement("h3");
-        title.innerHTML = "Number Sequence Generator"
-        panel.appendChild(title);
+        createTitles(panel, "Number Sequence Generator");
 
         contentDiv = document.createElement("div");
         contentDiv.className = "content";
 
-        let text = document.createElement("span");
-        text.innerHTML = "Select the number of numbers: ";
-        contentDiv.appendChild(text);
-
-        let inputNumber = document.createElement("input");
-        inputNumber.type = "number";
-        inputNumber.className = "number_input";
-        inputNumber.id = "sequenceNumber";
+        createTexts(contentDiv, "Select the number of numbers: ");
+        let inputNumber = createInputs(contentDiv, "number", "sequenceNumber");
         inputNumber.min = "0";
         inputNumber.max = "10000000";
-        contentDiv.appendChild(inputNumber);
 
         brake = document.createElement("br");
         contentDiv.appendChild(brake);
 
-        text = document.createElement("span");
-        text.innerHTML = "Generate numbers between: ";
-        contentDiv.appendChild(text);
-
-        let inputMinim = document.createElement("input");
-        inputMinim.type = "number";
-        inputMinim.className = "number_input";
-        inputMinim.id = "minimNumber";
-        contentDiv.appendChild(inputMinim);
-
-        text = document.createElement("span");
-        text.innerHTML = " and ";
-        contentDiv.appendChild(text);
-
-        let inputMaxim = document.createElement("input");
-        inputMaxim.type = "number";
-        inputMaxim.className = "number_input";
-        inputMaxim.id = "maximNumber";
-        contentDiv.appendChild(inputMaxim);
+        createTexts(contentDiv, "Generate numbers between: ");
+        createInputs(contentDiv, "number", "minimNumber");
+        createTexts(contentDiv, " and ");
+        createInputs(contentDiv, "number", "maximNumber");
 
         brake = document.createElement("br");
         contentDiv.appendChild(brake);
 
-        text = document.createElement("span");
-        text.innerHTML = "Select the distribution: ";
-        contentDiv.appendChild(text);
+        createTexts(contentDiv, "Select the distribution: ");
 
         let inputDistribution = document.createElement("input");
         inputDistribution.setAttribute('list', "sequenceDistributionData");
@@ -437,9 +350,7 @@ function manageSequenceGenerator() {
         brake = document.createElement("br");
         contentDiv.appendChild(brake);
 
-        text = document.createElement("span");
-        text.innerHTML = "Select the maximum frequency: ";
-        contentDiv.appendChild(text);
+        createTexts(contentDiv, "Select the maximum frequency: ");
 
         let inputFrequency = document.createElement("input");
         inputFrequency.type = "number";
@@ -453,29 +364,17 @@ function manageSequenceGenerator() {
         brake = document.createElement("br");
         contentDiv.appendChild(brake);
 
-        text = document.createElement("span");
-        text.innerHTML = "Your sequence: ";
-        contentDiv.appendChild(text);
+        createTexts(contentDiv, "Your sequence: ");
 
-        let inputSequenceResult = document.createElement("textarea");
-        inputSequenceResult.type = "text";
-        inputSequenceResult.className = "number_input";
-        inputSequenceResult.id = "inputSequenceResult";
-        inputSequenceResult.style.width = "474px";
-        inputSequenceResult.style.height = "100px";
-        inputSequenceResult.style.overflowY = "scroll";
-        inputSequenceResult.readOnly = "true";
-        inputSequenceResult.style.resize = "none";
-        contentDiv.appendChild(inputSequenceResult);
+        let output = createOutputs(contentDiv, "textarea", "inputSequenceResult");
+        output.style.width = "474px";
+        output.style.height = "100px";
+        output.style.overflowY = "scroll";
+        output.style.resize = "none";
 
         panel.appendChild(contentDiv);
 
-        let submitButton = document.createElement("button");
-        submitButton.className = "custom_button";
-        submitButton.innerHTML = "Submit";
-        panel.appendChild(submitButton);
-
-        submitButton.addEventListener("click", submitSequence);
+        createSubmitButtons(panel, submitSequence);
     }
 }
 
@@ -547,118 +446,53 @@ function managePrimeNumbersPanel() {
     } else {
         verifyExistence();
 
-        let panel = document.createElement("div");
-        panel.id = "nthPrimeNumbersPanel";
-        panel.className = "panel";
-        document.body.appendChild(panel);
-
-        let radioInput = document.createElement("input");
-        radioInput.type = "radio";
-        radioInput.id = "nthPrimeNumbers";
-        radioInput.name = "primeNumbers";
-        radioInput.className = "check";
-        panel.appendChild(radioInput);
-
-        let title = document.createElement("h3");
-        title.innerHTML = "N-th Prime Number"
-        title.className = "title";
-        panel.appendChild(title);
+        let panel = createPanels("nthPrimeNumbersPanel");
+        createRadioInputs(panel, "nthPrimeNumbers", "primeNumbers");
+        createTitles(panel, "N-th Prime Number");
 
         let contentDiv = document.createElement("div");
         contentDiv.className = "content";
 
-        let text = document.createElement("span");
-        text.innerHTML = "Select N: ";
-        contentDiv.appendChild(text);
-
-        let inputNumber = document.createElement("input");
-        inputNumber.type = "number";
-        inputNumber.className = "number_input";
-        inputNumber.id = "primeNumber";
+        createTexts(contentDiv, "Select N: ");
+        let inputNumber = createInputs(contentDiv, "number",  "primeNumber");
         inputNumber.min = "0";
-        contentDiv.appendChild(inputNumber);
 
         let brake = document.createElement("br");
         contentDiv.appendChild(brake);
 
-        text = document.createElement("span");
-        text.innerHTML = "Your N-th prime number is: ";
-        contentDiv.appendChild(text);
-
-        let inputPrimeNumbersResult = document.createElement("input");
-        inputPrimeNumbersResult.type = "text";
-        inputPrimeNumbersResult.className = "number_input";
-        inputPrimeNumbersResult.id = "inputPrimeNumbersResult";
-        inputPrimeNumbersResult.readOnly = "true";
-        contentDiv.appendChild(inputPrimeNumbersResult);
-
+        createTexts(contentDiv, "Your N-th prime number is: ");
+        createOutputs(contentDiv, "input", "inputPrimeNumbersResult");
         panel.appendChild(contentDiv);
 
-        let submitButton = document.createElement("button");
-        submitButton.className = "custom_button";
-        submitButton.innerHTML = "Submit";
-        panel.appendChild(submitButton);
+        createSubmitButtons(panel, submitPrimeNumber);
 
-        submitButton.addEventListener("click", submitPrimeNumber);
-
-        panel = document.createElement("div");
-        panel.id = "primeNumbersPanel";
-        panel.className = "panel";
+        panel = createPanels("primeNumbersPanel");
         panel.style.width = "370px"
-        document.body.appendChild(panel);
 
-        radioInput = document.createElement("input");
-        radioInput.type = "radio";
-        radioInput.id = "nPrimeNumbers";
-        radioInput.name = "primeNumbers";
-        radioInput.className = "check";
-        panel.appendChild(radioInput);
-
-        title = document.createElement("h3");
-        title.innerHTML = "First N Prime Numbers"
-        title.className = "title";
-        panel.appendChild(title);
+        createRadioInputs(panel, "nPrimeNumbers", "primeNumbers");
+        createTitles(panel, "First N Prime Numbers");
 
         contentDiv = document.createElement("div");
         contentDiv.className = "content";
+        createTexts(contentDiv, "Select N: ");
 
-        text = document.createElement("span");
-        text.innerHTML = "Select N: ";
-        contentDiv.appendChild(text);
-
-        inputNumber = document.createElement("input");
-        inputNumber.type = "number";
-        inputNumber.className = "number_input";
-        inputNumber.id = "nPrimeNumber";
+        inputNumber = createInputs(contentDiv, "number", "nPrimeNumber");
         inputNumber.min = "0";
-        contentDiv.appendChild(inputNumber);
 
         brake = document.createElement("br");
         contentDiv.appendChild(brake);
 
-        text = document.createElement("span");
-        text.innerHTML = "Your first N prime numbers: ";
-        contentDiv.appendChild(text);
+        createTexts(contentDiv, "Your first N prime numbers: ");
 
-        inputPrimeNumbersResult = document.createElement("textarea");
-        inputPrimeNumbersResult.type = "text";
-        inputPrimeNumbersResult.className = "number_input";
-        inputPrimeNumbersResult.id = "inputNPrimeNumbersResult";
-        inputPrimeNumbersResult.style.width = "334px";
-        inputPrimeNumbersResult.style.height = "100px";
-        inputPrimeNumbersResult.style.overflowY = "scroll";
-        inputPrimeNumbersResult.readOnly = "true";
-        inputPrimeNumbersResult.style.resize = "none";
-        contentDiv.appendChild(inputPrimeNumbersResult);
+        let output = createOutputs(contentDiv, "textarea", "inputNPrimeNumbersResult");
+        output.style.width = "334px";
+        output.style.height = "100px";
+        output.style.overflowY = "scroll";
+        output.style.resize = "none";
 
         panel.appendChild(contentDiv);
 
-        submitButton = document.createElement("button");
-        submitButton.className = "custom_button";
-        submitButton.innerHTML = "Submit";
-        panel.appendChild(submitButton);
-
-        submitButton.addEventListener("click", submitPrimeNumber);
+        createSubmitButtons(panel, submitPrimeNumber);
     }
 }
 
@@ -717,115 +551,48 @@ function manageRomanNumberPanel() {
 
         verifyExistence();
 
-        let panel = document.createElement("div");
-        panel.id = "arabToRomanPanel";
-        panel.className = "panel";
+        let panel = createPanels("arabToRomanPanel");
         panel.style.width = "370px"
-        document.body.appendChild(panel);
 
-        let radioInput = document.createElement("input");
-        radioInput.type = "radio";
-        radioInput.id = "arabNumbers";
-        radioInput.name = "romanArabNumbers";
-        radioInput.className = "check";
-        panel.appendChild(radioInput);
-
-        let title = document.createElement("h3");
-        title.innerHTML = "Arab - Roman Converter";
-        title.className = "title";
-        panel.appendChild(title);
+        createRadioInputs(panel, "arabNumbers", "romanArabNumbers");
+        createTitles(panel, "Arab - Roman Converter");
 
         let contentDiv = document.createElement("div");
         contentDiv.className = "content";
+        createTexts(contentDiv, "Select number: ");
 
-        let text = document.createElement("span");
-        text.innerHTML = "Select number: ";
-        contentDiv.appendChild(text);
-
-        let inputNumber = document.createElement("input");
-        inputNumber.type = "number";
-        inputNumber.className = "number_input";
-        inputNumber.id = "arabNumber";
+        let inputNumber = createInputs(contentDiv, "number", "arabNumber");
         inputNumber.min = "-5000";
         inputNumber.max = "5000";
-        contentDiv.appendChild(inputNumber);
 
         let brake = document.createElement("br");
         contentDiv.appendChild(brake);
 
-        text = document.createElement("span");
-        text.innerHTML = "Your roman number: ";
-        contentDiv.appendChild(text);
-
-        let inputRomanNumbersResult = document.createElement("input");
-        inputRomanNumbersResult.type = "text";
-        inputRomanNumbersResult.className = "number_input";
-        inputRomanNumbersResult.id = "inputArabNumberResult";
-        inputRomanNumbersResult.readOnly = "true";
-        contentDiv.appendChild(inputRomanNumbersResult);
-
+        createTexts(contentDiv, "Your roman number: ");
+        createOutputs(contentDiv, "input", "inputArabNumberResult");
         panel.appendChild(contentDiv);
 
-        let submitButton = document.createElement("button");
-        submitButton.className = "custom_button";
-        submitButton.innerHTML = "Submit";
-        panel.appendChild(submitButton);
+        createSubmitButtons(panel, submitRomanNumber);
 
-        submitButton.addEventListener("click", submitRomanNumber);
-
-        panel = document.createElement("div");
-        panel.id = "romanToArabPanel";
-        panel.className = "panel";
+        panel = createPanels("romanToArabPanel");
         panel.style.width = "370px"
-        document.body.appendChild(panel);
 
-        radioInput = document.createElement("input");
-        radioInput.type = "radio";
-        radioInput.id = "romanNumbers";
-        radioInput.name = "romanArabNumbers";
-        radioInput.className = "check";
-        panel.appendChild(radioInput);
+        createRadioInputs(panel, "romanNumbers", "romanArabNumbers");
+        createTitles(panel, "Roman - Arab Converter");
 
         contentDiv = document.createElement("div");
         contentDiv.className = "content";
-
-        title = document.createElement("h3");
-        title.innerHTML = "Roman - Arab Converter";
-        title.className = "title";
-        panel.appendChild(title);
-
-        text = document.createElement("span");
-        text.innerHTML = "Write number: ";
-        contentDiv.appendChild(text);
-
-        inputNumber = document.createElement("input");
-        inputNumber.type = "text";
-        inputNumber.className = "number_input";
-        inputNumber.id = "romanNumber";
-        contentDiv.appendChild(inputNumber);
+        createTexts(contentDiv, "Write number: ");
+        createInputs(contentDiv, "text", "romanNumber");
 
         brake = document.createElement("br");
         contentDiv.appendChild(brake);
 
-        text = document.createElement("span");
-        text.innerHTML = "Your arab number: ";
-        contentDiv.appendChild(text);
-
-        inputRomanNumbersResult = document.createElement("input");
-        inputRomanNumbersResult.type = "number";
-        inputRomanNumbersResult.className = "number_input";
-        inputRomanNumbersResult.id = "inputRomanNumberResult";
-        inputRomanNumbersResult.readOnly = "true";
-        contentDiv.appendChild(inputRomanNumbersResult);
-
+        createTexts(contentDiv, "Your arab number: ");
+        createOutputs(contentDiv, "input", "inputRomanNumberResult");
         panel.appendChild(contentDiv);
 
-        submitButton = document.createElement("button");
-        submitButton.className = "custom_button";
-        submitButton.innerHTML = "Submit";
-        panel.appendChild(submitButton);
-
-        submitButton.addEventListener("click", submitRomanNumber);
+        createSubmitButtons(panel, submitRomanNumber);
     }
 }
 
@@ -897,37 +664,17 @@ function manageSortButton() {
     else {
         verifyExistence();
 
-        let panel = document.createElement("div");
-        panel.id = "sortPanel";
-        panel.className = "panel";
-        document.body.appendChild(panel);
-
-        let title = document.createElement("h3");
-        title.innerHTML = "Sorting"
-        title.className = "title";
-        panel.appendChild(title);
+        let panel = createPanels("sortPanel");
+        createTitles(panel, "Sorting");
 
         let contentDiv = document.createElement("div");
         contentDiv.className = "content";
 
-        let text = document.createElement("span");
-        text.innerHTML = "Generate sets: ";
-        contentDiv.appendChild(text);
-
-        let inputNumber = document.createElement("input");
-        inputNumber.type = "number";
-        inputNumber.className = "number_input";
-        inputNumber.id = "setNumber";
-        contentDiv.appendChild(inputNumber);
-
+        createTexts(contentDiv, "Generate sets: ");
+        createInputs(contentDiv, "number", "setNumber");
         panel.appendChild(contentDiv);
 
-        let submitButton = document.createElement("button");
-        submitButton.className = "custom_button";
-        submitButton.innerHTML = "Submit";
-        panel.appendChild(submitButton);
-
-        submitButton.addEventListener("click", submitSort);
+        createSubmitButtons(panel, submitSort);
      }
 }
 
@@ -1128,38 +875,31 @@ function submitSort(){
     xhrSort.send(null);
 }
 
+function createResultSets(resultPanel, stringId){
+    let resultSet = document.createElement("div");
+    resultSet.id = stringId;
+    resultSet.className = "result_set";
+    resultPanel.appendChild(resultSet);
+    return resultSet;
+}
+
+function createResultDivs(resultSet, stringId){
+    let resultDiv = document.createElement("canvas");
+    resultDiv.id = stringId;
+    resultSet.appendChild(resultDiv);
+    return resultDiv;
+}
+
 function createSortCanvases(){
-    let resultPanel = document.createElement("div");
-    resultPanel.id = "resultPanel";
-    resultPanel.className = "result_panel";
-    document.body.appendChild(resultPanel);
+    let resultPanel = createResultPanels();
 
-    let randomResultSet = document.createElement("div");
-    randomResultSet.id = "randomResultSet";
-    randomResultSet.className = "result_set";
-    resultPanel.appendChild(randomResultSet);
+    let randomResultSet = createResultSets(resultPanel, "randomResultSet");
+    let nearlySortedResultSet = createResultSets(resultPanel, "nearlySortedResultSet");
+    let reversedResultSet = createResultSets(resultPanel, "reversedResultSet");
 
-    let nearlySortedResultSet = document.createElement("div");
-    nearlySortedResultSet.id = "nearlySortedResultSet";
-    nearlySortedResultSet.className = "result_set";
-    resultPanel.appendChild(nearlySortedResultSet);
-
-    let reversedResultSet = document.createElement("div");
-    reversedResultSet.id = "reversedResultSet";
-    reversedResultSet.className = "result_set";
-    resultPanel.appendChild(reversedResultSet);
-
-    let randomResultDiv = document.createElement("canvas");
-    randomResultDiv.id = "randomSortChart";
-    randomResultSet.appendChild(randomResultDiv);
-
-    let nearlySortedResultDiv = document.createElement("canvas");
-    nearlySortedResultDiv.id = "nearlySortedSortChart";
-    nearlySortedResultSet.appendChild(nearlySortedResultDiv);
-
-    let reversedResultDiv = document.createElement("canvas");
-    reversedResultDiv.id = "reversedSortChart";
-    reversedResultSet.appendChild(reversedResultDiv);
+    let randomResultDiv = createResultDivs(randomResultSet, "randomSortChart");
+    let nearlySortedResultDiv = createResultDivs(nearlySortedResultSet, "nearlySortedSortChart");
+    let reversedResultDiv = createResultDivs(reversedResultSet, "reversedSortChart");
 }
 
 function manageMatrixButton(){
@@ -1183,141 +923,113 @@ function manageMatrixButton(){
     else {
         verifyExistence();
 
-        let panel = document.createElement("div");
-        panel.id = "matrixPanel";
-        panel.className = "panel";
-        document.body.appendChild(panel);
-
-        let title = document.createElement("h3");
-        title.innerHTML = "Matrix Product"
-        title.className = "title";
-        panel.appendChild(title);
+        let panel = createPanels("matrixPanel");
+        createTitles(panel, "Matrix Product");
 
         let contentDiv = document.createElement("div");
         contentDiv.className = "content";
 
-        let text = document.createElement("span");
-        text.innerHTML = "Generate sets: ";
-        contentDiv.appendChild(text);
-
-        let inputNumber = document.createElement("input");
-        inputNumber.type = "number";
-        inputNumber.className = "number_input";
-        inputNumber.id = "setNumber";
-        contentDiv.appendChild(inputNumber);
-
+        createTexts(contentDiv, "Generate sets: ");
+        createInputs(contentDiv, "number", "setNumber");
         panel.appendChild(contentDiv);
 
-        let submitButton = document.createElement("button");
-        submitButton.className = "custom_button";
-        submitButton.innerHTML = "Submit";
-        panel.appendChild(submitButton);
-
-        submitButton.addEventListener("click", submitMatrixProduct);
+        createSubmitButtons(panel, submitMatrixProduct);
      }
 }
 
 function submitMatrixProduct(){
-        if(document.body.contains(document.getElementById("advertisement")))
-            document.body.removeChild(document.getElementById("advertisement"));
+    if(document.body.contains(document.getElementById("advertisement")))
+        document.body.removeChild(document.getElementById("advertisement"));
 
-        var number = document.getElementById("setNumber").value;
+    var number = document.getElementById("setNumber").value;
 
-        if(!number){
-            createAdvertisement("number");
-            return;
-        }
+    if(!number){
+        createAdvertisement("number");
+        return;
+    }
 
-        if(document.body.contains(document.getElementById("resultPanel")))
-            document.body.removeChild(document.getElementById("resultPanel"));
+    if(document.body.contains(document.getElementById("resultPanel")))
+        document.body.removeChild(document.getElementById("resultPanel"));
 
-        createMatrixCanvases();
+    createMatrixCanvases();
 
-        var xhrSort = new XMLHttpRequest();
-        xhrSort.open('GET', '/matrix/' + number);
-        xhrSort.setRequestHeader("Content-Type", "application/json");
+    var xhrSort = new XMLHttpRequest();
+    xhrSort.open('GET', '/matrix/' + number);
+    xhrSort.setRequestHeader("Content-Type", "application/json");
 
-        xhrSort.onreadystatechange = function () {
-            var DONE = 4; // readyState 4 means the request is done.
-            var OK = 200; // status 200 is a successful return.
+    xhrSort.onreadystatechange = function () {
+        var DONE = 4; // readyState 4 means the request is done.
+        var OK = 200; // status 200 is a successful return.
 
-            if (xhrSort.readyState === DONE)
-                if (xhrSort.status === OK) {
-                    if(xhrSort.responseText == "invalid input")
-                        createAdvertisement("invalid input");
-                        else{
-                            var response = JSON.parse(xhrSort.responseText);
-                            console.log(response);
+        if (xhrSort.readyState === DONE)
+            if (xhrSort.status === OK) {
+                if(xhrSort.responseText == "invalid input")
+                    createAdvertisement("invalid input");
+                    else{
+                        var response = JSON.parse(xhrSort.responseText);
+                        console.log(response);
 
-                            var values = [];
-                            var sampleSizes = [];
-                            var dataSets = [];
+                        var values = [];
+                        var sampleSizes = [];
+                        var dataSets = [];
 
-                            for(var i in response){
-                                if(typeof sampleSizes[response[i].sampleSize] === "undefined")
-                                    sampleSizes.push(response[i].sampleSize);
+                        for(var i in response){
+                            if(typeof sampleSizes[response[i].sampleSize] === "undefined")
+                                sampleSizes.push(response[i].sampleSize);
 
-                                if(typeof values[response[i].algorithm.name] === "undefined")
-                                    values[response[i].algorithm.name] = [];
-                                values[response[i].algorithm.name].push(response[i].totalTime);
-                            }
-                            console.log(sampleSizes);
-
-                            dataSets.push(
-                                {
-                                    label: "Matrix Product",
-                                    backgroundColor: "blue",
-                                    data: values["Product Set"]
-                                }
-                             );
-
-                            console.log(dataSets);
-
-                            var ctx = document.getElementById('matrixChart').getContext('2d');
-                            var randomChart = new Chart(ctx, {
-                                type: 'bar',
-                                data: {
-                                        labels: sampleSizes,
-                                        datasets: dataSets
-                                },
-                                options: {
-                                    title: {
-                                            display: true,
-                                            text: 'Matrix Product'
-                                    },
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    scales: {
-                                        yAxes: [{
-                                            ticks: {
-                                                beginAtZero: true
-                                            }
-                                        }]
-                                    }
-                                }
-                            });
+                            if(typeof values[response[i].algorithm.name] === "undefined")
+                                values[response[i].algorithm.name] = [];
+                            values[response[i].algorithm.name].push(response[i].totalTime);
                         }
-                    }
+                        console.log(sampleSizes);
 
-        };
-        xhrSort.send(null);
+                        dataSets.push(
+                            {
+                                label: "Matrix Product",
+                                backgroundColor: "blue",
+                                data: values["Product Set"]
+                            }
+                         );
+
+                        console.log(dataSets);
+
+                        var ctx = document.getElementById('matrixChart').getContext('2d');
+                        var randomChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                    labels: sampleSizes,
+                                    datasets: dataSets
+                            },
+                            options: {
+                                title: {
+                                        display: true,
+                                        text: 'Matrix Product'
+                                },
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    }
+                }
+
+    };
+    xhrSort.send(null);
 }
 
 function createMatrixCanvases(){
-    let resultPanel = document.createElement("div");
-    resultPanel.id = "resultPanel";
-    resultPanel.className = "result_panel";
-    document.body.appendChild(resultPanel);
+    let resultPanel = createResultPanels();
 
-    let resultSet = document.createElement("div");
-    resultSet.id = "resultSet";
-    resultSet.className = "result_set";
+    let resultSet = createResultSets(resultPanel, "resultSet");
     resultSet.style.height = "98%";
-    resultPanel.appendChild(resultSet);
 
-    let resultDiv = document.createElement("canvas");
-    resultDiv.id = "matrixChart";
-    resultSet.appendChild(resultDiv);
+    let resultDiv = createResultDivs(resultSet, "matrixChart");
 }
 
 function createAdvertisement(message) {
@@ -1392,24 +1104,5 @@ function verifyExistence() {
             document.body.removeChild(document.getElementById("resultPanel"));
     }
 
-}
-
-function createMatrixCanvases(){
-    let resultPanel = document.createElement("div");
-    resultPanel.id = "resultPanel";
-    resultPanel.className = "result_panel";
-    resultPanel.style.height = "200px";
-    resultPanel.classList.add("show_div");
-    document.body.appendChild(resultPanel);
-
-    let resultSet = document.createElement("div");
-    resultSet.id = "resultSet";
-    resultSet.className = "result_set";
-    resultSet.style.height = "98%";
-    resultPanel.appendChild(resultSet);
-
-    let resultDiv = document.createElement("canvas");
-    resultDiv.id = "matrixChart";
-    resultSet.appendChild(resultDiv);
 }
 
