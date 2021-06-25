@@ -190,6 +190,11 @@ function createSubmitButtons(panel, eventName){
     submitButton.addEventListener("click", eventName);
 }
 
+function createBrakes(contentDiv){
+    let brake = document.createElement("br");
+    contentDiv.appendChild(brake);
+}
+
 function manageRandomNumberPanel() {
 
     if (document.body.contains(document.getElementById("randomNumberPanel"))) {
@@ -311,17 +316,12 @@ function manageSequenceGenerator() {
         inputNumber.min = "0";
         inputNumber.max = "10000000";
 
-        brake = document.createElement("br");
-        contentDiv.appendChild(brake);
-
+        createBrakes(contentDiv);
         createTexts(contentDiv, "Generate numbers between: ");
         createInputs(contentDiv, "number", "minimNumber");
         createTexts(contentDiv, " and ");
         createInputs(contentDiv, "number", "maximNumber");
-
-        brake = document.createElement("br");
-        contentDiv.appendChild(brake);
-
+        createBrakes(contentDiv);
         createTexts(contentDiv, "Select the distribution: ");
 
         let inputDistribution = document.createElement("input");
@@ -361,9 +361,7 @@ function manageSequenceGenerator() {
         inputFrequency.style.width = "95px";
         contentDiv.appendChild(inputFrequency);
 
-        brake = document.createElement("br");
-        contentDiv.appendChild(brake);
-
+        createBrakes(contentDiv);
         createTexts(contentDiv, "Your sequence: ");
 
         let output = createOutputs(contentDiv, "textarea", "inputSequenceResult");
@@ -457,9 +455,7 @@ function managePrimeNumbersPanel() {
         let inputNumber = createInputs(contentDiv, "number",  "primeNumber");
         inputNumber.min = "0";
 
-        let brake = document.createElement("br");
-        contentDiv.appendChild(brake);
-
+        createBrakes(contentDiv);
         createTexts(contentDiv, "Your N-th prime number is: ");
         createOutputs(contentDiv, "input", "inputPrimeNumbersResult");
         panel.appendChild(contentDiv);
@@ -479,9 +475,7 @@ function managePrimeNumbersPanel() {
         inputNumber = createInputs(contentDiv, "number", "nPrimeNumber");
         inputNumber.min = "0";
 
-        brake = document.createElement("br");
-        contentDiv.appendChild(brake);
-
+        createBrakes(contentDiv);
         createTexts(contentDiv, "Your first N prime numbers: ");
 
         let output = createOutputs(contentDiv, "textarea", "inputNPrimeNumbersResult");
@@ -565,9 +559,7 @@ function manageRomanNumberPanel() {
         inputNumber.min = "-5000";
         inputNumber.max = "5000";
 
-        let brake = document.createElement("br");
-        contentDiv.appendChild(brake);
-
+        createBrakes(contentDiv);
         createTexts(contentDiv, "Your roman number: ");
         createOutputs(contentDiv, "input", "inputArabNumberResult");
         panel.appendChild(contentDiv);
@@ -584,10 +576,7 @@ function manageRomanNumberPanel() {
         contentDiv.className = "content";
         createTexts(contentDiv, "Write number: ");
         createInputs(contentDiv, "text", "romanNumber");
-
-        brake = document.createElement("br");
-        contentDiv.appendChild(brake);
-
+        createBrakes(contentDiv);
         createTexts(contentDiv, "Your arab number: ");
         createOutputs(contentDiv, "input", "inputRomanNumberResult");
         panel.appendChild(contentDiv);
@@ -671,7 +660,8 @@ function manageSortButton() {
         contentDiv.className = "content";
 
         createTexts(contentDiv, "Generate sets: ");
-        createInputs(contentDiv, "number", "setNumber");
+        let sortInput = createInputs(contentDiv, "number", "setNumber");
+        sortInput.min = 1;
         panel.appendChild(contentDiv);
 
         createSubmitButtons(panel, submitSort);
@@ -930,7 +920,8 @@ function manageMatrixButton(){
         contentDiv.className = "content";
 
         createTexts(contentDiv, "Generate sets: ");
-        createInputs(contentDiv, "number", "setNumber");
+        let matrixInput = createInputs(contentDiv, "number", "setNumber");
+        matrixInput.min = 1;
         panel.appendChild(contentDiv);
 
         createSubmitButtons(panel, submitMatrixProduct);
@@ -1037,10 +1028,17 @@ function createAdvertisement(message) {
     advertisement.id = "advertisement";
     advertisement.className = "advertisement";
 
-    let title = document.createTextNode("Alert!")
-    let titleSpan = document.createElement("span");
-    titleSpan.className = "title_span";
-    titleSpan.appendChild(title);
+    let closeDiv = document.createElement("img");
+    closeDiv.src = "/images/close_button.png"
+    closeDiv.className = "close_button";
+    advertisement.appendChild(closeDiv);
+
+    let title = document.createElement("span");
+    title.innerHTML = "Alert!";
+    title.className = "title_span";
+    advertisement.appendChild(title);
+
+    createBrakes(advertisement);
 
     let text;
     if (message == "not checked")
@@ -1052,19 +1050,13 @@ function createAdvertisement(message) {
     else if (message == "minim greater then maxim")
         text = "Invalid input. <br> << " + message + " >>";
     else text = "You need to choose a " + message + ".";
+
     let textSpan = document.createElement("span");
     textSpan.className = "text_span";
     textSpan.innerHTML = text;
 
-    let closeDiv = document.createElement("div");
-    closeDiv.innerHTML = "x";
-    closeDiv.className = "close_button";
-
-    advertisement.appendChild(titleSpan);
     advertisement.appendChild(textSpan);
-    advertisement.appendChild(closeDiv);
     document.body.appendChild(advertisement);
-
     advertisement.classList.add("appear");
 
     closeDiv.addEventListener("click", function () {

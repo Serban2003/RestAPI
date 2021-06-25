@@ -205,14 +205,6 @@ body {
     margin: 5px;
 }
 
-.close_button {
-    position: absolute;
-    top: 1px;
-    right: 5px;
-    user-select: none;
-    cursor: pointer;
-}
-
 .check {
     float: left;
     display: inline-block;
@@ -272,30 +264,30 @@ body {
 }
 
 .advertisement {
-    position: absolute;
-    top: 590px;
-    left: 2px;
-    width: 300px;
-    height: 90px;
+    display: inline-block;
+    background-color: red;
     font-size: 15px;
     color: white;
-    margin-top: 5px;
+    padding: 10px;
+    margin: 10px;
     background-color: #F44336;
     border: 1px solid #eb2c1e;
-    border-radius: 5px;
+}
+
+.close_button {
+    display: inline-block;
+    user-select: none;
+    cursor: pointer;
+    width: 10px;
+    float: right;
 }
 
 .title_span {
-    position: absolute;
-    font-size: 22px;
-    top: 6px;
-    left: 8px;
+    display: inline-block;
 }
 
 .text_span {
-    position: absolute;
-    top: 31px;
-    left: 8px;
+    display: inline-block;
 }
 
 /* Sorting */
