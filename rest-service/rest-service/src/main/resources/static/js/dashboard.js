@@ -1,14 +1,11 @@
 window.onload = function () {
 
-    document.getElementById("loader").style.top = window.innerHeight / 2 - 250 + "px";
-    document.getElementById("loading_message").style.top = window.innerHeight / 2 - 50 + "px";
-
     setTimeout(function () {
         document.getElementById("background").classList.add("disappear");
         setTimeout(function () {
             document.body.removeChild(document.getElementById("background"));
-        }, 600);
-    }, 1000);
+        }, 1200);
+    }, 3000);
 
     var menuIcon = document.getElementById('menu_icon');
     var menu = document.getElementById('menu');
