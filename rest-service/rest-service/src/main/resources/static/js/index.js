@@ -21,7 +21,6 @@ function createRegistration() {
     let panel = document.createElement("div");
     panel.id = "user_form"
     panel.className = "user_form";
-    panel.style.height = "315px";
 
     document.body.appendChild(panel);
 
@@ -31,21 +30,8 @@ function createRegistration() {
     createFields("email");
     createFields("address");
 
-    document.getElementById("label_firstname").style.top = "8px";
-    document.getElementById("label_lastname").style.top = "60px";
-    document.getElementById("label_password").style.top = "112px";
-    document.getElementById("label_email").style.top = "164px";
-    document.getElementById("label_address").style.top = "216px";
-
-    document.getElementById("firstname").style.top = "30px";
-    document.getElementById("lastname").style.top = "82px";
-    document.getElementById("password").style.top = "134px";
-    document.getElementById("email").style.top = "186px";
-    document.getElementById("address").style.top = "238px";
-
     let submitButton = document.createElement("button");
     submitButton.className = "submit_button";
-    submitButton.style.top = "275px";
     submitButton.innerHTML = "Create account";
     submitButton.addEventListener("click", registerUser);
     panel.appendChild(submitButton);
@@ -212,7 +198,6 @@ function createSignIn() {
 
     titleSpan.appendChild(title);
     titleSpan.className = "register_title";
-    titleSpan.style.marginLeft = "-40px";
     titleSpan.id = "title_span"
 
     document.body.appendChild(titleSpan);
@@ -220,22 +205,14 @@ function createSignIn() {
     let panel = document.createElement("div");
     panel.id = "user_form"
     panel.className = "user_form";
-    panel.style.height = "159px";
 
     document.body.appendChild(panel);
 
     createFields("email");
     createFields("password");
 
-    document.getElementById("label_email").style.top = "8px";
-    document.getElementById("label_password").style.top = "60px";
-
-    document.getElementById("email").style.top = "30px";
-    document.getElementById("password").style.top = "82px";
-
     let submitButton = document.createElement("button");
     submitButton.className = "submit_button";
-    submitButton.style.top = "119px"
     submitButton.innerHTML = "Login";
     submitButton.addEventListener("click", loginUser);
     panel.appendChild(submitButton);
