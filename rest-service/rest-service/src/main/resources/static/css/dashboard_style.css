@@ -1,6 +1,10 @@
 body {
     font-family: sans-serif;
     margin: 0;
+    background-image: url("/images/dashboardBackgroundGrey.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 /* Banner */
@@ -9,19 +13,23 @@ body {
     height: 80px;
     border: 1px solid black;
     border-radius: 0px 0px 5px 5px;
-    background-color: rgb(207, 205, 205);
+    background-color: #292b2f;
+    box-shadow: 0px 3px 10px black;
 }
 
 /* Menu */
 .menu {
     display:inline-block;
     margin: 2px;
+    padding: 5px;
     float: left;
     border: solid 0.5px black;
     border-radius: 5px;
     width: 40px;
-    background-color: rgb(207, 205, 205);
+    background-color: #292b2f;
     overflow: hidden;
+    z-index: 2;
+    box-shadow: 3px 3px 10px black;
 }
 
 .menu_icon {
@@ -75,15 +83,20 @@ body {
 }
 
 .custom_button {
-    width: 90%;
-   	margin: 5px;
+    width: 100%;
+    margin-top: 5px;
     border-radius: 10px;
     border: rgb(131, 131, 131)(114, 99, 99) solid 1px;
+    background-color: #b9bbbe;
     outline: none;
     font-size: 16px;
     padding-top: 5px;
     padding-bottom: 5px;
     overflow: hidden;
+}
+
+.custom_button:hover{
+    background-color: #ccced1;
 }
 
 @keyframes iconAnimation {
@@ -183,16 +196,16 @@ body {
 /* Random Number */
 
 .panel {
+    color: white;
     display: inline-block;
     border: solid 0.5px black;
-    text-align: center;
     border-radius: 5px;
     font-size: 18px;
     float: left;
-    width: 500px;
     padding: 10px;
     margin: 10px 0px 10px 10px;
-    background-color: rgb(207, 205, 205);
+    padding-right: 10px;
+    background-color: #474952;
 }
 
 .number_input {
@@ -200,7 +213,7 @@ body {
     width: 100px;
     font-size: 18px;
     border-radius: 5px;
-    margin: 5px;
+    margin: 5px 0px 5px 0px;
 }
 
 .check {
@@ -210,9 +223,11 @@ body {
 }
 
 .title{
-    display: inline-block;
-    margin-top: 10px;
-    margin-left: -20px;
+    text-align: center;
+}
+
+.custom_text{
+    margin: 0px 5px 0px 5px;
 }
 
 .content{
@@ -314,7 +329,7 @@ body {
     top: 0%;
     width: 100%;
     height: 100%;
-    background-color: #2D2E2D;
+    background-color: #2f3136;
     z-index: 99;
 }
 

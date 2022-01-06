@@ -95,7 +95,7 @@ function deleteIcons(menu){
 
 function createIcon(menu, stringId, eventName){
     let icon = document.createElement("img");
-    icon.src = "/images/" + stringId + ".png";
+    icon.src = "/images/MenuIcons/white/" + stringId + ".png?2";
     icon.className = "menu_icon";
     icon.id = stringId;
     menu.appendChild(icon);
@@ -154,6 +154,7 @@ function createTitles(panel, content){
 function createTexts(panel, content){
     let text = document.createElement("span");
     text.innerHTML = content;
+    text.className = "custom_text";
     panel.appendChild(text);
 }
 
@@ -218,6 +219,7 @@ function manageRandomNumberPanel() {
         createInputs(contentDiv, "number", "randomNumber1")
         createTexts(contentDiv, " and ");
         createInputs(contentDiv, "number", "randomNumber2")
+        createBrakes(contentDiv);
         createTexts(contentDiv, "Your number is: ");
         createOutputs(contentDiv, "input", "randomNumberResult");
         panel.appendChild(contentDiv);
@@ -302,7 +304,6 @@ function manageSequenceGenerator() {
         verifyExistence();
 
         let panel = createPanels("sequenceGeneratorPanel");
-        panel.style.width = "510px"
         createTitles(panel, "Number Sequence Generator");
 
         contentDiv = document.createElement("div");
@@ -360,15 +361,14 @@ function manageSequenceGenerator() {
 
         createBrakes(contentDiv);
         createTexts(contentDiv, "Your sequence: ");
-
+        createBrakes(contentDiv);
         let output = createOutputs(contentDiv, "textarea", "inputSequenceResult");
-        output.style.width = "474px";
+        output.style.width = "100%";
         output.style.height = "100px";
         output.style.overflowY = "scroll";
         output.style.resize = "none";
 
         panel.appendChild(contentDiv);
-
         createSubmitButtons(panel, submitSequence);
     }
 }
@@ -460,7 +460,6 @@ function managePrimeNumbersPanel() {
         createSubmitButtons(panel, submitPrimeNumber);
 
         panel = createPanels("primeNumbersPanel");
-        panel.style.width = "370px"
 
         createRadioInputs(panel, "nPrimeNumbers", "primeNumbers");
         createTitles(panel, "First N Prime Numbers");
@@ -474,6 +473,7 @@ function managePrimeNumbersPanel() {
 
         createBrakes(contentDiv);
         createTexts(contentDiv, "Your first N prime numbers: ");
+        createBrakes(contentDiv);
 
         let output = createOutputs(contentDiv, "textarea", "inputNPrimeNumbersResult");
         output.style.width = "334px";
@@ -543,7 +543,6 @@ function manageRomanNumberPanel() {
         verifyExistence();
 
         let panel = createPanels("arabToRomanPanel");
-        panel.style.width = "370px"
 
         createRadioInputs(panel, "arabNumbers", "romanArabNumbers");
         createTitles(panel, "Arab - Roman Converter");
@@ -564,7 +563,6 @@ function manageRomanNumberPanel() {
         createSubmitButtons(panel, submitRomanNumber);
 
         panel = createPanels("romanToArabPanel");
-        panel.style.width = "370px"
 
         createRadioInputs(panel, "romanNumbers", "romanArabNumbers");
         createTitles(panel, "Roman - Arab Converter");
@@ -1026,7 +1024,7 @@ function createAdvertisement(message) {
     advertisement.className = "advertisement";
 
     let closeDiv = document.createElement("img");
-    closeDiv.src = "/images/close_button.png"
+    closeDiv.src = "/images/menuIcons/white/close_icon.png"
     closeDiv.className = "close_button";
     advertisement.appendChild(closeDiv);
 
