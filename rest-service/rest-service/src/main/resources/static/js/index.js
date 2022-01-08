@@ -135,57 +135,6 @@ function registerUser() {
     }
 }
 
-function createAdvertisement(message, type) {
-    let advertisement = document.createElement('div');
-    advertisement.id = "advertisement";
-    advertisement.className = "advertisement";
-
-    let title = document.createTextNode("Alert!")
-    let titleSpan = document.createElement("span");
-    titleSpan.className = "title_span";
-    titleSpan.appendChild(title);
-
-    let text = document.createTextNode("To proceed, please type your " + message + ".");
-    if (message == "user exist") {
-        text = document.createTextNode("An user with this email is already registered. Please log in to continue.");
-        advertisement.style.height = "70px";
-    }
-    if (message == "user doesn't exist") {
-        text = document.createTextNode("No user exists with this email. Please register.");
-        advertisement.style.height = "70px";
-    }
-    if (message == "wrong password")
-        text = document.createTextNode("Wrong password. Please try again.");
-
-    let textSpan = document.createElement("span");
-    textSpan.className = "text_span";
-    textSpan.appendChild(text);
-
-    let close = document.createTextNode("x");
-    let closeDiv = document.createElement("div");
-    closeDiv.className = "close_div";
-
-    if (type == 1)
-        advertisement.style.top = "430px";
-    else advertisement.style.top = "275px";
-    closeDiv.appendChild(close);
-
-    advertisement.appendChild(titleSpan);
-    advertisement.appendChild(textSpan);
-    advertisement.appendChild(closeDiv);
-    document.body.appendChild(advertisement);
-
-    advertisement.classList.add("appear");
-
-    closeDiv.addEventListener("click", function () {
-        closeDiv.removeAttribute("click");
-        advertisement.classList.add("disappear");
-        setTimeout(function () {
-            document.body.removeChild(advertisement);
-        }, 600);
-    });
-}
-
 function createSignIn() {
 
     if (document.body.contains(document.getElementById("title_span"))) {

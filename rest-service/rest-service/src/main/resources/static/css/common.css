@@ -1,0 +1,61 @@
+.advertisement {
+    position: fixed;
+    font-size: 20px;
+    color: white;
+    padding: 10px;
+    background-color: #F44336;
+    border: 1px solid #eb2c1e;
+    bottom: 0px;
+    width: 100%;
+}
+
+.close_button {
+    float: right;
+    margin: 0px 25px 0px 0px;
+    user-select: none;
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+}
+
+@keyframes animationwow {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        display: none;
+        opacity: 1;
+    }
+}
+
+.appear {
+    animation-name: animationwow;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes animationnotwow {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        display: none;
+        opacity: 0;
+    }
+}
+
+.disappear {
+    animation-name: animationnotwow;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+}

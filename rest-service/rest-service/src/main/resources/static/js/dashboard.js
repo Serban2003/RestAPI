@@ -188,10 +188,6 @@ function createSubmitButtons(panel, eventName){
     submitButton.addEventListener("click", eventName);
 }
 
-function createBrakes(contentDiv){
-    let brake = document.createElement("br");
-    contentDiv.appendChild(brake);
-}
 
 function manageRandomNumberPanel() {
 
@@ -1016,51 +1012,6 @@ function createMatrixCanvases(){
     resultSet.style.height = "98%";
 
     let resultDiv = createResultDivs(resultSet, "matrixChart");
-}
-
-function createAdvertisement(message) {
-    let advertisement = document.createElement('div');
-    advertisement.id = "advertisement";
-    advertisement.className = "advertisement";
-
-    let closeDiv = document.createElement("img");
-    closeDiv.src = "/images/menuIcons/white/close_icon.png"
-    closeDiv.className = "close_button";
-    advertisement.appendChild(closeDiv);
-
-    let title = document.createElement("span");
-    title.innerHTML = "Alert!";
-    title.className = "title_span";
-    advertisement.appendChild(title);
-
-    createBrakes(advertisement);
-
-    let text;
-    if (message == "not checked")
-        text = "Please select a method by clicking the check circle located at the top-left corner of each method.";
-    else if (message == "invalid roman input")
-        text = "Please write a valid roman number.";
-    else if (message == "invalid input")
-        text = "Invalid input. <br> << frequency * ( maxim - minim + 1) >= number of numbers >>"
-    else if (message == "minim greater then maxim")
-        text = "Invalid input. <br> << " + message + " >>";
-    else text = "You need to choose a " + message + ".";
-
-    let textSpan = document.createElement("span");
-    textSpan.className = "text_span";
-    textSpan.innerHTML = text;
-
-    advertisement.appendChild(textSpan);
-    document.body.appendChild(advertisement);
-    advertisement.classList.add("appear");
-
-    closeDiv.addEventListener("click", function () {
-        closeDiv.removeAttribute("click");
-        advertisement.classList.add("disappear");
-        setTimeout(function () {
-            document.body.removeChild(advertisement);
-        }, 600);
-    });
 }
 
 function verifyExistence() {
