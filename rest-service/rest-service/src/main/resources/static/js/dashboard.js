@@ -1,4 +1,24 @@
+
 window.onload = function () {
+
+    const collapsedClass = "nav--collapsed";
+    const lsKey = "navCollapsed";
+
+    const nav = document.querySelector(".nav");
+    const navBorder = document.querySelector(".nav__border");
+    const navIcon = document.getElementById("nav-icon");
+
+    if(localStorage.getItem(lsKey) === "true"){
+        nav.classList.add(collapsedClass);
+        navIcon.classList.remove("hide_site_icon");
+    }
+    else navIcon.classList.add("hide_site_icon");
+
+    navBorder.addEventListener("click", () =>{
+        nav.classList.toggle(collapsedClass);
+        navIcon.classList.toggle("hide_site_icon");
+        localStorage.setItem(lsKey, nav.classList.contains(collapsedClass));
+    });
 
     setTimeout(function () {
         document.getElementById("background").classList.add("disappear");
@@ -6,42 +26,6 @@ window.onload = function () {
             document.body.removeChild(document.getElementById("background"));
         }, 1200);
     }, 3000);
-
-    var menuIcon = document.getElementById('menu_icon');
-    var menu = document.getElementById('menu');
-
-    createIcons(menu);
-
-    menuIcon.addEventListener("click", function () {
-        if (menu.classList.contains("menu_expanded")) {
-            menu.classList.remove("menu_expanded");
-            menuIcon.classList.remove("transition_in");
-
-            menu.classList.add("menu_out")
-            menuIcon.classList.add("transition_out");
-
-            setTimeout(function () {
-                menuIcon.style.pointerEvents = "none";
-                deleteButtons(menu);
-                createIcons(menu);
-
-                setTimeout(function () {
-                    menuIcon.classList.remove("transition_out");
-                    menu.classList.remove("menu_out");
-                    setTimeout(function () {
-                         menuIcon.style.pointerEvents = "auto";
-                    }, 500);
-                }, 300);
-            }, 200);
-
-        } else {
-            menu.classList.add("menu_expanded");
-            menuIcon.style.pointerEvents = "auto";
-            menuIcon.classList.add("transition_in");
-            createButtons(menu);
-            deleteIcons(menu);
-        }
-    });
 }
 
 function createPanels(stringId){
@@ -58,87 +42,6 @@ function createResultPanels(stringId){
     resultPanel.className = "result_panel";
     document.body.appendChild(resultPanel);
     return resultPanel;
-}
-
-function createIcons(menu){
-    var time = 120;
-    createIcon(menu, "random_number_generator_icon", manageRandomNumberPanel);
-    setTimeout(function () {
-        createIcon(menu, "number_sequence_generator_icon", manageSequenceGenerator);
-        setTimeout(function () {
-            createIcon(menu, "prime_numbers_icon", managePrimeNumbersPanel);
-            setTimeout(function () {
-                createIcon(menu, "roman_numbers_icon", manageRomanNumberPanel);
-                setTimeout(function () {
-                    createIcon(menu, "binary_numbers_icon", manageBinaryNumbersPanel());
-                    setTimeout(function () {
-                        createIcon(menu, "sorting_icon", manageNumberSorter);
-                        setTimeout(function () {
-                            createIcon(menu, "matrix_icon", manageSortButton);
-                            setTimeout(function () {
-                                createIcon(menu, "matrix_icon", manageMatrixButton);
-                            }, time);
-                        }, time);
-                    }, time);
-                }, time);
-            }, time);
-        }, time);
-    }, time);
-}
-
-function deleteIcons(menu){
-    menu.removeChild(document.getElementById("random_number_generator_icon"));
-    menu.removeChild(document.getElementById("number_sequence_generator_icon"));
-    menu.removeChild(document.getElementById("prime_numbers_icon"));
-    menu.removeChild(document.getElementById("roman_numbers_icon"));
-    menu.removeChild(document.getElementById("binary_numbers_icon"));
-    menu.removeChild(document.getElementById("number_sorter_icon"));
-    menu.removeChild(document.getElementById("sorting_icon"));
-    menu.removeChild(document.getElementById("matrix_icon"));
-}
-
-function createIcon(menu, stringId, eventName){
-    let icon = document.createElement("img");
-    icon.src = "/images/MenuIcons/white/" + stringId + ".png?2";
-    icon.className = "menu_icon";
-    icon.id = stringId;
-    menu.appendChild(icon);
-
-    setTimeout(function () {
-        document.getElementById(stringId).classList.add("icon_in");
-        icon.addEventListener("click", eventName);
-    }, 110);
-}
-
-function createMenuButton(menu, stringId, eventName, name){
-    let button = document.createElement("button");
-    button.id = stringId;
-    button.className = "custom_button";
-    button.innerHTML = name;
-    button.addEventListener("click", eventName);
-    menu.appendChild(button);
-}
-
-function createButtons(menu) {
-    createMenuButton(menu, "randomNumberButton", manageRandomNumberPanel, "Random Number Generator");
-    createMenuButton(menu, "sequenceGeneratorButton", manageSequenceGenerator, "Number Sequence Generator");
-    createMenuButton(menu, "primeNumbersButton", managePrimeNumbersPanel, "Prime Numbers");
-    createMenuButton(menu, "romanNumberButton", manageRomanNumberPanel, "Roman Numbers");
-    createMenuButton(menu, "binaryNumbersButton", manageBinaryNumbersPanel, "Binary Converter");
-    createMenuButton(menu, "numberSorterButton",  manageNumberSorter, "Number Sorter");
-    createMenuButton(menu, "sortButton",  manageSortButton, "Sorting");
-    createMenuButton(menu, "matrixButton",  manageMatrixButton, "Matrix");
-}
-
-function deleteButtons(menu) {
-    menu.removeChild(document.getElementById("randomNumberButton"));
-    menu.removeChild(document.getElementById("primeNumbersButton"));
-    menu.removeChild(document.getElementById("sequenceGeneratorButton"));
-    menu.removeChild(document.getElementById("romanNumberButton"));
-    menu.removeChild(document.getElementById("binaryNumbersButton"));
-    menu.removeChild(document.getElementById("numberSorterButton"));
-    menu.removeChild(document.getElementById("sortButton"));
-    menu.removeChild(document.getElementById("matrixButton"));
 }
 
 function createRadioInputs(panel, stringId, name){
@@ -207,7 +110,6 @@ function createSubmitButtons(panel, eventName){
 
     submitButton.addEventListener("click", eventName);
 }
-
 
 function manageRandomNumberPanel() {
 
@@ -722,7 +624,7 @@ function submitBinaryNumber(){
 function manageNumberSorter(){
 }
 
-function manageSortButton() {
+function manageSort() {
     if (document.body.contains(document.getElementById("sortPanel")) && document.body.contains(document.getElementById("resultPanel"))) {
         document.getElementById("sortPanel").classList.add("disappear");
         document.getElementById("resultPanel").classList.add("disappear");
@@ -982,7 +884,7 @@ function createSortCanvases(){
     let reversedResultDiv = createResultDivs(reversedResultSet, "reversedSortChart");
 }
 
-function manageMatrixButton(){
+function manageMatrix(){
     if (document.body.contains(document.getElementById("matrixPanel")) && document.body.contains(document.getElementById("resultPanel"))) {
         document.getElementById("matrixPanel").classList.add("disappear");
         document.getElementById("resultPanel").classList.add("disappear");

@@ -1,20 +1,112 @@
-body {
-    font-family: sans-serif;
+:root{
+    --nav-icon-width: 75px;
+    --nav-border-width: 10px;
+    --main-color: #140941;
+    --main-color-light: #261569;
+    --main-color-light-var: #201259;
+    --accent-color: #e00740;
+    --accent-color-dark: #ff0041;
+}
+html,
+body{
+    height: 100%;
     margin: 0;
+    font-family: sans-serif;
     background-image: url('/images/dashboardBackgroundGrey.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
 }
 
+.page-container{
+    height: inherit;
+    display: flex;
+}
+
+.main{
+    height: inherit;
+    padding: 0;
+    padding-left: var(--nav-border-width);
+    overflow-y: auto;
+}
+.nav{
+    width: 275px;
+    height: inherit;
+    position: relative;
+    background-color: var(--main-color-light);
+    transition: width 0.2s;
+    font-size: 20px;
+    flex-shrink:  0;
+}
+
+.material-icons{
+    color: var(--accent-color);
+}
+.nav--collapsed{
+    width: var(--nav-icon-width);
+}
+.nav--collapsed .nav__label{
+    display: none;
+}
+
+.nav h1{
+    white-space: nowrap;
+    transition: all 0.2s;
+    overflow: hidden;
+}
+
+.nav__item{
+    display: flex;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+    border-bottom: 1px solid var(--main-color);
+}
+.nav__item:last-child{
+    border: 0;
+}
+.nav__item:hover{
+    background-color: var(--main-color-light-var);
+}
+.nav__icon-container{
+    width: var(--nav-icon-width);
+    height: var(--nav-icon-width);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.nav__border{
+    position: absolute;
+    left: 100%;
+    top: 0;
+    width: var(--nav-border-width);
+    height: inherit;
+    background-color: var(--accent-color);
+    transition: background-color 0.2s;
+    cursor: ew-resize;
+}
+.nav__border:hover{
+    background-color: var(--accent-color-dark);
+}
+
+.hide_site_icon{
+    display: none;
+}
+
+.show_site_icon{
+    display: block;
+}
 /* Banner */
 
 .banner {
     height: 80px;
-    border: 1px solid black;
-    border-radius: 0px 0px 5px 5px;
-    background-color: #292b2f;
-    box-shadow: 0px 3px 10px black;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--main-color);
+    background-color: var(--main-color);
+    box-shadow:  0 4px 2px -2px rgba(0, 0 , 0, 0.5);
 }
 
 /* Menu */
@@ -29,7 +121,7 @@ body {
     background-color: #292b2f;
     overflow: hidden;
     z-index: 2;
-    box-shadow: 3px 3px 10px black;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
 
 .menu_icon {

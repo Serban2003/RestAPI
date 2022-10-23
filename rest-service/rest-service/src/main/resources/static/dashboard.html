@@ -1,8 +1,9 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/dashboard_style.css?3">
+    <link rel="stylesheet" type="text/css" href="/css/dashboard_style.css?4">
     <link rel="stylesheet" type="text/css" href="/css/common.css?1">
     <link rel="icon" type="image/png" href="/images/favicon-32x32.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="/js/Chart.min.js"></script>
     <script type="text/javascript" src="/js/dashboard.js?4"></script>
     <script type="text/javascript" src="/js/common.js?2"></script>
@@ -14,12 +15,66 @@
         <img src="images/loading_icon.gif" class="loader">
     </div>
 
-    <div class="banner">
-        <h1 style="text-align:center; color: white;">Rest-API-Service</h1>
-    </div>
+    <div class="page-container">
 
-    <div class="menu" id="menu">
-        <img src="/images/MenuIcons/black/menu3.png" class="menu_icon" id="menu_icon" style="opacity: 100% !important;">
+        <nav class="nav">
+            <div class="nav__border"></div>
+            <div class="banner">
+                <div class="nav__icon-container" id="nav-icon">
+                </div>
+                <h1 class="nav__label" style="color:white; margin: auto;">Rest-API-Service</h1>
+            </div>
+            <div class="nav__item" onclick="manageRandomNumberPanel()">
+                <div class="nav__icon-container">
+                    <i class="material-icons">casino</i>
+                </div>
+                <span class="nav__label">Random Number Generator</span>
+            </div>
+            <div class="nav__item" onclick="manageSequenceGenerator()">
+                <div class="nav__icon-container">
+                    <i class="material-icons">pin</i>
+                </div>
+                <span class="nav__label">Number Sequence Generator</span>
+            </div>
+            <div class="nav__item" onclick="managePrimeNumbersPanel()">
+                <div class="nav__icon-container">
+                    <i class="material-icons">dashboard</i>
+                </div>
+                <span class="nav__label">Prime Numbers</span>
+            </div>
+            <div class="nav__item" onclick="manageRomanNumberPanel()">
+                <div class="nav__icon-container">
+                    <i class="material-icons">dashboard</i>
+                </div>
+                <span class="nav__label">Roman Numbers</span>
+            </div>
+            <div class="nav__item" onclick="manageBinaryNumbersPanel()">
+                <div class="nav__icon-container">
+                    <i class="material-icons">money</i>
+                </div>
+                <span class="nav__label">Binary Numbers</span>
+            </div>
+            <div class="nav__item" onclick="manageNumberSorter()">
+                <div class="nav__icon-container">
+                    <i class="material-icons">sort</i>
+                </div>
+                <span class="nav__label">Number Sorter</span>
+            </div>
+            <div class="nav__item" onclick="manageSort()">
+                <div class="nav__icon-container">
+                    <i class="material-icons">sort</i>
+                </div>
+                <span class="nav__label">Sorter</span>
+            </div><div class="nav__item" onclick="manageMatrix()">
+            <div class="nav__icon-container">
+                <i class="material-icons">numbers</i>
+            </div>
+            <span class="nav__label">Matrix</span>
+        </div>
+        </nav>
+
+        <div class="main" >
+        </div>
     </div>
 </body>
 </html>
