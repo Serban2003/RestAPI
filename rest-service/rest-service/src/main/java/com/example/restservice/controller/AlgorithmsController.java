@@ -5,6 +5,7 @@ import com.example.restservice.algorithms.general.AlgorithmsGenerator;
 import com.example.restservice.algorithms.general.EratosthenesSieve;
 import com.example.restservice.algorithms.general.RandomPerson;
 import com.example.restservice.algorithms.numbers.ArabToRoman;
+import com.example.restservice.algorithms.numbers.BinaryConverter;
 import com.example.restservice.algorithms.numbers.NumbersSequenceGenerator;
 import com.example.restservice.algorithms.numbers.RomanToArab;
 import com.example.restservice.db.CustomDb;
@@ -80,6 +81,13 @@ public class AlgorithmsController {
     public String transformArabToRoman(@RequestParam(name = "number", required = true, defaultValue = "0") int number) {
         ArabToRoman romanNumber = new ArabToRoman();
         return romanNumber.transform(number);
+    }
+
+    @ResponseBody
+    @PostMapping("/algorithms/binaryConverter")
+    public String convertBinaryNumber(@RequestParam(name = "number", required = true, defaultValue = "0") String number, @RequestParam(name = "primaryBase", required = true, defaultValue = "Binary") String primaryBase, @RequestParam(name = "finalBase", required = true, defaultValue = "Binary") String finalBase) {
+        BinaryConverter binaryConverter = new BinaryConverter(number, primaryBase, finalBase);
+        return binaryConverter.convertNumber();
     }
 
     @ResponseBody

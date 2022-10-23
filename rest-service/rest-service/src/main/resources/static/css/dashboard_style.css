@@ -1,7 +1,7 @@
 body {
     font-family: sans-serif;
     margin: 0;
-    background-image: url("/images/dashboardBackgroundGrey.png");
+    background-image: url('/images/dashboardBackgroundGrey.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -84,9 +84,10 @@ body {
 
 .custom_button {
     width: 100%;
+    height: auto;
     margin-top: 5px;
     border-radius: 10px;
-    border: rgb(131, 131, 131)(114, 99, 99) solid 1px;
+    border: rgb(131, 131, 131);(114, 99, 99) solid 1px;
     background-color: #b9bbbe;
     outline: none;
     font-size: 16px;

@@ -70,11 +70,14 @@ function createIcons(menu){
             setTimeout(function () {
                 createIcon(menu, "roman_numbers_icon", manageRomanNumberPanel);
                 setTimeout(function () {
-                    createIcon(menu, "number_sorter_icon", manageNumberSorter);
+                    createIcon(menu, "binary_numbers_icon", manageBinaryNumbersPanel());
                     setTimeout(function () {
-                        createIcon(menu, "sorting_icon", manageSortButton);
+                        createIcon(menu, "sorting_icon", manageNumberSorter);
                         setTimeout(function () {
-                            createIcon(menu, "matrix_icon", manageMatrixButton);
+                            createIcon(menu, "matrix_icon", manageSortButton);
+                            setTimeout(function () {
+                                createIcon(menu, "matrix_icon", manageMatrixButton);
+                            }, time);
                         }, time);
                     }, time);
                 }, time);
@@ -88,6 +91,7 @@ function deleteIcons(menu){
     menu.removeChild(document.getElementById("number_sequence_generator_icon"));
     menu.removeChild(document.getElementById("prime_numbers_icon"));
     menu.removeChild(document.getElementById("roman_numbers_icon"));
+    menu.removeChild(document.getElementById("binary_numbers_icon"));
     menu.removeChild(document.getElementById("number_sorter_icon"));
     menu.removeChild(document.getElementById("sorting_icon"));
     menu.removeChild(document.getElementById("matrix_icon"));
@@ -120,6 +124,7 @@ function createButtons(menu) {
     createMenuButton(menu, "sequenceGeneratorButton", manageSequenceGenerator, "Number Sequence Generator");
     createMenuButton(menu, "primeNumbersButton", managePrimeNumbersPanel, "Prime Numbers");
     createMenuButton(menu, "romanNumberButton", manageRomanNumberPanel, "Roman Numbers");
+    createMenuButton(menu, "binaryNumbersButton", manageBinaryNumbersPanel, "Binary Converter");
     createMenuButton(menu, "numberSorterButton",  manageNumberSorter, "Number Sorter");
     createMenuButton(menu, "sortButton",  manageSortButton, "Sorting");
     createMenuButton(menu, "matrixButton",  manageMatrixButton, "Matrix");
@@ -130,6 +135,7 @@ function deleteButtons(menu) {
     menu.removeChild(document.getElementById("primeNumbersButton"));
     menu.removeChild(document.getElementById("sequenceGeneratorButton"));
     menu.removeChild(document.getElementById("romanNumberButton"));
+    menu.removeChild(document.getElementById("binaryNumbersButton"));
     menu.removeChild(document.getElementById("numberSorterButton"));
     menu.removeChild(document.getElementById("sortButton"));
     menu.removeChild(document.getElementById("matrixButton"));
@@ -166,6 +172,20 @@ function createInputs(panel, type, stringId){
     panel.appendChild(inputNumber);
 
     return inputNumber;
+}
+
+function createDropdownList(panel, options, stringId){
+    let list = document.createElement("select");
+    list.id = stringId;
+    list.className = "number_input";
+    panel.appendChild(list);
+
+    for(var i = 0; i < options.length; ++i){
+        var option = document.createElement("option");
+        option.value = options[i];
+        option.text = options[i];
+        list.appendChild(option);
+    }
 }
 
 function createOutputs(panel, typeOfInput, stringId){
@@ -415,7 +435,7 @@ function submitSequence() {
 
         if (xhrSequence.readyState === DONE)
             if (xhrSequence.status === OK) {
-                if(xhrSequence.responseText == "invalid input")
+                if(xhrSequence.responseText === "invalid input")
                     createAdvertisement("invalid input");
                     else document.getElementById("inputSequenceResult").value = xhrSequence.responseText;
             }
@@ -618,6 +638,85 @@ function submitRomanNumber() {
             }
     };
     xhrRomanNumber.send(null);
+}
+
+function manageBinaryNumbersPanel(){
+    if (document.body.contains(document.getElementById("binaryNumbersPanel"))) {
+        document.getElementById("binaryNumbersPanel").classList.add("disappear");
+
+        setTimeout(function () {
+            document.body.removeChild(document.getElementById("binaryNumbersPanel"));
+        }, 500);
+
+    } else {
+
+        verifyExistence();
+
+        let convertTypes = ["Binary", "Octal", "Decimal", "Hexadecimal"];
+
+        let panel = createPanels("binaryNumbersPanel");
+
+       // createRadioInputs(panel, "arabNumbers", "romanArabNumbers");
+        createTitles(panel, "Binary Converter");
+
+        let contentDiv = document.createElement("div");
+        contentDiv.className = "content";
+        createTexts(contentDiv, "Type number: ");
+        createInputs(contentDiv, "text", "binaryNumberInput");
+        createBrakes(contentDiv);
+
+        createTexts(contentDiv, "Select your number base: ");
+        createDropdownList(contentDiv, convertTypes, "primaryBaseNumberInput");
+        createBrakes(contentDiv);
+
+        createTexts(contentDiv, "In what base do you want to convert your number? ");
+        createDropdownList(contentDiv, convertTypes, "finalBaseNumberInput");
+        createBrakes(contentDiv);
+
+        createTexts(contentDiv, "Your converted number: ");
+        createOutputs(contentDiv, "input", "inputBinaryNumbersResult");
+        panel.appendChild(contentDiv);
+
+        createSubmitButtons(panel, submitBinaryNumber);
+    }
+}
+
+function submitBinaryNumber(){
+    if(document.body.contains(document.getElementById("advertisement")))
+        document.body.removeChild(document.getElementById("advertisement"));
+
+    var xhrBinaryNumbers = new XMLHttpRequest();
+    if (document.body.contains(document.getElementById("advertisement")))
+        document.body.removeChild(document.getElementById("advertisement"));
+
+    var inputNumber = document.getElementById("binaryNumberInput").value;
+    var primaryBase = document.getElementById("primaryBaseNumberInput").value;
+    var finalBase = document.getElementById("finalBaseNumberInput").value;
+
+    if(!inputNumber){
+        createAdvertisement("type number");
+        return;
+    }
+    if(!primaryBase || !finalBase){
+        createAdvertisement("invalid base");
+        return;
+    }
+
+    xhrBinaryNumbers.open('POST', "/algorithms/binaryConverter?number=" + inputNumber + '&primaryBase=' + primaryBase + '&finalBase=' + finalBase);
+    xhrBinaryNumbers.setRequestHeader("Content-Type", "application/json");
+
+    // Track the state changes of the request.
+    xhrBinaryNumbers.onreadystatechange = function () {
+        var DONE = 4; // readyState 4 means the request is done.
+        var OK = 200; // status 200 is a successful return.
+
+        if (xhrBinaryNumbers.readyState === DONE)
+            if (xhrBinaryNumbers.status === OK) {
+                if (xhrBinaryNumbers.responseText === 0) createAdvertisement("error");
+                else document.getElementById("inputBinaryNumbersResult").value = xhrBinaryNumbers.responseText;
+            }
+    };
+    xhrBinaryNumbers.send(null);
 }
 
 function manageNumberSorter(){
@@ -1031,6 +1130,8 @@ function verifyExistence() {
         main.removeChild(document.getElementById("romanToArabPanel"));
     if (main.contains(document.getElementById("arabToRomanPanel")))
         main.removeChild(document.getElementById("arabToRomanPanel"));
+    if (main.contains(document.getElementById("binaryNumbersPanel")))
+        main.removeChild(document.getElementById("binaryNumbersPanel"));
     if (main.contains(document.getElementById("sortPanel"))){
         main.removeChild(document.getElementById("sortPanel"));
         if(document.body.contains(document.getElementById("resultPanel")))

@@ -3,8 +3,6 @@ function createAdvertisement(message) {
     advertisement.id = "advertisement";
     advertisement.className = "advertisement";
 
-
-
     let title = document.createElement("span");
     title.innerHTML = "Alert!";
     advertisement.appendChild(title);
@@ -17,20 +15,26 @@ function createAdvertisement(message) {
     createBrakes(advertisement);
 
     let text;
-    if (message == "user exist")
+    if (message === "user exist")
         text = document.createTextNode("An user with this email is already registered. Please log in to continue.");
-    else if (message == "user doesn't exist")
+    else if (message === "user doesn't exist")
         text = document.createTextNode("No user exists with this email. Please register.");
-    else if (message == "wrong password")
+    else if (message === "wrong password")
         text = document.createTextNode("Wrong password. Please try again.");
-    else if (message == "not checked")
+    else if (message === "error")
+        text = "Ups! Something bad happened.";
+    else if (message === "not checked")
         text = "Please select a method by clicking the check circle located at the top-left corner of each method.";
-    else if (message == "invalid roman input")
+    else if (message === "invalid roman input")
         text = "Please write a valid roman number.";
-    else if (message == "invalid input")
+    else if (message === "invalid input")
         text = "Invalid input. <br> << frequency * ( maxim - minim + 1) >= number of numbers >>"
-    else if (message == "minim greater then maxim")
+    else if (message === "minim greater then maxim")
         text = "Invalid input. <br> << " + message + " >>";
+    else if (message === "type number")
+        text = "Please type an input number.";
+    else if (message === "invalid base")
+        text = "Please choose a numerical base.";
     else text = "You need to choose a " + message + ".";
 
     let textSpan = document.createElement("span");
