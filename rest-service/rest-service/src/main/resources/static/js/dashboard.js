@@ -1,4 +1,6 @@
 
+var mainPage;
+
 window.onload = function () {
 
     const collapsedClass = "nav--collapsed";
@@ -7,6 +9,8 @@ window.onload = function () {
     const nav = document.querySelector(".nav");
     const navBorder = document.querySelector(".nav__border");
     const navIcon = document.getElementById("nav-icon");
+
+    mainPage = document.getElementById("main")
 
     if(localStorage.getItem(lsKey) === "true"){
         nav.classList.add(collapsedClass);
@@ -32,7 +36,7 @@ function createPanels(stringId){
     let panel = document.createElement("div");
     panel.id = stringId;
     panel.className = "panel";
-    document.body.appendChild(panel);
+    mainPage.appendChild(panel);
     return panel;
 }
 
@@ -40,7 +44,7 @@ function createResultPanels(stringId){
     let resultPanel = document.createElement("div");
     resultPanel.id = "resultPanel";
     resultPanel.className = "result_panel";
-    document.body.appendChild(resultPanel);
+    mainPage.appendChild(resultPanel);
     return resultPanel;
 }
 
@@ -113,13 +117,13 @@ function createSubmitButtons(panel, eventName){
 
 function manageRandomNumberPanel() {
 
-    if (document.body.contains(document.getElementById("randomNumberPanel"))) {
+    if (mainPage.contains(document.getElementById("randomNumberPanel"))) {
         document.getElementById("randomNumberPanel").classList.add("disappear");
         document.getElementById("randomPersonPanel").classList.add("disappear");
 
         setTimeout(function () {
-            document.body.removeChild(document.getElementById("randomNumberPanel"));
-            document.body.removeChild(document.getElementById("randomPersonPanel"));
+            mainPage.removeChild(document.getElementById("randomNumberPanel"));
+            mainPage.removeChild(document.getElementById("randomPersonPanel"));
         }, 500);
 
 
@@ -162,8 +166,8 @@ function manageRandomNumberPanel() {
 
 function submitRandomNumber() {
 
-    if(document.body.contains(document.getElementById("advertisement")))
-            document.body.removeChild(document.getElementById("advertisement"));
+    if(mainPage.contains(document.getElementById("advertisement")))
+            mainPage.removeChild(document.getElementById("advertisement"));
 
     if (document.getElementById("randomNumberRadio").checked) {
          var minim = document.getElementById("randomNumber1").value;
@@ -210,11 +214,11 @@ function submitRandomNumber() {
 
 function manageSequenceGenerator() {
 
-    if (document.body.contains(document.getElementById("sequenceGeneratorPanel"))) {
+    if (mainPage.contains(document.getElementById("sequenceGeneratorPanel"))) {
         document.getElementById("sequenceGeneratorPanel").classList.add("disappear");
 
         setTimeout(function () {
-            document.body.removeChild(document.getElementById("sequenceGeneratorPanel"));
+            mainPage.removeChild(document.getElementById("sequenceGeneratorPanel"));
         }, 500);
 
     } else {
@@ -293,8 +297,8 @@ function manageSequenceGenerator() {
 
 function submitSequence() {
 
-    if(document.body.contains(document.getElementById("advertisement")))
-        document.body.removeChild(document.getElementById("advertisement"));
+    if(mainPage.contains(document.getElementById("advertisement")))
+        mainPage.removeChild(document.getElementById("advertisement"));
 
     var number = document.getElementById("sequenceNumber").value;
     var distribution = document.getElementById("sequenceDistribution").value;
@@ -347,13 +351,13 @@ function submitSequence() {
 
 function managePrimeNumbersPanel() {
 
-    if (document.body.contains(document.getElementById("nthPrimeNumbersPanel"))) {
+    if (mainPage.contains(document.getElementById("nthPrimeNumbersPanel"))) {
         document.getElementById("nthPrimeNumbersPanel").classList.add("disappear");
         document.getElementById("primeNumbersPanel").classList.add("disappear");
 
         setTimeout(function () {
-            document.body.removeChild(document.getElementById("nthPrimeNumbersPanel"));
-            document.body.removeChild(document.getElementById("primeNumbersPanel"));
+            mainPage.removeChild(document.getElementById("nthPrimeNumbersPanel"));
+            mainPage.removeChild(document.getElementById("primeNumbersPanel"));
         }, 500);
 
     } else {
@@ -407,8 +411,8 @@ function managePrimeNumbersPanel() {
 
 function submitPrimeNumber() {
 
-    if(document.body.contains(document.getElementById("advertisement")))
-            document.body.removeChild(document.getElementById("advertisement"));
+    if(mainPage.contains(document.getElementById("advertisement")))
+            mainPage.removeChild(document.getElementById("advertisement"));
 
     var number, id, path;
 
@@ -447,13 +451,13 @@ function submitPrimeNumber() {
 
 function manageRomanNumberPanel() {
 
-    if (document.body.contains(document.getElementById("arabToRomanPanel"))) {
+    if (mainPage.contains(document.getElementById("arabToRomanPanel"))) {
         document.getElementById("arabToRomanPanel").classList.add("disappear");
         document.getElementById("romanToArabPanel").classList.add("disappear");
 
         setTimeout(function () {
-            document.body.removeChild(document.getElementById("arabToRomanPanel"));
-            document.body.removeChild(document.getElementById("romanToArabPanel"));
+            mainPage.removeChild(document.getElementById("arabToRomanPanel"));
+            mainPage.removeChild(document.getElementById("romanToArabPanel"));
         }, 500);
 
     } else {
@@ -500,14 +504,14 @@ function manageRomanNumberPanel() {
 
 function submitRomanNumber() {
 
-    if(document.body.contains(document.getElementById("advertisement")))
-            document.body.removeChild(document.getElementById("advertisement"));
+    if(mainPage.contains(document.getElementById("advertisement")))
+            mainPage.removeChild(document.getElementById("advertisement"));
 
     var number, id, path;
 
     var xhrRomanNumber = new XMLHttpRequest();
-    if (document.body.contains(document.getElementById("advertisement")))
-        document.body.removeChild(document.getElementById("advertisement"));
+    if (mainPage.contains(document.getElementById("advertisement")))
+        mainPage.removeChild(document.getElementById("advertisement"));
 
     if (document.getElementById("arabNumbers").checked) {
         number = document.getElementById("arabNumber").value;
@@ -543,11 +547,11 @@ function submitRomanNumber() {
 }
 
 function manageBinaryNumbersPanel(){
-    if (document.body.contains(document.getElementById("binaryNumbersPanel"))) {
+    if (mainPage.contains(document.getElementById("binaryNumbersPanel"))) {
         document.getElementById("binaryNumbersPanel").classList.add("disappear");
 
         setTimeout(function () {
-            document.body.removeChild(document.getElementById("binaryNumbersPanel"));
+            mainPage.removeChild(document.getElementById("binaryNumbersPanel"));
         }, 500);
 
     } else {
@@ -584,12 +588,12 @@ function manageBinaryNumbersPanel(){
 }
 
 function submitBinaryNumber(){
-    if(document.body.contains(document.getElementById("advertisement")))
-        document.body.removeChild(document.getElementById("advertisement"));
+    if(mainPage.contains(document.getElementById("advertisement")))
+        mainPage.removeChild(document.getElementById("advertisement"));
 
     var xhrBinaryNumbers = new XMLHttpRequest();
-    if (document.body.contains(document.getElementById("advertisement")))
-        document.body.removeChild(document.getElementById("advertisement"));
+    if (mainPage.contains(document.getElementById("advertisement")))
+        mainPage.removeChild(document.getElementById("advertisement"));
 
     var inputNumber = document.getElementById("binaryNumberInput").value;
     var primaryBase = document.getElementById("primaryBaseNumberInput").value;
@@ -625,21 +629,21 @@ function manageNumberSorter(){
 }
 
 function manageSort() {
-    if (document.body.contains(document.getElementById("sortPanel")) && document.body.contains(document.getElementById("resultPanel"))) {
+    if (mainPage.contains(document.getElementById("sortPanel")) && mainPage.contains(document.getElementById("resultPanel"))) {
         document.getElementById("sortPanel").classList.add("disappear");
         document.getElementById("resultPanel").classList.add("disappear");
 
         setTimeout(function () {
-            document.body.removeChild(document.getElementById("sortPanel"));
-            document.body.removeChild(document.getElementById("resultPanel"));
+            mainPage.removeChild(document.getElementById("sortPanel"));
+            mainPage.removeChild(document.getElementById("resultPanel"));
         }, 500);
 
 
-    }else if(document.body.contains(document.getElementById("sortPanel"))){
+    }else if(mainPage.contains(document.getElementById("sortPanel"))){
         document.getElementById("sortPanel").classList.add("disappear");
 
         setTimeout(function () {
-            document.body.removeChild(document.getElementById("sortPanel"));
+            mainPage.removeChild(document.getElementById("sortPanel"));
         }, 500);
     }
     else {
@@ -661,8 +665,8 @@ function manageSort() {
 }
 
 function submitSort(){
-    if(document.body.contains(document.getElementById("advertisement")))
-        document.body.removeChild(document.getElementById("advertisement"));
+    if(mainPage.contains(document.getElementById("advertisement")))
+        mainPage.removeChild(document.getElementById("advertisement"));
 
     var number = document.getElementById("setNumber").value;
 
@@ -671,8 +675,8 @@ function submitSort(){
         return;
     }
 
-    if(document.body.contains(document.getElementById("resultPanel")))
-        document.body.removeChild(document.getElementById("resultPanel"));
+    if(mainPage.contains(document.getElementById("resultPanel")))
+        mainPage.removeChild(document.getElementById("resultPanel"));
 
     createSortCanvases();
 
@@ -885,21 +889,21 @@ function createSortCanvases(){
 }
 
 function manageMatrix(){
-    if (document.body.contains(document.getElementById("matrixPanel")) && document.body.contains(document.getElementById("resultPanel"))) {
+    if (mainPage.contains(document.getElementById("matrixPanel")) && mainPage.contains(document.getElementById("resultPanel"))) {
         document.getElementById("matrixPanel").classList.add("disappear");
         document.getElementById("resultPanel").classList.add("disappear");
 
         setTimeout(function () {
-            document.body.removeChild(document.getElementById("matrixPanel"));
-            document.body.removeChild(document.getElementById("resultPanel"));
+            mainPage.removeChild(document.getElementById("matrixPanel"));
+            mainPage.removeChild(document.getElementById("resultPanel"));
         }, 500);
 
 
-    }else if(document.body.contains(document.getElementById("matrixPanel"))){
+    }else if(mainPage.contains(document.getElementById("matrixPanel"))){
         document.getElementById("matrixPanel").classList.add("disappear");
 
         setTimeout(function () {
-            document.body.removeChild(document.getElementById("matrixPanel"));
+            mainPage.removeChild(document.getElementById("matrixPanel"));
         }, 500);
     }
     else {
@@ -921,8 +925,8 @@ function manageMatrix(){
 }
 
 function submitMatrixProduct(){
-    if(document.body.contains(document.getElementById("advertisement")))
-        document.body.removeChild(document.getElementById("advertisement"));
+    if(mainPage.contains(document.getElementById("advertisement")))
+        mainPage.removeChild(document.getElementById("advertisement"));
 
     var number = document.getElementById("setNumber").value;
 
@@ -931,8 +935,8 @@ function submitMatrixProduct(){
         return;
     }
 
-    if(document.body.contains(document.getElementById("resultPanel")))
-        document.body.removeChild(document.getElementById("resultPanel"));
+    if(mainPage.contains(document.getElementById("resultPanel")))
+        mainPage.removeChild(document.getElementById("resultPanel"));
 
     createMatrixCanvases();
 
@@ -1016,7 +1020,7 @@ function createMatrixCanvases(){
 }
 
 function verifyExistence() {
-    var main = document.body;
+    var main = mainPage;
 
     if (main.contains(document.getElementById("randomNumberPanel"))){
         main.removeChild(document.getElementById("randomNumberPanel"));
@@ -1036,13 +1040,13 @@ function verifyExistence() {
         main.removeChild(document.getElementById("binaryNumbersPanel"));
     if (main.contains(document.getElementById("sortPanel"))){
         main.removeChild(document.getElementById("sortPanel"));
-        if(document.body.contains(document.getElementById("resultPanel")))
-            document.body.removeChild(document.getElementById("resultPanel"));
+        if(mainPage.contains(document.getElementById("resultPanel")))
+            mainPage.removeChild(document.getElementById("resultPanel"));
     }
     if (main.contains(document.getElementById("matrixPanel"))){
         main.removeChild(document.getElementById("matrixPanel"));
-        if(document.body.contains(document.getElementById("resultPanel")))
-            document.body.removeChild(document.getElementById("resultPanel"));
+        if(mainPage.contains(document.getElementById("resultPanel")))
+            mainPage.removeChild(document.getElementById("resultPanel"));
     }
 
 }
