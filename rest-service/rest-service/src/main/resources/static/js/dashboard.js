@@ -49,12 +49,16 @@ function createResultPanels(stringId){
 }
 
 function createRadioInputs(panel, stringId, name){
+    let radioLabel = document.createElement("label");
+    radioLabel.className = "container";
+
     let radioInput = document.createElement("input");
     radioInput.type = "radio";
     radioInput.id = stringId;
     radioInput.name = name;
-    radioInput.className = "check";
-    panel.appendChild(radioInput);
+
+    radioLabel.appendChild(radioInput);
+    panel.appendChild(radioLabel);
 }
 
 function createTitles(panel, content){
