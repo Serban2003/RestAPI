@@ -1,5 +1,4 @@
-
-var mainPage;
+let mainPage;
 
 window.onload = function () {
 
@@ -40,7 +39,7 @@ function createPanels(stringId){
     return panel;
 }
 
-function createResultPanels(stringId){
+function createResultPanels(){
     let resultPanel = document.createElement("div");
     resultPanel.id = "resultPanel";
     resultPanel.className = "result_panel";
@@ -91,8 +90,8 @@ function createDropdownList(panel, options, stringId){
     list.className = "number_input";
     panel.appendChild(list);
 
-    for(var i = 0; i < options.length; ++i){
-        var option = document.createElement("option");
+    for(let i = 0; i < options.length; ++i){
+        const option = document.createElement("option");
         option.value = options[i];
         option.text = options[i];
         list.appendChild(option);
@@ -511,9 +510,9 @@ function submitRomanNumber() {
     if(mainPage.contains(document.getElementById("advertisement")))
             mainPage.removeChild(document.getElementById("advertisement"));
 
-    var number, id, path;
+    let number, id, path;
 
-    var xhrRomanNumber = new XMLHttpRequest();
+    const xhrRomanNumber = new XMLHttpRequest();
     if (mainPage.contains(document.getElementById("advertisement")))
         mainPage.removeChild(document.getElementById("advertisement"));
 
@@ -538,12 +537,12 @@ function submitRomanNumber() {
 
     // Track the state changes of the request.
     xhrRomanNumber.onreadystatechange = function () {
-        var DONE = 4; // readyState 4 means the request is done.
-        var OK = 200; // status 200 is a successful return.
+        const DONE = 4; // readyState 4 means the request is done.
+        const OK = 200; // status 200 is a successful return.
 
         if (xhrRomanNumber.readyState === DONE)
             if (xhrRomanNumber.status === OK) {
-                if (xhrRomanNumber.responseText == 0) createAdvertisement("invalid roman input");
+                if (xhrRomanNumber.responseText === 0) createAdvertisement("invalid roman input");
                 else document.getElementById(id).value = xhrRomanNumber.responseText;
             }
     };
@@ -694,17 +693,17 @@ function submitSort(){
 
         if (xhrSort.readyState === DONE)
             if (xhrSort.status === OK) {
-                if(xhrSort.responseText == "invalid input")
+                if(xhrSort.responseText === "invalid input")
                     createAdvertisement("invalid input");
                     else{
-                        var response = JSON.parse(xhrSort.responseText);
+                        const response = JSON.parse(xhrSort.responseText);
                         console.log(response);
 
-                        var values = [];
-                        var sampleSizes = [];
-                        var dataSets = [];
+                        const values = [];
+                        const sampleSizes = [];
+                        let dataSets = [];
 
-                        for(var i in response){
+                        for(const i in response){
                             if(typeof sampleSizes[response[i].sampleSize] === "undefined")
                                 sampleSizes.push(response[i].sampleSize);
 
@@ -954,7 +953,7 @@ function submitMatrixProduct(){
 
         if (xhrSort.readyState === DONE)
             if (xhrSort.status === OK) {
-                if(xhrSort.responseText == "invalid input")
+                if(xhrSort.responseText === "invalid input")
                     createAdvertisement("invalid input");
                     else{
                         var response = JSON.parse(xhrSort.responseText);

@@ -1,18 +1,18 @@
-<html>
+<html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="/css/dashboard_style.css?2">
     <link rel="stylesheet" type="text/css" href="/css/common.css?1">
-    <link rel="icon" type="image/png" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" href="/images/site_icon_no_back.svg">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="/js/Chart.min.js"></script>
-    <script type="text/javascript" src="/js/dashboard.js?5"></script>
+    <script type="text/javascript" src="/js/dashboard.js?6"></script>
     <script type="text/javascript" src="/js/common.js?2"></script>
 
     <title>Dashboard</title>
 </head>
 <body>
     <div class="back" id="background">
-        <img src="images/loading_icon.gif" class="loader">
+        <div class="loader">LOADING</div>
     </div>
 
     <div class="page-container">
@@ -21,6 +21,7 @@
             <div class="nav__border"></div>
             <div class="banner">
                 <div class="nav__icon-container" id="nav-icon">
+                    <img src="images/site_icon_no_back.svg" alt="Rest-Api">
                 </div>
                 <h1 class="nav__label" style="color:white; margin: auto;">Rest-API-Service</h1>
             </div>
@@ -65,19 +66,17 @@
                     <i class="material-icons">sort</i>
                 </div>
                 <span class="nav__label">Sorter</span>
-            </div><div class="nav__item" onclick="manageMatrix()">
-            <div class="nav__icon-container">
-                <i class="material-icons">numbers</i>
             </div>
-            <span class="nav__label">Matrix</span>
-        </div>
+            <div class="nav__item" onclick="manageMatrix()">
+                <div class="nav__icon-container">
+                    <i class="material-icons">numbers</i>
+                </div>
+                <span class="nav__label">Matrix</span>
+            </div>
         </nav>
 
         <div class="main" id="main" >
-<!--            <label class="container">-->
-<!--                <input type="radio"  name="radio">-->
-<!--                <span class="checkmark"></span>-->
-<!--            </label>-->
+
         </div>
     </div>
 </body>
