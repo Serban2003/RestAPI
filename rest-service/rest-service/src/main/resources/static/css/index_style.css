@@ -1,4 +1,4 @@
-body{
+body {
     margin: 0;
     font-family: sans-serif;
     background-image: url('/images/backgrounds.svg');
@@ -8,7 +8,7 @@ body{
     align-content: center;
 }
 
-.user_form{
+.user_form {
     padding: 0 25px 25px 25px;
     border-radius: 20px;
     box-shadow: 2px 2px 5px var(--shadow-color);
@@ -17,30 +17,30 @@ body{
     backdrop-filter: blur(10px);
 }
 
-.user_form h1{
+.user_form h1 {
     color: var(--accent-color);
     font-size: 50px;
     text-align: center;
 }
 
-.user_form label{
+.user_form label {
     color: var(--main-color-white);
     font-size: 28px;
 }
 
-.user_form a{
+.user_form a {
     text-decoration: none;
     color: var(--accent-color);
     font-size: 21px;
     pointer-events: initial;
 }
 
-.user_form input[type="submit"]{
+.user_form input[type="submit"] {
     margin-top: 10px;
     font-size: 25px;
 }
 
-.message{
+.message {
     font-size: 16px;
 }
 
@@ -53,14 +53,15 @@ body{
     pointer-events: none;
 }
 
-input{
+input {
     width: 400px;
     font-size: 25px;
     margin: 10px 0 20px 0;
-    padding: 5px 10px; !important
+    padding: 5px 10px;
+!important
 }
 
-input[type="checkbox"]{
+input[type="checkbox"] {
     appearance: none;
     background-color: var(--main-color-light-var);
     margin: 0;
@@ -77,7 +78,7 @@ input[type="checkbox"]{
     pointer-events: initial;
 }
 
-input[type="checkbox"]:hover{
+input[type="checkbox"]:hover {
     background-color: var(--main-color-light-var2);
 }
 

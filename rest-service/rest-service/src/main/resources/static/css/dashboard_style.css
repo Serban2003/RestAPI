@@ -24,10 +24,11 @@ body {
     width: 275px;
     height: inherit;
     position: relative;
-    background-color: var(--main-color-light);
     transition: width 0.2s;
     font-size: 20px;
     flex-shrink: 0;
+    background-color: rgba(57, 62, 70, 0.80);
+    backdrop-filter: blur(10px);
 }
 
 .material-icons {
@@ -56,6 +57,7 @@ body {
     cursor: pointer;
     overflow: hidden;
     border-bottom: 1px solid var(--main-color);
+    transition: background-color 0.2s;
 }
 
 .nav__item:last-child {
@@ -63,7 +65,7 @@ body {
 }
 
 .nav__item:hover {
-    background-color: var(--main-color-light-var);
+    background-color: rgba(136, 136, 136, 0.2);
 }
 
 .nav__icon-container {
@@ -235,8 +237,9 @@ input[type="radio"]:focus {
     float: left;
     padding: 10px;
     margin: 10px 0 10px 10px;
-    background-color: var(--main-color-light);
     box-shadow: 2px 2px 5px var(--shadow-color);
+    background-color: rgba(57, 62, 70, 0.80);
+    backdrop-filter: blur(10px);
 }
 
 input {
