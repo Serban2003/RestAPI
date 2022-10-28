@@ -1,20 +1,4 @@
-:root {
-    --nav-icon-width: 75px;
-    --nav-border-width: 10px;
-    --main-color: #222831;
-    --main-color-light: #393E46;
-    --main-color-light-var: #454950;
-    --main-color-light-var2: #52565e;
-    --main-color-white: #EEEEEE;
-    --accent-color: #00ADB5;
-    --accent-color-dark: #02979d;
-    --shadow-color: rgba(0, 0, 0, 0.5);
-    /*--main-color: #140941;*/
-    /*--main-color-light: #261569;*/
-    /*--main-color-light-var: #201259;*/
-    /*--accent-color: #e00740;*/
-    /*--accent-color-dark: #ff0041;*/
-}
+
 
 html,
 body {
@@ -243,27 +227,6 @@ input[type="radio"]:focus {
     background: white;
 }
 
-.custom_button {
-    width: 100%;
-    height: auto;
-    color: white;
-    margin-top: 5px;
-    border-radius: 10px;
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--main-color);
-    background-color: var(--accent-color);
-    outline: none;
-    font-size: 16px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.custom_button:hover {
-    background-color: var(--accent-color-dark);
-}
-
 /* Random Number */
 .panel {
     color: white;
@@ -279,20 +242,9 @@ input[type="radio"]:focus {
 }
 
 input {
-    color: white;
     height: 28px;
     width: 100px;
     font-size: 18px;
-    padding: 0 5px;
-    background-color: var(--main-color-light-var2);
-    border: 1px solid var(--main-color);
-    border-radius: 5px;
-    margin: 5px 0 5px 0;
-    outline: none;
-}
-
-input:focus {
-    outline: var(--accent-color) solid 2px;
 }
 
 .title {

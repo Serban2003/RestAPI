@@ -1,5 +1,83 @@
 window.onload = function () {
-    createRegistration();
+    createLoginForm()
+}
+
+function createLoginForm(){
+    let form = document.createElement("form");
+    form.className = "user_form";
+
+    let title = document.createElement("h1");
+    title.innerHTML = "Login";
+    form.appendChild(title);
+
+    createFormInput(form, "email", "email");
+    createBrakes(form);
+    createFormInput(form, "password", "password");
+    createBrakes(form);
+
+    let label = document.createElement("label");
+    label.className = "form-control";
+
+    let checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    label.appendChild(checkbox);
+
+    let span = document.createElement("span");
+    span.style.fontSize = "21px";
+    span.innerHTML = "Remember me";
+
+    let forgotPasswordLink = document.createElement("a");
+    forgotPasswordLink.href="#ForgotPassword";
+    forgotPasswordLink.style.float = "right";
+    forgotPasswordLink.innerHTML = "Forgot Password?";
+
+    span.appendChild(forgotPasswordLink);
+    label.appendChild(span);
+    form.appendChild(label);
+
+    let submitButton = document.createElement("input");
+    submitButton.type = "submit";
+    submitButton.value = "Login";
+    submitButton.className = "custom_button";
+
+    form.appendChild(submitButton);
+    createBrakes(form);
+
+    span = document.createElement("span");
+    span.style.fontSize = "21px";
+    span.style.color = "#EEEEEEFF"
+    span.innerHTML = "Not registered yet?";
+
+    let createAccountLink = document.createElement("a");
+    createAccountLink.href = "#createAccount";
+    createAccountLink.innerHTML = " Create an Account";
+
+    span.appendChild(createAccountLink);
+    form.appendChild(span);
+
+    document.body.appendChild(form);
+}
+
+function createRegisterForm(){
+
+}
+
+function createFormInput(panel, forString, inputType){
+    let forStringC = forString.toUpperCase()[0] + forString.substring(1);
+
+    let label = document.createElement("label");
+    label.setAttribute("for", forString);
+    label.innerHTML = forStringC;
+
+    createBrakes(label);
+
+    let input = document.createElement("input");
+    input.id = forString;
+    input.name = forStringC;
+    input.type = inputType;
+
+    label.appendChild(input);
+    panel.appendChild(label);
 }
 
 function createRegistration() {

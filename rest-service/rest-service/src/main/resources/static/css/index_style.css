@@ -1,73 +1,96 @@
 body{
-    background-image: url("/images/indexBackground.png");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
     margin: 0;
-}
-
-.register_title{
     font-family: sans-serif;
-    text-align: center;
-    color: #FF9620;
-    margin-top: 20px;
-    text-shadow:
-       -1px -1px 0 #000,
-        1px -1px 0 #000,
-       -1px 1px 0 #000,
-        1px 1px 0 #000;
-    font-size: 50px;
+    background-image: url('/images/backgrounds.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-content: center;
 }
 
 .user_form{
-    display: inline-block;
-    padding: 10px;
-    font-family: sans-serif;
-    background-color: #FF9620;
-    box-shadow: 5px 5px 15px black;
-    border-radius: 5px;
-    font-size: 18px;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+    padding: 0 25px 25px 25px;
+    border-radius: 20px;
+    box-shadow: 2px 2px 5px var(--shadow-color);
+    background-color: rgba(57, 62, 70, 0.80);
+    margin: auto;
+    backdrop-filter: blur(10px);
 }
 
-.submit_button{
-    display: block;
-    width: 100%;
-    margin: 5px 0px 10px 0px;
-    border-radius: 10px;
-    border: #C66800 solid 1px;
-    outline: none;
-    font-size: 15px;
-    padding: 2px 5px 2px 5px;
-    background: #FFC17D;
-    box-shadow: 1px 1px 5px black;
+.user_form h1{
+    color: var(--accent-color);
+    font-size: 50px;
+    text-align: center;
+}
+
+.user_form label{
+    color: var(--main-color-white);
+    font-size: 28px;
+}
+
+.user_form a{
+    text-decoration: none;
+    color: var(--accent-color);
+    font-size: 21px;
+    pointer-events: initial;
+}
+
+.user_form input[type="submit"]{
+    margin-top: 20px;
+    font-size: 25px;
 }
 
 .message{
     font-size: 16px;
 }
 
-.submit_button:hover{
-	background: #FFAF59;
+.form-control {
+    display: grid;
+    grid-template-columns: 20px auto;
+    gap: 15px;
+    line-height: 1.1;
+    margin-bottom: 15px;
+    pointer-events: none;
 }
 
 input{
-    display: block;
-    width: 100%;
-    margin: 5px 0px 10px 0px;
-    background: rgb(255, 255, 255);
-    font-size: 16px;
-    border: 1px grey solid;
-    border-radius: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    outline: none;
+    width: 400px;
+    font-size: 25px;
+    margin: 10px 0 20px 0;
+    padding: 5px 10px; !important
 }
 
-input:focus,
-input:hover {
-    box-shadow: black 0.5px 0.5px 0.5px;
-    border-color: black;
+input[type="checkbox"]{
+    appearance: none;
+    background-color: var(--main-color-light-var);
+    margin: 0;
+    font: inherit;
+    color: var(--main-color-light-var);
+    width: 25px;
+    height: 25px;
+    border: 1px solid var(--main-color);
+    border-radius: 5px;
+    transform: translateY(-1px);
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    pointer-events: initial;
+}
+
+input[type="checkbox"]:hover{
+    background-color: var(--main-color-light-var2);
+}
+
+input[type="checkbox"]::before {
+    content: "";
+    width: 15px;
+    height: 15px;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 10px 10px var(--accent-color);
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
 }
